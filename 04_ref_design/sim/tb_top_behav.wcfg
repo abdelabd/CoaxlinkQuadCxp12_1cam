@@ -5,393 +5,392 @@
    <db_ref_list>
       <db_ref path="tb_top_behav.wdb" id="1">
          <top_modules>
-            <top_module name="customlogic_tb_pkg" />
             <top_module name="glbl" />
             <top_module name="simulation_fileio_pkg" />
-            <top_module name="simulationctrl_tb_pkg" />
             <top_module name="tb_top" />
-            <top_module name="tl_pkg" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1305000001fs"></ZoomEndTime>
-      <Cursor1Time time="375000000fs"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="37.636280 us"></ZoomEndTime>
+      <Cursor1Time time="1.354245 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="466"></NameColumnWidth>
-      <ValueColumnWidth column_width="248"></ValueColumnWidth>
+      <NameColumnWidth column_width="184"></NameColumnWidth>
+      <ValueColumnWidth column_width="148"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="1" />
-   <wvobject fp_name="group369" type="group">
+   <wvobject type="group" fp_name="group369">
       <obj_property name="label">CustomLogic</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="group361" type="group">
+      <wvobject type="group" fp_name="group361">
          <obj_property name="label">Global Signals</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/clk250" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/clk250">
             <obj_property name="ElementShortName">clk250</obj_property>
             <obj_property name="ObjectShortName">clk250</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/srst250" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/srst250">
             <obj_property name="ElementShortName">srst250</obj_property>
             <obj_property name="ObjectShortName">srst250</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group971" type="group">
+      <wvobject type="group" fp_name="group971">
          <obj_property name="label">GPIO Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/user_output_ctrl" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/user_output_ctrl">
             <obj_property name="ElementShortName">user_output_ctrl[15:0]</obj_property>
             <obj_property name="ObjectShortName">user_output_ctrl[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/user_output_status" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/user_output_status">
             <obj_property name="ElementShortName">user_output_status[7:0]</obj_property>
             <obj_property name="ObjectShortName">user_output_status[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/custom_logic_output_ctrl" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/custom_logic_output_ctrl">
             <obj_property name="ElementShortName">custom_logic_output_ctrl[31:0]</obj_property>
             <obj_property name="ObjectShortName">custom_logic_output_ctrl[31:0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group362" type="group">
+      <wvobject type="group" fp_name="group362">
          <obj_property name="label">Master - Control/Status Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_ctrl_data_wr_en" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/s_ctrl_data_wr_en">
             <obj_property name="ElementShortName">s_ctrl_data_wr_en</obj_property>
             <obj_property name="ObjectShortName">s_ctrl_data_wr_en</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_ctrl_addr" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_ctrl_addr">
             <obj_property name="ElementShortName">s_ctrl_addr[15:0]</obj_property>
             <obj_property name="ObjectShortName">s_ctrl_addr[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_ctrl_data_wr" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_ctrl_data_wr">
             <obj_property name="ElementShortName">s_ctrl_data_wr[31:0]</obj_property>
             <obj_property name="ObjectShortName">s_ctrl_data_wr[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_ctrl_data_rd" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_ctrl_data_rd">
             <obj_property name="ElementShortName">s_ctrl_data_rd[31:0]</obj_property>
             <obj_property name="ObjectShortName">s_ctrl_data_rd[31:0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group363" type="group">
+      <wvobject type="group" fp_name="group363">
          <obj_property name="label">Master - On-Board Memory Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/onboard_mem_base" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/onboard_mem_base">
             <obj_property name="ElementShortName">onboard_mem_base[31:0]</obj_property>
             <obj_property name="ObjectShortName">onboard_mem_base[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/onboard_mem_size" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/onboard_mem_size">
             <obj_property name="ElementShortName">onboard_mem_size[31:0]</obj_property>
             <obj_property name="ObjectShortName">onboard_mem_size[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_resetn" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_resetn">
             <obj_property name="ElementShortName">m_axi_resetn</obj_property>
             <obj_property name="ObjectShortName">m_axi_resetn</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awaddr" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awaddr">
             <obj_property name="ElementShortName">m_axi_awaddr[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awaddr[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awlen" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awlen">
             <obj_property name="ElementShortName">m_axi_awlen[7:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awlen[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awsize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awsize">
             <obj_property name="ElementShortName">m_axi_awsize[2:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awsize[2:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awburst" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awburst">
             <obj_property name="ElementShortName">m_axi_awburst[1:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awburst[1:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awlock" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_awlock">
             <obj_property name="ElementShortName">m_axi_awlock</obj_property>
             <obj_property name="ObjectShortName">m_axi_awlock</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awcache" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awcache">
             <obj_property name="ElementShortName">m_axi_awcache[3:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awcache[3:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awprot" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awprot">
             <obj_property name="ElementShortName">m_axi_awprot[2:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awprot[2:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awqos" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_awqos">
             <obj_property name="ElementShortName">m_axi_awqos[3:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_awqos[3:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_awvalid">
             <obj_property name="ElementShortName">m_axi_awvalid</obj_property>
             <obj_property name="ObjectShortName">m_axi_awvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_awready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_awready">
             <obj_property name="ElementShortName">m_axi_awready</obj_property>
             <obj_property name="ObjectShortName">m_axi_awready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_wdata" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_wdata">
             <obj_property name="ElementShortName">m_axi_wdata[255:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_wdata[255:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_wstrb" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_wstrb">
             <obj_property name="ElementShortName">m_axi_wstrb[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_wstrb[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_wlast" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_wlast">
             <obj_property name="ElementShortName">m_axi_wlast</obj_property>
             <obj_property name="ObjectShortName">m_axi_wlast</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_wvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_wvalid">
             <obj_property name="ElementShortName">m_axi_wvalid</obj_property>
             <obj_property name="ObjectShortName">m_axi_wvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_wready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_wready">
             <obj_property name="ElementShortName">m_axi_wready</obj_property>
             <obj_property name="ObjectShortName">m_axi_wready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_bresp" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_bresp">
             <obj_property name="ElementShortName">m_axi_bresp[1:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_bresp[1:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_bvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_bvalid">
             <obj_property name="ElementShortName">m_axi_bvalid</obj_property>
             <obj_property name="ObjectShortName">m_axi_bvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_bready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_bready">
             <obj_property name="ElementShortName">m_axi_bready</obj_property>
             <obj_property name="ObjectShortName">m_axi_bready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_araddr" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_araddr">
             <obj_property name="ElementShortName">m_axi_araddr[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_araddr[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arlen" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arlen">
             <obj_property name="ElementShortName">m_axi_arlen[7:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arlen[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arsize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arsize">
             <obj_property name="ElementShortName">m_axi_arsize[2:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arsize[2:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arburst" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arburst">
             <obj_property name="ElementShortName">m_axi_arburst[1:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arburst[1:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arlock" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_arlock">
             <obj_property name="ElementShortName">m_axi_arlock</obj_property>
             <obj_property name="ObjectShortName">m_axi_arlock</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arcache" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arcache">
             <obj_property name="ElementShortName">m_axi_arcache[3:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arcache[3:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arprot" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arprot">
             <obj_property name="ElementShortName">m_axi_arprot[2:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arprot[2:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arqos" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_arqos">
             <obj_property name="ElementShortName">m_axi_arqos[3:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_arqos[3:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_arvalid">
             <obj_property name="ElementShortName">m_axi_arvalid</obj_property>
             <obj_property name="ObjectShortName">m_axi_arvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_arready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_arready">
             <obj_property name="ElementShortName">m_axi_arready</obj_property>
             <obj_property name="ObjectShortName">m_axi_arready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_rdata" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_rdata">
             <obj_property name="ElementShortName">m_axi_rdata[255:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_rdata[255:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_rresp" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axi_rresp">
             <obj_property name="ElementShortName">m_axi_rresp[1:0]</obj_property>
             <obj_property name="ObjectShortName">m_axi_rresp[1:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_rlast" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_rlast">
             <obj_property name="ElementShortName">m_axi_rlast</obj_property>
             <obj_property name="ObjectShortName">m_axi_rlast</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_rvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_rvalid">
             <obj_property name="ElementShortName">m_axi_rvalid</obj_property>
             <obj_property name="ObjectShortName">m_axi_rvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axi_rready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axi_rready">
             <obj_property name="ElementShortName">m_axi_rready</obj_property>
             <obj_property name="ObjectShortName">m_axi_rready</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group368" type="group">
+      <wvobject type="group" fp_name="group368">
          <obj_property name="label">Master - Memento Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_memento_event" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_memento_event">
             <obj_property name="ElementShortName">m_memento_event</obj_property>
             <obj_property name="ObjectShortName">m_memento_event</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_memento_arg0" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_memento_arg0">
             <obj_property name="ElementShortName">m_memento_arg0[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_memento_arg0[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_memento_arg1" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_memento_arg1">
             <obj_property name="ElementShortName">m_memento_arg1[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_memento_arg1[31:0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group364" type="group">
+      <wvobject type="group" fp_name="group364">
          <obj_property name="label">Slave - Data Stream Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_axis_resetn" type="logic">
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/s_axis_resetn">
             <obj_property name="ElementShortName">s_axis_resetn</obj_property>
             <obj_property name="ObjectShortName">s_axis_resetn</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_axis_tvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/s_axis_tvalid">
             <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
             <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_axis_tready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/s_axis_tready">
             <obj_property name="ElementShortName">s_axis_tready</obj_property>
             <obj_property name="ObjectShortName">s_axis_tready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_axis_tdata" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_axis_tdata">
             <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
             <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_axis_tuser" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_axis_tuser">
             <obj_property name="ElementShortName">s_axis_tuser[3:0]</obj_property>
             <obj_property name="ObjectShortName">s_axis_tuser[3:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group365" type="group">
+      <wvobject type="group" fp_name="group365">
          <obj_property name="label">Slave - Metadata Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_StreamId" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_StreamId">
             <obj_property name="ElementShortName">s_mdata_StreamId[7:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_StreamId[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_SourceTag" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_SourceTag">
             <obj_property name="ElementShortName">s_mdata_SourceTag[15:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_SourceTag[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Xsize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Xsize">
             <obj_property name="ElementShortName">s_mdata_Xsize[23:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Xsize[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Xoffs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Xoffs">
             <obj_property name="ElementShortName">s_mdata_Xoffs[23:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Xoffs[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Ysize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Ysize">
             <obj_property name="ElementShortName">s_mdata_Ysize[23:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Ysize[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Yoffs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Yoffs">
             <obj_property name="ElementShortName">s_mdata_Yoffs[23:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Yoffs[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_DsizeL" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_DsizeL">
             <obj_property name="ElementShortName">s_mdata_DsizeL[23:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_DsizeL[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_PixelF" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_PixelF">
             <obj_property name="ElementShortName">s_mdata_PixelF[15:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_PixelF[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_TapG" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_TapG">
             <obj_property name="ElementShortName">s_mdata_TapG[15:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_TapG[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Flags" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Flags">
             <obj_property name="ElementShortName">s_mdata_Flags[7:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Flags[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Timestamp" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Timestamp">
             <obj_property name="ElementShortName">s_mdata_Timestamp[31:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Timestamp[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_PixProcFlgs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_PixProcFlgs">
             <obj_property name="ElementShortName">s_mdata_PixProcFlgs[7:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_PixProcFlgs[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/s_mdata_Status" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/s_mdata_Status">
             <obj_property name="ElementShortName">s_mdata_Status[31:0]</obj_property>
             <obj_property name="ObjectShortName">s_mdata_Status[31:0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group366" type="group">
+      <wvobject type="group" fp_name="group366">
          <obj_property name="label">Master - Data Stream Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axis_tvalid" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axis_tvalid">
             <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
             <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axis_tready" type="logic">
+         <wvobject type="logic" fp_name="/tb_top/iCustomLogic/m_axis_tready">
             <obj_property name="ElementShortName">m_axis_tready</obj_property>
             <obj_property name="ObjectShortName">m_axis_tready</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axis_tdata" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axis_tdata">
             <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
             <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_axis_tuser" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_axis_tuser">
             <obj_property name="ElementShortName">m_axis_tuser[3:0]</obj_property>
             <obj_property name="ObjectShortName">m_axis_tuser[3:0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject fp_name="group367" type="group">
+      <wvobject type="group" fp_name="group367">
          <obj_property name="label">Master - Metadata Interface</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_StreamId" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_StreamId">
             <obj_property name="ElementShortName">m_mdata_StreamId[7:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_StreamId[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_SourceTag" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_SourceTag">
             <obj_property name="ElementShortName">m_mdata_SourceTag[15:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_SourceTag[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Xsize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Xsize">
             <obj_property name="ElementShortName">m_mdata_Xsize[23:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Xsize[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Xoffs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Xoffs">
             <obj_property name="ElementShortName">m_mdata_Xoffs[23:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Xoffs[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Ysize" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Ysize">
             <obj_property name="ElementShortName">m_mdata_Ysize[23:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Ysize[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Yoffs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Yoffs">
             <obj_property name="ElementShortName">m_mdata_Yoffs[23:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Yoffs[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_DsizeL" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_DsizeL">
             <obj_property name="ElementShortName">m_mdata_DsizeL[23:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_DsizeL[23:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_PixelF" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_PixelF">
             <obj_property name="ElementShortName">m_mdata_PixelF[15:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_PixelF[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_TapG" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_TapG">
             <obj_property name="ElementShortName">m_mdata_TapG[15:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_TapG[15:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Flags" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Flags">
             <obj_property name="ElementShortName">m_mdata_Flags[7:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Flags[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Timestamp" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Timestamp">
             <obj_property name="ElementShortName">m_mdata_Timestamp[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Timestamp[31:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_PixProcFlgs" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_PixProcFlgs">
             <obj_property name="ElementShortName">m_mdata_PixProcFlgs[7:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_PixProcFlgs[7:0]</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top/iCustomLogic/m_mdata_Status" type="array">
+         <wvobject type="array" fp_name="/tb_top/iCustomLogic/m_mdata_Status">
             <obj_property name="ElementShortName">m_mdata_Status[31:0]</obj_property>
             <obj_property name="ObjectShortName">m_mdata_Status[31:0]</obj_property>
          </wvobject>

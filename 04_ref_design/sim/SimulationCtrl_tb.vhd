@@ -274,12 +274,16 @@ begin
 		Ref_MementoEvent_gen	(clk,status,ctrl, 0, x"AAAAAAAA");
 		Ref_PixelLut_Negative_on(clk,status,ctrl, 0);
 		EnableDataStream		(clk,status,ctrl, 0);
-		FrameRequest			(clk,status,ctrl, 0, 5, 256, 10, Mono8, FALSE);
+		-- FrameRequest			(clk,status,ctrl, 0, 5, 160, 100, Mono8, FALSE);
+		-- FrameRequest			(clk,status,ctrl, 0, 5, 128, 64, Mono8, TRUE, FALSE, "/home/aelabd/RHEED/ml4fg/my-frame-grabber_TEMPLATE_MNIST_octo/05_model_design_hls/tb_data/tb_input_features.dat");
+		FrameRequest			(clk,status,ctrl, 0, 5, 160, 100, Mono16, TRUE, FALSE, "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_16_15/100x160_to_48x48x1/img_precrop_hex_INDEX.dat");
+		-- FrameRequest			(clk,status,ctrl, 0, 5, 160, 100, Mono8, TRUE, FALSE, "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_16_15/100x160_to_48x48x1/cl_output_data_ch0_000.dat");
 
-		-- To read image data from a file, change the absolute path here below to locate the file containing the data.
-		-- In addition, Linux users must update the FILE_PATH_LENGTH constant in Simulation_FileIO_pkg.vhd
-		-- to specify the length of the absolute path locating the image data file.
-		-- FrameRequest			(clk,status,ctrl, 0, 5, 256, 10, Mono8, TRUE, FALSE, "C:/Documents/Image_Data.dat");
+
+		-- -- To read image data from a file, change the absolute path here below to locate the file containing the data.
+		-- -- In addition, Linux users must update the FILE_PATH_LENGTH constant in Simulation_FileIO_pkg.vhd
+		-- -- to specify the length of the absolute path locating the image data file.
+		-- -- FrameRequest			(clk,status,ctrl, 0, 5, 256, 10, Mono8, TRUE, FALSE, "C:/Documents/Image_Data.dat");
 
 		DisableDataStream		(clk,status,ctrl, 0);
 		Ref_PixelLut_off		(clk,status,ctrl, 0);
