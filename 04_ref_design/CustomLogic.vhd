@@ -220,6 +220,22 @@ architecture behav of CustomLogic is
 	-- attribute mark_debug of s_axis_tready	: signal is "true";
 	-- attribute mark_debug of s_axis_tuser		: signal is "true";
 
+	constant PIXEL_BIT_WIDTH : integer  := 16;
+	constant PIXELS_PER_BURST : integer := 16;
+	constant USER_WIDTH : integer := 4;
+	constant IN_ROWS : integer := 100;
+	constant IN_COLS : integer := 160;
+	constant OUT_ROWS : integer := 48;
+	constant OUT_COLS : integer := 48;
+	constant IMG_COL_BITWIDTH : integer := 10; 
+	constant IMG_ROW_BITWIDTH : integer := 10;
+	
+  	signal crop_x0   : std_logic_vector(IMG_COL_BITWIDTH-1 downto 0);
+	signal crop_y0   : std_logic_vector(IMG_COL_BITWIDTH-1 downto 0);
+	signal seq_m_axis_tready : std_logic;
+	signal seq_m_axis_tvalid : std_logic;
+	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 
 begin
 
@@ -298,152 +314,40 @@ begin
 			m_axi_rready 		=> m_axi_rready
 		);
 	
-	-- Pixel Lookup Table 8-bit
-	iPixelLut : entity work.pix_lut8b
-		generic map (
-			DATA_WIDTH 					=> STREAM_DATA_WIDTH
-		)
-		port map (
-			clk							=> clk250,
-			srst						=> srst250,
-			PixelLut_bypass				=> PixelLut_bypass,
-			PixelLut_coef_start			=> PixelLut_coef_start,
-			PixelLut_coef_vld			=> PixelLut_coef_vld,
-			PixelLut_coef				=> PixelLut_coef,
-			PixelLut_coef_done			=> PixelLut_coef_done,
-			s_axis_resetn 				=> s_axis_resetn,
-			s_axis_tvalid				=> s_axis_tvalid,
-			s_axis_tready				=> s_axis_tready,
-			s_axis_tdata				=> s_axis_tdata,
-			s_axis_tuser				=> s_axis_tuser,
-			s_mdata_StreamId			=> s_mdata_StreamId,
-			s_mdata_SourceTag			=> s_mdata_SourceTag,
-			s_mdata_Xsize				=> s_mdata_Xsize,
-			s_mdata_Xoffs				=> s_mdata_Xoffs,
-			s_mdata_Ysize				=> s_mdata_Ysize,
-			s_mdata_Yoffs				=> s_mdata_Yoffs,
-			s_mdata_DsizeL				=> s_mdata_DsizeL,
-			s_mdata_PixelF				=> s_mdata_PixelF,
-			s_mdata_TapG				=> s_mdata_TapG,
-			s_mdata_Flags				=> s_mdata_Flags,
-			s_mdata_Timestamp			=> s_mdata_Timestamp,
-			s_mdata_PixProcFlgs			=> s_mdata_PixProcFlgs,
-			s_mdata_Status				=> s_mdata_Status,
-			m_axis_tvalid				=> PixelLut_tvalid,
-			m_axis_tready				=> PixelLut_tready,
-			m_axis_tdata				=> PixelLut_tdata,
-			m_axis_tuser				=> PixelLut_tuser,
-			m_mdata_StreamId			=> PixelLut_StreamId,
-			m_mdata_SourceTag			=> PixelLut_SourceTag,
-			m_mdata_Xsize				=> PixelLut_Xsize,
-			m_mdata_Xoffs				=> PixelLut_Xoffs,
-			m_mdata_Ysize				=> PixelLut_Ysize,
-			m_mdata_Yoffs				=> PixelLut_Yoffs,
-			m_mdata_DsizeL				=> PixelLut_DsizeL,
-			m_mdata_PixelF				=> PixelLut_PixelF,
-			m_mdata_TapG				=> PixelLut_TapG,
-			m_mdata_Flags				=> PixelLut_Flags,
-			m_mdata_Timestamp			=> PixelLut_Timestamp,
-			m_mdata_PixProcFlgs			=> PixelLut_PixProcFlgs,
-			m_mdata_Status				=> PixelLut_Status
-		);
-		
-	-- HLS Pixel Threshold
-	iHlsPixTh : entity work.pix_threshold_wrp
-		generic map (
-			DATA_WIDTH 					=> STREAM_DATA_WIDTH
-		)
-		port map (
-			clk			 				=> clk250,
-			srst						=> srst250,
-			HlsThreshold_bypass			=> PixelThreshold_bypass,
-			HlsThreshold_level			=> PixelThreshold_level,
-			s_axis_resetn 				=> s_axis_resetn,
-			s_axis_tvalid				=> PixelLut_tvalid,
-			s_axis_tready				=> PixelLut_tready,
-			s_axis_tdata				=> PixelLut_tdata,
-			s_axis_tuser				=> PixelLut_tuser,
-			s_mdata_StreamId			=> PixelLut_StreamId,
-			s_mdata_SourceTag			=> PixelLut_SourceTag,
-			s_mdata_Xsize				=> PixelLut_Xsize,
-			s_mdata_Xoffs				=> PixelLut_Xoffs,
-			s_mdata_Ysize				=> PixelLut_Ysize,
-			s_mdata_Yoffs				=> PixelLut_Yoffs,
-			s_mdata_DsizeL				=> PixelLut_DsizeL,
-			s_mdata_PixelF				=> PixelLut_PixelF,
-			s_mdata_TapG				=> PixelLut_TapG,
-			s_mdata_Flags				=> PixelLut_Flags,
-			s_mdata_Timestamp			=> PixelLut_Timestamp,
-			s_mdata_PixProcFlgs			=> PixelLut_PixProcFlgs,
-			s_mdata_Status				=> PixelLut_Status,
-			m_axis_tvalid				=> HlsPixTh_tvalid,
-			m_axis_tready				=> HlsPixTh_tready,
-			m_axis_tdata				=> HlsPixTh_tdata,
-			m_axis_tuser				=> HlsPixTh_tuser,
-			m_mdata_StreamId			=> HlsPixTh_StreamId,
-			m_mdata_SourceTag			=> HlsPixTh_SourceTag,
-			m_mdata_Xsize				=> HlsPixTh_Xsize,
-			m_mdata_Xoffs				=> HlsPixTh_Xoffs,
-			m_mdata_Ysize				=> HlsPixTh_Ysize,
-			m_mdata_Yoffs				=> HlsPixTh_Yoffs,
-			m_mdata_DsizeL				=> HlsPixTh_DsizeL,
-			m_mdata_PixelF				=> HlsPixTh_PixelF,
-			m_mdata_TapG				=> HlsPixTh_TapG,
-			m_mdata_Flags				=> HlsPixTh_Flags,
-			m_mdata_Timestamp			=> HlsPixTh_Timestamp,
-			m_mdata_PixProcFlgs			=> HlsPixTh_PixProcFlgs,
-			m_mdata_Status				=> HlsPixTh_Status
-		);
-	
-	-- Frame to Line
-	iFrame2Line : entity work.frame_to_line
-		generic map (
-			DATA_WIDTH 					=> STREAM_DATA_WIDTH
-		)
-		port map (
-			clk			 				=> clk250,
-			srst						=> srst250,
-			Frame2Line_bypass			=> Frame2Line_bypass,
-			s_axis_resetn 				=> s_axis_resetn,
-			s_axis_tvalid				=> HlsPixTh_tvalid,
-			s_axis_tready				=> HlsPixTh_tready,
-			s_axis_tdata				=> HlsPixTh_tdata,
-			s_axis_tuser				=> HlsPixTh_tuser,
-			s_mdata_StreamId			=> HlsPixTh_StreamId,
-			s_mdata_SourceTag			=> HlsPixTh_SourceTag,
-			s_mdata_Xsize				=> HlsPixTh_Xsize,
-			s_mdata_Xoffs				=> HlsPixTh_Xoffs,
-			s_mdata_Ysize				=> HlsPixTh_Ysize,
-			s_mdata_Yoffs				=> HlsPixTh_Yoffs,
-			s_mdata_DsizeL				=> HlsPixTh_DsizeL,
-			s_mdata_PixelF				=> HlsPixTh_PixelF,
-			s_mdata_TapG				=> HlsPixTh_TapG,
-			s_mdata_Flags				=> HlsPixTh_Flags,
-			s_mdata_Timestamp			=> HlsPixTh_Timestamp,
-			s_mdata_PixProcFlgs			=> HlsPixTh_PixProcFlgs,
-			s_mdata_Status				=> HlsPixTh_Status,
-			m_axis_tvalid				=> m_axis_tvalid,
-			m_axis_tready				=> m_axis_tready,
-			m_axis_tdata				=> m_axis_tdata,
-			m_axis_tuser				=> m_axis_tuser,
-			m_mdata_StreamId			=> m_mdata_StreamId,
-			m_mdata_SourceTag			=> m_mdata_SourceTag,
-			m_mdata_Xsize				=> m_mdata_Xsize,
-			m_mdata_Xoffs				=> m_mdata_Xoffs,
-			m_mdata_Ysize				=> m_mdata_Ysize,
-			m_mdata_Yoffs				=> m_mdata_Yoffs,
-			m_mdata_DsizeL				=> m_mdata_DsizeL,
-			m_mdata_PixelF				=> m_mdata_PixelF,
-			m_mdata_TapG				=> m_mdata_TapG,
-			m_mdata_Flags				=> m_mdata_Flags,
-			m_mdata_Timestamp			=> m_mdata_Timestamp,
-			m_mdata_PixProcFlgs			=> m_mdata_PixProcFlgs,
-			m_mdata_Status				=> m_mdata_Status
-		);
-	
-	-- Generate CustomLogic events on Memento
+
 	m_memento_event 	<= MementoEvent_en or Wraparound_pls;
 	m_memento_arg0		<= MementoEvent_arg0;
 	m_memento_arg1		<= Wraparound_cnt;
+
+	crop_x0 <= std_logic_vector(to_unsigned(10, IMG_COL_BITWIDTH));
+	crop_y0 <= std_logic_vector(to_unsigned(10, IMG_ROW_BITWIDTH));
+	seq_m_axis_tready <= '1';
+	iSequentializer: entity work.sequentializer 
+    generic map (
+      PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+      PIXELS_PER_BURST => PIXELS_PER_BURST,
+      USER_WIDTH => USER_WIDTH, 
+      IN_ROWS => IN_ROWS,
+      IN_COLS => IN_COLS, 
+      OUT_ROWS => OUT_ROWS,
+      OUT_COLS => OUT_COLS,
+      IMG_ROW_BITWIDTH => IMG_COL_BITWIDTH,
+      IMG_COL_BITWIDTH => IMG_COL_BITWIDTH
+    )
+    port map (
+      clk => clk250, 
+      srst => srst250, 
+	  s_axis_resetn => s_axis_resetn,
+      s_axis_tvalid => s_axis_tvalid,
+      s_axis_tready => s_axis_tready,
+      s_axis_tdata => s_axis_tdata,
+      s_axis_tuser => s_axis_tuser,
+	  crop_x0 => crop_x0, 
+	  crop_y0 => crop_y0,
+	  m_axis_tvalid => m_axis_tvalid,
+	  m_axis_tready => m_axis_tready,
+	  m_axis_tdata => m_axis_tdata,
+	  m_axis_tuser => m_axis_tuser
+    );
 	
 end behav;
