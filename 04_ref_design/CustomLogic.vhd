@@ -21,6 +21,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+
 entity CustomLogic is
 	generic (
 		STREAM_DATA_WIDTH			: natural := 128;
@@ -131,6 +132,18 @@ entity CustomLogic is
 end entity CustomLogic;
 
 architecture behav of CustomLogic is
+	function clog2(n : integer) return integer is
+		variable m, p : integer;
+	begin
+		m := 0;
+		p := 1;
+		while p < n loop
+		m := m + 1;
+		p := p * 2;
+		end loop;
+		return m;
+	end function;
+
 
 	----------------------------------------------------------------------------
 	-- Constants
@@ -227,11 +240,10 @@ architecture behav of CustomLogic is
 	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
-	constant IMG_COL_BITWIDTH : integer := 10; 
-	constant IMG_ROW_BITWIDTH : integer := 10;
 	
-  	signal crop_x0   : std_logic_vector(IMG_COL_BITWIDTH-1 downto 0);
-	signal crop_y0   : std_logic_vector(IMG_COL_BITWIDTH-1 downto 0);
+  	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
+	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	signal seq_s_axis_tready : std_logic;
 	signal seq_m_axis_tready : std_logic;
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
@@ -319,8 +331,8 @@ begin
 	m_memento_arg0		<= MementoEvent_arg0;
 	m_memento_arg1		<= Wraparound_cnt;
 
-	crop_x0 <= std_logic_vector(to_unsigned(10, IMG_COL_BITWIDTH));
-	crop_y0 <= std_logic_vector(to_unsigned(10, IMG_ROW_BITWIDTH));
+	crop_x0 <= std_logic_vector(to_unsigned(10, clog2(IN_COLS)));
+	crop_y0 <= std_logic_vector(to_unsigned(10, clog2(IN_ROWS)));
 	seq_m_axis_tready <= '1';
 	iSequentializer: entity work.sequentializer 
     generic map (
@@ -330,26 +342,25 @@ begin
       IN_ROWS => IN_ROWS,
       IN_COLS => IN_COLS, 
       OUT_ROWS => OUT_ROWS,
-      OUT_COLS => OUT_COLS,
-      IMG_ROW_BITWIDTH => IMG_COL_BITWIDTH,
-      IMG_COL_BITWIDTH => IMG_COL_BITWIDTH
+      OUT_COLS => OUT_COLS
     )
     port map (
       clk => clk250, 
       srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
       s_axis_tvalid => s_axis_tvalid,
-      s_axis_tready => s_axis_tready,
+      s_axis_tready => seq_s_axis_tready,
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
 	  crop_x0 => crop_x0, 
 	  crop_y0 => crop_y0,
 	  m_axis_tvalid => m_axis_tvalid,
 	  m_axis_tready => m_axis_tready,
-	  m_axis_tdata => seq_m_axis_tdata,
-	  m_axis_tuser => m_axis_tuser
+	  m_axis_tdata => seq_m_axis_tdata
     );
 
+	s_axis_tready <= '1';
 	m_axis_tdata <= s_axis_tdata;
+	m_axis_tuser <= s_axis_tuser;
 	
 end behav;
