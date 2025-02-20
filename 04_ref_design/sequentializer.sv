@@ -32,7 +32,7 @@ module sequentializer #(
     // AXIS Stream Master Interface
     output logic m_axis_tvalid;
     input  logic m_axis_tready;
-    output logic [PIXEL_BIT_WIDTH*PIXELS_PER_BURST-1:0] m_axis_tdata;
+    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata;
     output logic [USER_WIDTH-1:0] m_axis_tuser;
 
     // First, we want to keep track of the indeces of the incoming pixels
