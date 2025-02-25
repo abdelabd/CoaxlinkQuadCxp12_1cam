@@ -236,14 +236,13 @@ architecture behav of CustomLogic is
 	constant PIXEL_BIT_WIDTH : integer  := 16;
 	constant PIXELS_PER_BURST : integer := 16;
 	constant USER_WIDTH : integer := 4;
-	constant IN_ROWS : integer := 100;
+	constant IN_ROWS : integer := 104;
 	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
 	
   	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-	signal seq_s_axis_tready : std_logic;
 	signal seq_m_axis_tready : std_logic;
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
@@ -349,7 +348,7 @@ begin
       srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
       s_axis_tvalid => s_axis_tvalid,
-      s_axis_tready => seq_s_axis_tready,
+      s_axis_tready => s_axis_tready,
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
 	  crop_x0 => crop_x0, 
@@ -358,8 +357,6 @@ begin
 	  m_axis_tready => m_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata
     );
-
-	s_axis_tready <= '1';
 	m_axis_tdata <= s_axis_tdata;
 	m_axis_tuser <= s_axis_tuser;
 	
