@@ -247,6 +247,8 @@ architecture behav of CustomLogic is
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
+	signal seq_m_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
+	signal seq_m_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
 begin
 
@@ -351,11 +353,11 @@ begin
       s_axis_tready => s_axis_tready,
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
-	  crop_x0 => crop_x0, 
-	  crop_y0 => crop_y0,
 	  m_axis_tvalid => m_axis_tvalid,
 	  m_axis_tready => m_axis_tready,
-	  m_axis_tdata => seq_m_axis_tdata
+	  m_axis_tdata => seq_m_axis_tdata,
+	  cnt_col => seq_m_cnt_col,
+	  cnt_row => seq_m_cnt_row
     );
 	m_axis_tdata <= s_axis_tdata;
 	m_axis_tuser <= s_axis_tuser;

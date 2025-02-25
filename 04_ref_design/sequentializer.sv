@@ -17,14 +17,12 @@ module sequentializer #(
     input  logic [PIXEL_BIT_WIDTH*PIXELS_PER_BURST-1:0] s_axis_tdata,
     input  logic [USER_WIDTH-1:0]    s_axis_tuser,
 
-    // Crop coordinates
-    input  logic [$clog2(IN_COLS)-1:0] crop_x0,
-    input  logic [$clog2(IN_ROWS)-1:0] crop_y0,
-
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata
+    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
+    output logic [$clog2(IN_COLS)-1:0] cnt_col,
+    output logic [$clog2(IN_ROWS)-1:0] cnt_row
 );
 
     //////////////////////// Internal signals ////////////////////////
@@ -111,11 +109,35 @@ module sequentializer #(
         else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_frame <= cnt_idx_in_frame + 1;
     end
 
+    // cnt_col
+    always_ff @(posedge clk) begin
+        if (reset) cnt_col <= 0;
+        else if (m_axis_tvalid && m_axis_tready) begin
+            if (cnt_col==IN_COLS-1) cnt_col <= 0;
+            else cnt_col <= cnt_col + 1;
+        end
+    end
+
+    // cnt_row
+    always_ff @(posedge clk) begin
+        if (reset) cnt_row <= 0;
+        else if (m_axis_tvalid && m_axis_tready) begin
+            if (cnt_col==IN_COLS-1) begin
+                if (cnt_row==IN_ROWS-1) cnt_row <= 0;
+                else cnt_row <= cnt_row + 1;
+            end
+        end
+    end
+
     //////////////////////// For testbenching ////////////////////////
     logic downstream_handshake;
     assign downstream_handshake = (m_axis_tvalid && m_axis_tready);
     always_ff @(posedge clk) begin
-        if (downstream_handshake) assert(m_axis_tdata == cnt_idx_in_frame); // Only true for systematic testbench data of course
+        if (downstream_handshake) begin
+            assert(m_axis_tdata == cnt_idx_in_frame); // Only true for systematic testbench data of course
+            assert((cnt_idx_in_frame%IN_COLS)==cnt_col);
+            assert((cnt_idx_in_frame/IN_COLS)==cnt_row);
+        end
     end
 
 endmodule
