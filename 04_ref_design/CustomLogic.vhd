@@ -259,6 +259,11 @@ architecture behav of CustomLogic is
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
+	-- Crop-filter output signals
+	signal cf_s_axis_tready : std_logic;
+	signal cf_m_axis_tvalid : std_logic;
+	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+
 begin
 
 	-- Control Registers
@@ -341,9 +346,6 @@ begin
 	m_memento_arg0		<= MementoEvent_arg0;
 	m_memento_arg1		<= Wraparound_cnt;
 
-	crop_x0 <= std_logic_vector(to_unsigned(10, clog2(IN_COLS)));
-	crop_y0 <= std_logic_vector(to_unsigned(10, clog2(IN_ROWS)));
-
 	---------------------- Bypassed connections ----------------------
 	-- m_axis_tdata <= s_axis_tdata;
 	-- m_axis_tuser <= s_axis_tuser;
@@ -351,8 +353,8 @@ begin
 
 
 	---------------------- Sequentializer ----------------------
-	-- For clarity's sake
-	s_axis_tready <= seq_s_axis_tready;
+	
+	s_axis_tready <= seq_s_axis_tready; -- For clarity's sake
 
 	iSequentializer: entity work.sequentializer 
     generic map (
@@ -373,11 +375,39 @@ begin
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
 	  m_axis_tvalid => seq_m_axis_tvalid,
-	  m_axis_tready => my_m_axis_tready,
+	  m_axis_tready => cf_s_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
     );
+
+	---------------------- Crop-filter ----------------------
+	
+	crop_y0 <= std_logic_vector(to_unsigned(56, clog2(IN_ROWS)));
+	crop_x0 <= std_logic_vector(to_unsigned(112, clog2(IN_COLS)));
+
+	iCropFilter: entity work.crop_filter
+	generic map(
+	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+      IN_ROWS => IN_ROWS,
+      IN_COLS => IN_COLS, 
+      OUT_ROWS => OUT_ROWS,
+      OUT_COLS => OUT_COLS
+	  )
+	port map(
+	  s_axis_tvalid => seq_m_axis_tvalid,
+	  s_axis_tready => cf_s_axis_tready,
+	  s_axis_tdata => seq_m_axis_tdata,
+
+	  crop_x0 => crop_x0,
+	  crop_y0 => crop_y0,
+
+	  m_axis_tvalid => cf_m_axis_tvalid,
+	  m_axis_tready => my_m_axis_tready,
+	  m_axis_tdata => cf_m_axis_tdata,
+	  cnt_col => seq_cnt_col,
+	  cnt_row => seq_cnt_row
+	);
 
 	----------------------- For testbenching -----------------------
 	-- my_m_axis_tready <= '1';
