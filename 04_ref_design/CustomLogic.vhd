@@ -21,7 +21,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
 entity CustomLogic is
 	generic (
 		STREAM_DATA_WIDTH			: natural := 128;
@@ -246,9 +245,8 @@ architecture behav of CustomLogic is
 	signal seq_m_axis_tready : std_logic;
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
-	signal seq_m_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
-	signal seq_m_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
+	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
 begin
 
@@ -334,7 +332,7 @@ begin
 
 	crop_x0 <= std_logic_vector(to_unsigned(10, clog2(IN_COLS)));
 	crop_y0 <= std_logic_vector(to_unsigned(10, clog2(IN_ROWS)));
-	seq_m_axis_tready <= '1';
+
 	iSequentializer: entity work.sequentializer 
     generic map (
       PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
@@ -353,13 +351,22 @@ begin
       s_axis_tready => s_axis_tready,
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
-	  m_axis_tvalid => m_axis_tvalid,
-	  m_axis_tready => m_axis_tready,
+	  m_axis_tvalid => seq_m_axis_tvalid,
+	  m_axis_tready => seq_m_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
-	  cnt_col => seq_m_cnt_col,
-	  cnt_row => seq_m_cnt_row
+	  cnt_col => seq_cnt_col,
+	  cnt_row => seq_cnt_row
     );
 	m_axis_tdata <= s_axis_tdata;
 	m_axis_tuser <= s_axis_tuser;
+
+	----------------------- For testbenching -----------------------
+	-- seq_m_axis_tready <= '1';
+	-- seq_m_axis_tready <= m_axis_tready;
+	iRBG: entity work.RandomBitGenerator
+	port map (
+		clk => clk250,
+		random_bit => seq_m_axis_tready -- random_bit
+	);
 	
 end behav;
