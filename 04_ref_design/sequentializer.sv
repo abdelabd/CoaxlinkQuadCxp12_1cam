@@ -112,6 +112,7 @@ module sequentializer #(
     // cnt_col
     always_ff @(posedge clk) begin
         if (reset) cnt_col <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_col <= 0;
         else if (m_axis_tvalid && m_axis_tready) begin
             if (cnt_col==IN_COLS-1) cnt_col <= 0;
             else cnt_col <= cnt_col + 1;
@@ -121,6 +122,7 @@ module sequentializer #(
     // cnt_row
     always_ff @(posedge clk) begin
         if (reset) cnt_row <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_row <= 0;
         else if (m_axis_tvalid && m_axis_tready) begin
             if (cnt_col==IN_COLS-1) begin
                 if (cnt_row==IN_ROWS-1) cnt_row <= 0;
@@ -130,14 +132,26 @@ module sequentializer #(
     end
 
     //////////////////////// For testbenching ////////////////////////
+
+    // synthesis translate_off
     logic downstream_handshake;
     assign downstream_handshake = (m_axis_tvalid && m_axis_tready);
+    
+    int signed col_diff;
+    assign col_diff = cnt_col - cnt_idx_in_frame%IN_COLS;
+
+    int signed row_diff;
+    assign row_diff = cnt_row - cnt_idx_in_frame/IN_COLS;
+
     always_ff @(posedge clk) begin
         if (downstream_handshake) begin
             assert(m_axis_tdata == cnt_idx_in_frame); // Only true for systematic testbench data of course
             assert((cnt_idx_in_frame%IN_COLS)==cnt_col);
+            assert(col_diff==0);
             assert((cnt_idx_in_frame/IN_COLS)==cnt_row);
+            assert(row_diff==0);
         end
     end
+    // synthesis translate_on
 
 endmodule
