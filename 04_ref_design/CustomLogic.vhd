@@ -232,6 +232,11 @@ architecture behav of CustomLogic is
 	-- attribute mark_debug of s_axis_tready	: signal is "true";
 	-- attribute mark_debug of s_axis_tuser		: signal is "true";
 
+	----------------------------------------------------------------------------
+	-- FPGAs for RHEED
+	----------------------------------------------------------------------------
+
+	-- Parameters (constant for now)
 	constant PIXEL_BIT_WIDTH : integer  := 16;
 	constant PIXELS_PER_BURST : integer := 16;
 	constant USER_WIDTH : integer := 4;
@@ -240,9 +245,15 @@ architecture behav of CustomLogic is
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
 	
+	-- Crop-coordinates 
   	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-	signal seq_m_axis_tready : std_logic;
+
+	-- Custom downstream tready signal for randomized testbenching
+	signal my_m_axis_tready : std_logic;
+
+	-- Sequentializer output signals
+	signal seq_s_axis_tready : std_logic;
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
@@ -333,6 +344,16 @@ begin
 	crop_x0 <= std_logic_vector(to_unsigned(10, clog2(IN_COLS)));
 	crop_y0 <= std_logic_vector(to_unsigned(10, clog2(IN_ROWS)));
 
+	---------------------- Bypassed connections ----------------------
+	-- m_axis_tdata <= s_axis_tdata;
+	-- m_axis_tuser <= s_axis_tuser;
+	-- m_axis_tvalid <= '1';
+
+
+	---------------------- Sequentializer ----------------------
+	-- For clarity's sake
+	s_axis_tready <= seq_s_axis_tready;
+
 	iSequentializer: entity work.sequentializer 
     generic map (
       PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
@@ -348,25 +369,23 @@ begin
       srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
       s_axis_tvalid => s_axis_tvalid,
-      s_axis_tready => s_axis_tready,
+      s_axis_tready => seq_s_axis_tready,
       s_axis_tdata => s_axis_tdata,
       s_axis_tuser => s_axis_tuser,
 	  m_axis_tvalid => seq_m_axis_tvalid,
-	  m_axis_tready => seq_m_axis_tready,
+	  m_axis_tready => my_m_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
     );
-	m_axis_tdata <= s_axis_tdata;
-	m_axis_tuser <= s_axis_tuser;
 
 	----------------------- For testbenching -----------------------
-	-- seq_m_axis_tready <= '1';
-	-- seq_m_axis_tready <= m_axis_tready;
+	-- my_m_axis_tready <= '1';
+	-- my_m_axis_tready <= m_axis_tready;
 	iRBG: entity work.RandomBitGenerator
 	port map (
 		clk => clk250,
-		random_bit => seq_m_axis_tready -- random_bit
+		random_bit => my_m_axis_tready -- random_bit
 	);
 	
 end behav;
