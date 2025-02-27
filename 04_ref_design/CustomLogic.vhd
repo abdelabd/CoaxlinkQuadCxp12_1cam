@@ -249,9 +249,9 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 48;
 
 	-- Stuff for testbenching
-	-- synthesis translate_off
 	constant CROP_Y0_CONST : integer := 56;
 	constant CROP_X0_CONST : integer := 112;
+	-- synthesis translate_off
 	constant BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
 											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
 											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
@@ -266,6 +266,7 @@ architecture behav of CustomLogic is
 	signal reset : std_logic;
 	-- synthesis translate_on
 	signal frame_complete : std_logic; -- eh, we might actually need this one
+	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 	
 	
 	-- Crop-coordinates 
@@ -279,6 +280,7 @@ architecture behav of CustomLogic is
 	signal seq_s_axis_tready : std_logic;
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
@@ -286,6 +288,7 @@ architecture behav of CustomLogic is
 	signal cf_s_axis_tready : std_logic;
 	signal cf_m_axis_tvalid : std_logic;
 	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal cf_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 
 begin
 	
@@ -400,6 +403,7 @@ begin
 	  m_axis_tvalid => seq_m_axis_tvalid,
 	  m_axis_tready => cf_s_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
+	  m_axis_tuser => seq_m_axis_tuser,
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
     );
@@ -409,15 +413,21 @@ begin
 	iCropFilter: entity work.crop_filter
 	generic map(
 	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+	  USER_WIDTH => USER_WIDTH,
       IN_ROWS => IN_ROWS,
       IN_COLS => IN_COLS, 
       OUT_ROWS => OUT_ROWS,
       OUT_COLS => OUT_COLS
 	  )
 	port map(
+	  clk => clk250, 
+	  srst => srst250, 
+	  s_axis_resetn => s_axis_resetn,
+
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,
 	  s_axis_tdata => seq_m_axis_tdata,
+	  s_axis_tuser => seq_m_axis_tuser,
 
 	  crop_x0 => crop_x0,
 	  crop_y0 => crop_y0,
@@ -425,6 +435,7 @@ begin
 	  m_axis_tvalid => cf_m_axis_tvalid,
 	  m_axis_tready => my_m_axis_tready,
 	  m_axis_tdata => cf_m_axis_tdata,
+	  m_axis_tuser => cf_m_axis_tuser,
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
 	);
@@ -434,11 +445,13 @@ begin
 	-- Drive downstream treadt
 	-- my_m_axis_tready <= '1';
 	-- my_m_axis_tready <= m_axis_tready;
-	iRBG: entity work.RandomBitGenerator
+	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
-		random_bit => my_m_axis_tready -- random_bit
+		reset => srst250,
+		Q => lfsr_16bit_out
 	);
+	my_m_axis_tready <= lfsr_16bit_out(0);
 
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
@@ -493,12 +506,11 @@ begin
                     
                     -- Verify against benchmark
                     assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata
-                        report "Mismatch at index " & integer'image(idx_cf_out) & 
-                               " (Row=" & integer'image(idx_cf_out/OUT_COLS) &
-                               ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" --&
-                            --    " Expected: " & integer'image(to_unsigned(cf_out_benchmark_mem(idx_cf_out))) &
-                            --    " Expected: " & to_hstring(cf_out_benchmark_mem(idx_cf_out)) &
-                            --    " Received: " & cf_m_axis_tdata
+                        report "Mismatch at index " & integer'image(idx_cf_out) 
+                               & " (Row=" & integer'image(idx_cf_out/OUT_COLS) 
+                               & ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" 
+                               & " Expected: " & integer'image(to_integer(unsigned(cf_out_benchmark_mem(idx_cf_out))))
+							   & " Received: " & integer'image(to_integer(unsigned(cf_m_axis_tdata)))  
                         severity error;
 
                     -- Increment index

@@ -21,9 +21,12 @@ module sequentializer #(
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
+    output logic [USER_WIDTH-1:0] m_axis_tuser,
     output logic [$clog2(IN_COLS)-1:0] cnt_col,
     output logic [$clog2(IN_ROWS)-1:0] cnt_row
 );
+    //////////////////////// Pass-through signals ////////////////////////
+    assign m_axis_tuser = s_axis_tuser;
 
     //////////////////////// Internal signals ////////////////////////
 
@@ -35,7 +38,7 @@ module sequentializer #(
     logic frame_started;
     always_comb begin
         if (reset) frame_started = 1'b0;
-        else if (cnt_idx_in_burst==IN_ROWS*IN_COLS-1) frame_started = 1'b0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) frame_started = 1'b0;
         else if (s_axis_tuser[0]) frame_started = 1'b1;
     end
 
