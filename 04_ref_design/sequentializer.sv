@@ -11,6 +11,12 @@ module sequentializer #(
     input  logic srst,           // Synchronous reset
     input  logic s_axis_resetn,  // AXI Stream interface reset (active-low)
 
+    // ap control signals
+    // input logic ap_start, // TODO
+    output logic ap_done,
+    // output logic ap_ready, // TODO
+    // output logic ap_idle, // TODO
+
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
@@ -43,7 +49,7 @@ module sequentializer #(
     end
 
     //////////////////////// Finite-state machine ////////////////////////
-    enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT} ps, ns;
+    enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT, DONE} ps, ns;
     always_ff @(posedge clk) begin 
         if (reset) ps <= IDLE;
         else ps <= ns;
@@ -53,6 +59,8 @@ module sequentializer #(
         case (ps)
 
             IDLE: begin
+                ap_done = 1'b0;
+
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b0;
                 load = 1'b0;
@@ -62,6 +70,8 @@ module sequentializer #(
             end
 
             LOAD_IN: begin
+                ap_done = 1'b0;
+
                 s_axis_tready = 1'b1;
                 m_axis_tvalid = 1'b0;
                 load = s_axis_tvalid && s_axis_tready;
@@ -71,13 +81,25 @@ module sequentializer #(
             end
 
             STREAM_OUT: begin
+                ap_done = 1'b0;
+
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b1;
                 load = 1'b0;
                 shift = m_axis_tvalid && m_axis_tready;
-                if (cnt_idx_in_frame == IN_ROWS*IN_COLS-1) ns = IDLE;
+                if (cnt_idx_in_frame == IN_ROWS*IN_COLS-1) ns = DONE;
                 else if ((cnt_idx_in_burst == PIXELS_PER_BURST-1) && (m_axis_tvalid && m_axis_tready)) ns = LOAD_IN; // Wait for this handshake to complete before moving to LOAD_IN
                 else ns = STREAM_OUT;
+            end
+
+            DONE: begin
+                ap_done = 1'b1;
+                
+                s_axis_tready = 1'b0;
+                m_axis_tvalid = 1'b0;
+                load = 1'b0;
+                shift = 1'b0;
+                ns = IDLE;
             end
 
         endcase 

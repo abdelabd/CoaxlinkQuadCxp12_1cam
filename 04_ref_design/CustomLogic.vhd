@@ -249,8 +249,9 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 48;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 56;
-	constant CROP_X0_CONST : integer := 112;
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
+	
 	-- synthesis translate_off
 	constant BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
 											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
@@ -265,7 +266,6 @@ architecture behav of CustomLogic is
 	signal idx_cf_out : integer := 0;
 	signal reset : std_logic;
 	-- synthesis translate_on
-	signal frame_complete : std_logic; -- eh, we might actually need this one
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 	
 	
@@ -277,18 +277,22 @@ architecture behav of CustomLogic is
 	signal my_m_axis_tready : std_logic;
 
 	-- Sequentializer output signals
-	signal seq_s_axis_tready : std_logic;
+	signal seq_s_axis_tready : std_logic; 
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
+	signal seq_ap_done : std_logic;
+
 	-- Crop-filter output signals
 	signal cf_s_axis_tready : std_logic;
 	signal cf_m_axis_tvalid : std_logic;
 	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal cf_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
+
+	signal cf_ap_done : std_logic;
 
 begin
 	
@@ -395,6 +399,9 @@ begin
     port map (
       clk => clk250, 
       srst => srst250, 
+
+	  ap_done => seq_ap_done,
+
 	  s_axis_resetn => s_axis_resetn,
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => seq_s_axis_tready,
@@ -407,6 +414,8 @@ begin
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
     );
+
+
 
 	---------------------- Crop-filter ----------------------
 
@@ -437,7 +446,9 @@ begin
 	  m_axis_tdata => cf_m_axis_tdata,
 	  m_axis_tuser => cf_m_axis_tuser,
 	  cnt_col => seq_cnt_col,
-	  cnt_row => seq_cnt_row
+	  cnt_row => seq_cnt_row,
+
+	  ap_done => cf_ap_done
 	);
 
 	----------------------- For testbenching -----------------------
@@ -455,17 +466,6 @@ begin
 
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
-
-	-- Check if we're done with the current frame
-	check_frame_complete: process(clk250)
-	begin
-		if rising_edge(clk250) then
-			if ((seq_cnt_col = std_logic_vector(to_unsigned(IN_COLS-1, clog2(IN_COLS)))) and (seq_cnt_row = std_logic_vector(to_unsigned(IN_ROWS-1, clog2(IN_ROWS))))) then
-				frame_complete <= '1';
-			else frame_complete <= '0';
-			end if;
-		end if;
-	end process;
 
 	-- synthesis translate_off
 
@@ -497,7 +497,7 @@ begin
     data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
-            if reset = '1' or frame_complete = '1' then
+            if reset = '1' or idx_cf_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_cf_out <= 0;
             else
                 if cf_m_axis_tvalid = '1' and my_m_axis_tready = '1' then

@@ -26,8 +26,14 @@ module crop_filter #(
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
     output logic [USER_WIDTH-1:0] m_axis_tuser,
     input logic [$clog2(IN_COLS)-1:0] cnt_col,
-    input logic [$clog2(IN_ROWS)-1:0] cnt_row
+    input logic [$clog2(IN_ROWS)-1:0] cnt_row,
+
+    output logic ap_done
 );
+
+    // Combine both reset signals into one for simplicity
+    logic reset;
+    assign reset = srst || (!s_axis_resetn);
 
     // 's_' = slave
     // 'int' = intermediate
@@ -62,11 +68,9 @@ module crop_filter #(
     logic intmd_axis_tready; // Depends on the downstream FIFO
 
     //////////////////////// FIFO ////////////////////////
-    logic fifo_resetn;
-    assign fifo_resetn = ~(srst || (!s_axis_resetn));
 
     axis_fifo cf_axis_fifo (.s_aclk(clk),
-                            .s_aresetn(fifo_resetn),
+                            .s_aresetn(~reset),
                             .s_axis_tvalid(intmd_axis_tvalid),
                             .s_axis_tready(intmd_axis_tready),
                             .s_axis_tdata(intmd_axis_tdata),
@@ -76,6 +80,22 @@ module crop_filter #(
                             .m_axis_tdata(m_axis_tdata),
                             .m_axis_tuser(m_axis_tuser)
                             );
+
+    //////////////////////// ap_done signal ////////////////////////
+
+    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes;
+    always_ff @(posedge clk) begin
+
+        if (reset) cnt_fifo_writes <= 0;
+        else if (cnt_fifo_writes == OUT_ROWS*OUT_COLS-1) cnt_fifo_writes <= 0;
+        else if (intmd_axis_tready && intmd_axis_tvalid) cnt_fifo_writes <= cnt_fifo_writes + 1;
+
+    end
+
+    always_ff @(posedge clk) begin
+        if (reset || cnt_fifo_writes==0) ap_done <= 1'b0;
+        else if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) ap_done <= 1'b1;
+    end
 
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
