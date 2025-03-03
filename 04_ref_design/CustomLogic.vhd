@@ -441,6 +441,7 @@ begin
 
 	  ap_done => cf_ap_done,
 	  ap_start => ap_start_cf,
+	  seq_ap_done => seq_ap_done,
 
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,

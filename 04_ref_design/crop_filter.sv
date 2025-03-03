@@ -13,6 +13,7 @@ module crop_filter #(
     // ap control signals
     input logic ap_start, 
     output logic ap_done,
+    input logic seq_ap_done,
     // output logic ap_ready, // TODO
     // output logic ap_idle, // TODO
 
@@ -101,6 +102,16 @@ module crop_filter #(
         if (reset || cnt_fifo_writes==0) ap_done <= 1'b0;
         else if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) ap_done <= 1'b1;
     end
+
+    //////////////////////// Computing max-value for normalization ////////////////////////
+    logic [PIXEL_BIT_WIDTH-1:0] max_value;
+    always_ff @(posedge clk) begin
+        if (reset || ap_start) max_value <= 0;
+        else if (intmd_axis_tvalid && intmd_axis_tready) begin
+            if (intmd_axis_tdata > max_value) max_value <= intmd_axis_tdata;
+        end
+    end
+
 
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
