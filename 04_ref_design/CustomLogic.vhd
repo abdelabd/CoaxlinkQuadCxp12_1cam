@@ -285,6 +285,7 @@ architecture behav of CustomLogic is
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
 	signal seq_ap_done : std_logic;
+	signal ap_start_seq : std_logic; -- This is an INPUT to the sequentializer
 
 	-- Crop-filter output signals
 	signal cf_s_axis_tready : std_logic;
@@ -293,6 +294,7 @@ architecture behav of CustomLogic is
 	signal cf_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 
 	signal cf_ap_done : std_logic;
+	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
 
 begin
 	
@@ -385,6 +387,7 @@ begin
 	---------------------- Sequentializer ----------------------
 	
 	s_axis_tready <= seq_s_axis_tready; -- For clarity's sake
+	ap_start_seq <= s_axis_tuser(0);
 
 	iSequentializer: entity work.sequentializer 
     generic map (
@@ -401,6 +404,7 @@ begin
       srst => srst250, 
 
 	  ap_done => seq_ap_done,
+	  ap_start => ap_start_seq,
 
 	  s_axis_resetn => s_axis_resetn,
       s_axis_tvalid => s_axis_tvalid,
@@ -419,6 +423,8 @@ begin
 
 	---------------------- Crop-filter ----------------------
 
+	ap_start_cf <= s_axis_tuser(0);
+
 	iCropFilter: entity work.crop_filter
 	generic map(
 	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
@@ -433,6 +439,9 @@ begin
 	  srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
+	  ap_done => cf_ap_done,
+	  ap_start => ap_start_cf,
+
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,
 	  s_axis_tdata => seq_m_axis_tdata,
@@ -446,9 +455,7 @@ begin
 	  m_axis_tdata => cf_m_axis_tdata,
 	  m_axis_tuser => cf_m_axis_tuser,
 	  cnt_col => seq_cnt_col,
-	  cnt_row => seq_cnt_row,
-
-	  ap_done => cf_ap_done
+	  cnt_row => seq_cnt_row
 	);
 
 	----------------------- For testbenching -----------------------

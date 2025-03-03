@@ -10,6 +10,12 @@ module crop_filter #(
     input  logic                     srst,
     input  logic                     s_axis_resetn,
 
+    // ap control signals
+    input logic ap_start, 
+    output logic ap_done,
+    // output logic ap_ready, // TODO
+    // output logic ap_idle, // TODO
+
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
@@ -26,9 +32,8 @@ module crop_filter #(
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
     output logic [USER_WIDTH-1:0] m_axis_tuser,
     input logic [$clog2(IN_COLS)-1:0] cnt_col,
-    input logic [$clog2(IN_ROWS)-1:0] cnt_row,
+    input logic [$clog2(IN_ROWS)-1:0] cnt_row
 
-    output logic ap_done
 );
 
     // Combine both reset signals into one for simplicity

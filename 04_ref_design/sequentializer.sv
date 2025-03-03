@@ -12,7 +12,7 @@ module sequentializer #(
     input  logic s_axis_resetn,  // AXI Stream interface reset (active-low)
 
     // ap control signals
-    // input logic ap_start, // TODO
+    input logic ap_start, 
     output logic ap_done,
     // output logic ap_ready, // TODO
     // output logic ap_idle, // TODO
@@ -45,7 +45,7 @@ module sequentializer #(
     always_comb begin
         if (reset) frame_started = 1'b0;
         else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) frame_started = 1'b0;
-        else if (s_axis_tuser[0]) frame_started = 1'b1;
+        else if (ap_start) frame_started = 1'b1;
     end
 
     //////////////////////// Finite-state machine ////////////////////////
@@ -110,7 +110,7 @@ module sequentializer #(
     logic [PIXEL_BIT_WIDTH-1:0] pixel_buffer [PIXELS_PER_BURST-1:0];
     logic load, shift;
     shift_register #(.WIDTH(PIXEL_BIT_WIDTH), .DEPTH(PIXELS_PER_BURST)) 
-    seq_sr (.clk(clk), .reset(srst||(!s_axis_resetn)), .load(load), .shift(shift),
+    seq_sr (.clk(clk), .reset(reset), .load(load), .shift(shift),
     .parallel_in(s_axis_tdata), .serial_in({PIXEL_BIT_WIDTH{1'b0}}), .data_out(pixel_buffer));
 
     assign m_axis_tdata = pixel_buffer[0]; // Output is the bottom byte of pixel_buffer
