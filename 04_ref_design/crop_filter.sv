@@ -11,9 +11,10 @@ module crop_filter #(
     input  logic                     s_axis_resetn,
 
     // ap control signals
+    input logic seq_ap_done,
     input logic ap_start, 
     output logic ap_done,
-    input logic seq_ap_done,
+    
     // output logic ap_ready, // TODO
     // output logic ap_idle, // TODO
 

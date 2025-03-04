@@ -253,18 +253,29 @@ architecture behav of CustomLogic is
 	constant CROP_X0_CONST : integer := 0;
 	
 	-- synthesis translate_off
-	constant BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
+	signal reset : std_logic;
+	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+
+	constant CF_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
+											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
+											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
+											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
+											"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
+											"/img_postcrop_INDEX.txt";	
+	signal cf_out_mem          : mem_array;
+    signal cf_out_benchmark_mem: mem_array;
+	signal idx_cf_out : integer := 0;
+
+	constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
 											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
 											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
 											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
 											"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
 											"/img_postcrop_INDEX.txt";
-	
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	signal cf_out_mem          : mem_array;
-    signal cf_out_benchmark_mem: mem_array;
-	signal idx_cf_out : integer := 0;
-	signal reset : std_logic;
+	signal nr_out_mem          : mem_array;
+    signal nr_out_benchmark_mem: mem_array;
+	signal idx_nr_out : integer := 0;
+
 	-- synthesis translate_on
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 	
@@ -293,6 +304,13 @@ architecture behav of CustomLogic is
 	signal cf_max_value : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal cf_ap_done : std_logic;
 	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
+
+	-- Norm-reader output signals
+	signal nr_s_axis_tready : std_logic;
+	signal nr_m_axis_tvalid : std_logic;
+	signal nr_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal nr_ap_done : std_logic;
+	signal ap_start_nr : std_logic; -- This is an INPUT to the crop-filter
 
 begin
 	
@@ -437,10 +455,10 @@ begin
 	  srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
-	  ap_done => cf_ap_done,
-	  ap_start => ap_start_cf,
 	  seq_ap_done => seq_ap_done,
-
+	  ap_start => ap_start_cf,
+	  ap_done => cf_ap_done,
+	  
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,
 	  s_axis_tdata => seq_m_axis_tdata,
@@ -451,12 +469,41 @@ begin
 	  max_value => cf_max_value,
 
 	  m_axis_tvalid => cf_m_axis_tvalid,
-	  m_axis_tready => my_m_axis_tready,
+	  m_axis_tready => nr_s_axis_tready,
 	  m_axis_tdata => cf_m_axis_tdata,
 
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
 	);
+
+	---------------------- Norm-reader ----------------------
+	ap_start_nr <= s_axis_tuser(0);
+
+	iNormReader: entity work.norm_reader
+	generic map(
+	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+	  USER_WIDTH => USER_WIDTH
+	  )
+	port map(
+	  clk => clk250, 
+	  srst => srst250, 
+	  s_axis_resetn => s_axis_resetn,
+
+	  cf_ap_done => cf_ap_done,
+	  ap_start => ap_start_cf,
+	  ap_done => nr_ap_done,
+	  
+	  s_axis_tvalid => cf_m_axis_tvalid,
+	  s_axis_tready => nr_s_axis_tready,
+	  s_axis_tdata => cf_m_axis_tdata,
+
+	  norm_denominator => cf_max_value,
+
+	  m_axis_tvalid => nr_m_axis_tvalid,
+	  m_axis_tready => my_m_axis_tready,
+	  m_axis_tdata => nr_m_axis_tdata
+	);
+
 
 	----------------------- For testbenching -----------------------
 
@@ -477,13 +524,13 @@ begin
 	-- synthesis translate_off
 
 	-- Read benchmark file into memory
-    load_benchmark: process
+    load_cf_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
         variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
         variable row, col      : integer;
     begin
-        file_open(file_handle, BENCHMARK_FILE, read_mode);
+        file_open(file_handle, CF_BENCHMARK_FILE, read_mode);
         
         for row in 0 to OUT_ROWS-1 loop
             readline(file_handle, line_content);
@@ -499,15 +546,38 @@ begin
         wait;
     end process;
 
+	load_nr_benchmark: process
+        file file_handle       : text;
+        variable line_content  : line;
+        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable row, col      : integer;
+    begin
+        file_open(file_handle, NR_BENCHMARK_FILE, read_mode);
+        
+        for row in 0 to OUT_ROWS-1 loop
+            readline(file_handle, line_content);
+            for col in 0 to OUT_COLS-1 loop
+                -- Read hexadecimal value from line
+                hread(line_content, temp_vector);
+                -- Calculate 1D index from 2D coordinates
+                nr_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
+            end loop;
+        end loop;
+        
+        file_close(file_handle);
+        wait;
+    end process;
+
 	-- Data capture and verification process
 	reset <= (not s_axis_resetn) or srst250;
-    data_capture: process(clk250)
+
+    cf_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
             if reset = '1' or idx_cf_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_cf_out <= 0;
             else
-                if cf_m_axis_tvalid = '1' and my_m_axis_tready = '1' then
+                if cf_m_axis_tvalid = '1' and nr_s_axis_tready = '1' then
                     -- Capture DUT output
                     cf_out_mem(idx_cf_out) <= cf_m_axis_tdata;
                     
@@ -522,6 +592,32 @@ begin
 
                     -- Increment index
                     idx_cf_out <= idx_cf_out + 1;
+                end if;
+            end if;
+        end if;
+	end process;
+
+    nr_data_capture: process(clk250)
+    begin
+        if rising_edge(clk250) then
+            if reset = '1' or idx_nr_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+                idx_nr_out <= 0;
+            else
+                if nr_m_axis_tvalid = '1' and my_m_axis_tready = '1' then
+                    -- Capture DUT output
+                    nr_out_mem(idx_nr_out) <= nr_m_axis_tdata;
+                    
+                    -- Verify against benchmark
+                    assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
+                        report "Mismatch at index " & integer'image(idx_nr_out) 
+                               & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
+                               & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
+                               & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
+							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
+                        severity error;
+
+                    -- Increment index
+                    idx_nr_out <= idx_nr_out + 1;
                 end if;
             end if;
         end if;
