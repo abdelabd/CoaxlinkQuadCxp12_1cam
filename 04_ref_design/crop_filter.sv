@@ -21,7 +21,6 @@ module crop_filter #(
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
     input  logic [PIXEL_BIT_WIDTH-1:0] s_axis_tdata,
-    input  logic [USER_WIDTH-1:0]    s_axis_tuser,
 
     // Crop-coordinates
     input logic [$clog2(IN_COLS)-1:0] crop_x0,
@@ -31,7 +30,6 @@ module crop_filter #(
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
-    output logic [USER_WIDTH-1:0] m_axis_tuser,
     input logic [$clog2(IN_COLS)-1:0] cnt_col,
     input logic [$clog2(IN_ROWS)-1:0] cnt_row
 
@@ -44,11 +42,6 @@ module crop_filter #(
     // 's_' = slave
     // 'int' = intermediate
     // 'm_' = master
-
-    //////////////////////// intmd_axis_tuser ////////////////////////
-    logic [USER_WIDTH-1:0] intmd_axis_tuser;
-    assign intmd_axis_tuser = s_axis_tuser;
-
 
     //////////////////////// intmd_axis_tvalid, intmd_axis_tdata ////////////////////////
     logic intmd_axis_tvalid;
@@ -80,11 +73,9 @@ module crop_filter #(
                             .s_axis_tvalid(intmd_axis_tvalid),
                             .s_axis_tready(intmd_axis_tready),
                             .s_axis_tdata(intmd_axis_tdata),
-                            .s_axis_tuser(intmd_axis_tuser),
                             .m_axis_tvalid(m_axis_tvalid),
                             .m_axis_tready(m_axis_tready),
-                            .m_axis_tdata(m_axis_tdata),
-                            .m_axis_tuser(m_axis_tuser)
+                            .m_axis_tdata(m_axis_tdata)
                             );
 
     //////////////////////// ap_done signal ////////////////////////

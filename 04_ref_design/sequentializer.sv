@@ -21,18 +21,14 @@ module sequentializer #(
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
     input  logic [PIXEL_BIT_WIDTH*PIXELS_PER_BURST-1:0] s_axis_tdata,
-    input  logic [USER_WIDTH-1:0]    s_axis_tuser,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
-    output logic [USER_WIDTH-1:0] m_axis_tuser,
     output logic [$clog2(IN_COLS)-1:0] cnt_col,
     output logic [$clog2(IN_ROWS)-1:0] cnt_row
 );
-    //////////////////////// Pass-through signals ////////////////////////
-    assign m_axis_tuser = s_axis_tuser;
 
     //////////////////////// Internal signals ////////////////////////
 

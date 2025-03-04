@@ -280,7 +280,6 @@ architecture behav of CustomLogic is
 	signal seq_s_axis_tready : std_logic; 
 	signal seq_m_axis_tvalid : std_logic;
 	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	signal seq_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
@@ -291,7 +290,6 @@ architecture behav of CustomLogic is
 	signal cf_s_axis_tready : std_logic;
 	signal cf_m_axis_tvalid : std_logic;
 	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	signal cf_m_axis_tuser : std_logic_vector(USER_WIDTH-1 downto 0);
 
 	signal cf_ap_done : std_logic;
 	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
@@ -410,11 +408,11 @@ begin
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => seq_s_axis_tready,
       s_axis_tdata => s_axis_tdata,
-      s_axis_tuser => s_axis_tuser,
+
 	  m_axis_tvalid => seq_m_axis_tvalid,
 	  m_axis_tready => cf_s_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
-	  m_axis_tuser => seq_m_axis_tuser,
+
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
     );
@@ -446,7 +444,6 @@ begin
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,
 	  s_axis_tdata => seq_m_axis_tdata,
-	  s_axis_tuser => seq_m_axis_tuser,
 
 	  crop_x0 => crop_x0,
 	  crop_y0 => crop_y0,
@@ -454,7 +451,7 @@ begin
 	  m_axis_tvalid => cf_m_axis_tvalid,
 	  m_axis_tready => my_m_axis_tready,
 	  m_axis_tdata => cf_m_axis_tdata,
-	  m_axis_tuser => cf_m_axis_tuser,
+
 	  cnt_col => seq_cnt_col,
 	  cnt_row => seq_cnt_row
 	);
