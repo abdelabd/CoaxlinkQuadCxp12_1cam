@@ -37,8 +37,28 @@ entity SimulationCtrl_tb is
 	);
 end entity SimulationCtrl_tb;
 
+
 architecture behav of SimulationCtrl_tb is
-	
+
+	constant NUM_FRAMES : integer := 5;
+
+	constant IN_ROWS : integer := 32;
+	constant IN_COLS : integer := 32;
+	constant OUT_ROWS : integer := 20;
+	constant OUT_COLS : integer := 20;
+
+	constant PIXEL_BIT_WIDTH : integer  := 16;
+	constant PIXELS_PER_BURST : integer := 16;
+	constant USER_WIDTH : integer := 4;
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
+
+	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH)
+									& "_x/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+									& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
+									& "x1" & "/img_precrop_hex_INDEX.dat";
+
+		
 begin
 
 	----------------------------------------------------------------------------
@@ -275,7 +295,7 @@ begin
 		Ref_PixelLut_Negative_on(clk,status,ctrl, 0);
 		EnableDataStream		(clk,status,ctrl, 0);
 		-- FrameRequest			(clk,status,ctrl, 0, 5, 160, 100, Mono8, FALSE);
-		FrameRequest			(clk,status,ctrl, 0, 5, 160, 104, Mono16, TRUE, FALSE, "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_16_15/104x160_to_48x48x1/img_precrop_hex_INDEX.dat");
+		FrameRequest			(clk,status,ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono16, TRUE, FALSE, INPUT_FILE);
 		-- FrameRequest			(clk,status,ctrl, 0, 1, 160, 104, Mono16, TRUE, FALSE, "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_16_15/104x160_to_48x48x1/img_precrop_hex_INDEX.dat");
 
 

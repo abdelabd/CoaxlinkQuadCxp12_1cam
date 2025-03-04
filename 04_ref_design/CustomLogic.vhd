@@ -243,10 +243,11 @@ architecture behav of CustomLogic is
 	constant PIXEL_BIT_WIDTH : integer  := 16;
 	constant PIXELS_PER_BURST : integer := 16;
 	constant USER_WIDTH : integer := 4;
-	constant IN_ROWS : integer := 104;
-	constant IN_COLS : integer := 160;
-	constant OUT_ROWS : integer := 48;
-	constant OUT_COLS : integer := 48;
+
+	constant IN_ROWS : integer := 32;
+	constant IN_COLS : integer := 32;
+	constant OUT_ROWS : integer := 20;
+	constant OUT_COLS : integer := 20;
 
 	-- Stuff for testbenching
 	constant CROP_Y0_CONST : integer := 0;
@@ -257,7 +258,8 @@ architecture behav of CustomLogic is
 	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 
 	constant CF_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
-											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
+											-- "_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
+											"_x/"& 
 											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
 											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
 											"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
@@ -267,8 +269,7 @@ architecture behav of CustomLogic is
 	signal idx_cf_out : integer := 0;
 
 	constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
-											"_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
-											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
+											"_x/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
 											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
 											"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
 											"/img_postcrop_INDEX.txt";
