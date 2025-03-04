@@ -290,7 +290,7 @@ architecture behav of CustomLogic is
 	signal cf_s_axis_tready : std_logic;
 	signal cf_m_axis_tvalid : std_logic;
 	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-
+	signal cf_max_value : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal cf_ap_done : std_logic;
 	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
 
@@ -447,6 +447,8 @@ begin
 
 	  crop_x0 => crop_x0,
 	  crop_y0 => crop_y0,
+
+	  max_value => cf_max_value,
 
 	  m_axis_tvalid => cf_m_axis_tvalid,
 	  m_axis_tready => my_m_axis_tready,

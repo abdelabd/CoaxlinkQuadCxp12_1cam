@@ -26,6 +26,9 @@ module crop_filter #(
     input logic [$clog2(IN_COLS)-1:0] crop_x0,
     input logic [$clog2(IN_ROWS)-1:0] crop_y0,
 
+    // Max-value for normalization 
+    output logic [PIXEL_BIT_WIDTH-1:0] max_value,
+
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
@@ -40,7 +43,7 @@ module crop_filter #(
     assign reset = srst || (!s_axis_resetn);
 
     // 's_' = slave
-    // 'int' = intermediate
+    // 'intmd_' = intermediate
     // 'm_' = master
 
     //////////////////////// intmd_axis_tvalid, intmd_axis_tdata ////////////////////////
@@ -89,13 +92,14 @@ module crop_filter #(
 
     end
 
-    always_ff @(posedge clk) begin
-        if (reset || cnt_fifo_writes==0) ap_done <= 1'b0;
-        else if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) ap_done <= 1'b1;
-    end
+    assign ap_done = (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1);
+
+    // always_ff @(posedge clk) begin
+    //     if (reset || cnt_fifo_writes==0) ap_done <= 1'b0;
+    //     else if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) ap_done <= 1'b1;
+    // end
 
     //////////////////////// Computing max-value for normalization ////////////////////////
-    logic [PIXEL_BIT_WIDTH-1:0] max_value;
     always_ff @(posedge clk) begin
         if (reset || ap_start) max_value <= 0;
         else if (intmd_axis_tvalid && intmd_axis_tready) begin
