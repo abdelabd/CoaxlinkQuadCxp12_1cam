@@ -43,51 +43,77 @@ module norm_reader #(
         else if (cf_ap_done) begin
             ready_to_norm <= 1'b1;
         end
+    end 
+
+    logic [PIXEL_BIT_WIDTH-1:0] norm_coef;
+    division_LUT_ap_fixed_16_10_s15 norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+
+    assign s_axis_tready = ready_to_norm && m_axis_tready;
+    assign m_axis_tvalid = ready_to_norm && s_axis_tvalid;
+
+    logic m_axis_tdata_ovr;
+    qmult #(.Q(FP_INT), .N(PIXEL_BIT_WIDTH)) m_axis_tdata_getter
+        (.i_multiplicand(s_axis_tdata), 
+        .i_multiplier(norm_coef), 
+        .o_result(m_axis_tdata), 
+        .ovr(m_axis_tdata_ovr));
+
+    logic [PIXEL_BIT_WIDTH-1:0] den_test, out_test;
+    division_LUT_ap_fixed_16_10_s15 div_test (.number_in(den_test), .reciprocal(out_test));
+
+    int cc_counter;
+    always_ff @(posedge clk) begin
+        if (reset) cc_counter <= 0;
+        else cc_counter <= cc_counter + 1;
+    end
+    always_ff @(posedge clk) begin
+        if (cc_counter < 100) den_test <= 16'b0000000010100000; 
+        else if (cc_counter < 200) den_test <= 16'b0000000011100000;
+        else if (cc_counter < 300) den_test <= 16'b0000000101100000;
+        else if (cc_counter < 400) den_test <= 16'b0000001000100000;
+        else if (cc_counter < 500) den_test <= 16'b0000001111100000;
+        else if (cc_counter < 600) den_test <= 16'b0000010100100000;
+        else if (cc_counter < 700) den_test <= 16'b0000010101100000;
+        else if (cc_counter < 800) den_test <= 16'b0000010111100000;
+        else if (cc_counter < 900) den_test <= 16'b0000011110100000;
+        else den_test <= 16'b0000100001100000;
     end
 
-    logic [PIXEL_BIT_WIDTH-1:0] norm_numerator;
-    assign norm_numerator = 16'b0000010000000000; // '1' in ap_fixed<FP_TOTAL, FP_INT>
-    logic [PIXEL_BIT_WIDTH-1:0] norm_value;
-    logic [PIXEL_BIT_WIDTH-1:0] norm_denominator_test;
-    assign norm_denominator_test = 16'b0000001000000000;
-    logic norm_value_ready;
-    logic norm_value_overflow;
+    logic [PIXEL_BIT_WIDTH-1:0] a_test, b_test, c_test;
+    logic qmult_test_over;
+    qmult #(.Q(FP_INT), .N(PIXEL_BIT_WIDTH)) qmult_test 
+    (.i_multiplicand(a_test),
+    .i_multiplier(b_test),
+    .o_result(c_test),
+    .ovr(qmult_test_over));
+    always_ff @(posedge clk) begin
+        if (cc_counter < 100) begin
+            a_test <= 16'b0000000010100000;
+            b_test <= 16'b0000000001000000;
+        end
+        else if (cc_counter < 200) begin
+            a_test <= 16'b0000000011100000;
+            b_test <= 16'b0000100000000000;
+        end
+        else if (cc_counter < 300) begin
+            a_test <= 16'b0000000101100000;
+            b_test <= 16'b0000011101000000;
+        end
+        else if (cc_counter < 400) begin
+            a_test <= 16'b0000001000100000;
+            b_test <= 16'b0000010110000000;
+        end
+        else if (cc_counter < 500) begin
+            a_test <= 16'b0000001111100000;
+            b_test <= 16'b0000010100000000;
+        end
+        else begin
+            a_test <= 16'b0000010100100000;
+            b_test <= 16'b0000010011000000;
+        end
+    end
 
-    qdiv #(.Q(FP_INT), .N(PIXEL_BIT_WIDTH)) 
-    norm_coefficient_getter (
-        .i_dividend(norm_numerator),
-        // .i_divisor(norm_denominator),
-        .i_divisor(norm_denominator_test),
-        .i_start(cf_ap_done), // start the operation once upstream is done
-        .i_clk(clk),
-        .o_quotient_out(norm_value),
-        .o_complete(norm_value_ready),
-        .o_overflow(norm_value_overflow)
-    );
-
-
-    assign s_axis_tready = ready_to_norm && norm_value_ready && m_axis_tready;
-    assign m_axis_tvalid = ready_to_norm && norm_value_ready && s_axis_tvalid;
     
-    logic m_axis_tdata_overflow;
-    qmult #(.Q(FP_INT), .N(PIXEL_BIT_WIDTH))
-    normalized_value_getter (
-        .i_multiplicand(s_axis_tdata),
-        .i_multiplier(norm_value),
-        .o_result(m_axis_tdata),
-        .ovr(m_axis_tdata_overflow)
-    );
-
-    logic [2*PIXEL_BIT_WIDTH-1:0] mult_test;
-    assign mult_test = norm_denominator * norm_denominator;
-
-    logic [PIXEL_BIT_WIDTH-1:0] mult_test_concat;
-    localparam pbwo2 = PIXEL_BIT_WIDTH/2;
-    assign mult_test_concat[PIXEL_BIT_WIDTH-1 -: PIXEL_BIT_WIDTH/2] = mult_test[PIXEL_BIT_WIDTH-1 -: PIXEL_BIT_WIDTH/2];
-    assign mult_test_concat[PIXEL_BIT_WIDTH/2 -1 -: PIXEL_BIT_WIDTH/2] = mult_test[PIXEL_BIT_WIDTH/2 -1 -: PIXEL_BIT_WIDTH/2];
-    
-    // assign m_axis_tdata = s_axis_tdata * norm_value; // TODO: why does above not work? <-- Prob not a problem because I'm passing-through the handshake signals. 
-
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
 
