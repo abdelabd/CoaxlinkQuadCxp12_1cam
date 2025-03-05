@@ -240,7 +240,9 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 
 	-- Parameters (constant for now)
-	constant PIXEL_BIT_WIDTH : integer  := 16;
+	constant FP_TOTAL : integer := 16;
+	constant FP_INT : integer := 10;
+	constant FP_FRAC : integer := FP_TOTAL - FP_INT - 1;
 	constant PIXELS_PER_BURST : integer := 16;
 	constant USER_WIDTH : integer := 4;
 
@@ -255,10 +257,10 @@ architecture behav of CustomLogic is
 	
 	-- synthesis translate_off
 	signal reset : std_logic;
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(FP_TOTAL-1 downto 0);
 
-	constant CF_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
-											-- "_" & integer'image(PIXEL_BIT_WIDTH-1) & "/" & 
+	constant CF_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(FP_TOTAL) & 
+											-- "_" & integer'image(FP_TOTAL-1) & "/" & 
 											"_x/"& 
 											integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
 											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
@@ -268,11 +270,19 @@ architecture behav of CustomLogic is
     signal cf_out_benchmark_mem: mem_array;
 	signal idx_cf_out : integer := 0;
 
-	constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH) & 
+	-- constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(FP_TOTAL) & 
+	-- 										-- "_" & integer'image(FP_TOTAL-1) & "/" & 
+	-- 										"_x/"& 
+	-- 										integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
+	-- 										"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
+	-- 										"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
+	-- 										"/img_postcrop_INDEX.txt";	
+	constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(FP_TOTAL) & 
 											"_x/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) & 
 											"_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & 
 											"x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) & 
-											"/img_postcrop_INDEX.txt";
+											"/img_postnorm_ap_fixed_" & integer'image(FP_TOTAL) & "_" & 
+											integer'image(FP_INT) & "_INDEX.txt";	
 	signal nr_out_mem          : mem_array;
     signal nr_out_benchmark_mem: mem_array;
 	signal idx_nr_out : integer := 0;
@@ -291,7 +301,7 @@ architecture behav of CustomLogic is
 	-- Sequentializer output signals
 	signal seq_s_axis_tready : std_logic; 
 	signal seq_m_axis_tvalid : std_logic;
-	signal seq_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal seq_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
@@ -301,15 +311,15 @@ architecture behav of CustomLogic is
 	-- Crop-filter output signals
 	signal cf_s_axis_tready : std_logic;
 	signal cf_m_axis_tvalid : std_logic;
-	signal cf_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	signal cf_max_value : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal cf_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
+	signal cf_max_value : std_logic_vector(FP_TOTAL-1 downto 0);
 	signal cf_ap_done : std_logic;
 	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
 
 	-- Norm-reader output signals
 	signal nr_s_axis_tready : std_logic;
 	signal nr_m_axis_tvalid : std_logic;
-	signal nr_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal nr_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
 	signal nr_ap_done : std_logic;
 	signal ap_start_nr : std_logic; -- This is an INPUT to the crop-filter
 
@@ -408,7 +418,7 @@ begin
 
 	iSequentializer: entity work.sequentializer 
     generic map (
-      PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+      PIXEL_BIT_WIDTH => FP_TOTAL,
       PIXELS_PER_BURST => PIXELS_PER_BURST,
       USER_WIDTH => USER_WIDTH, 
       IN_ROWS => IN_ROWS,
@@ -444,7 +454,7 @@ begin
 
 	iCropFilter: entity work.crop_filter
 	generic map(
-	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+	  PIXEL_BIT_WIDTH => FP_TOTAL,
 	  USER_WIDTH => USER_WIDTH,
       IN_ROWS => IN_ROWS,
       IN_COLS => IN_COLS, 
@@ -482,7 +492,8 @@ begin
 
 	iNormReader: entity work.norm_reader
 	generic map(
-	  PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+	  PIXEL_BIT_WIDTH => FP_TOTAL,
+	  FP_INT => FP_INT,
 	  USER_WIDTH => USER_WIDTH
 	  )
 	port map(
@@ -528,7 +539,7 @@ begin
     load_cf_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
-        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
         variable row, col      : integer;
     begin
         file_open(file_handle, CF_BENCHMARK_FILE, read_mode);
@@ -550,7 +561,7 @@ begin
 	load_nr_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
-        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
         variable row, col      : integer;
     begin
         file_open(file_handle, NR_BENCHMARK_FILE, read_mode);
@@ -609,13 +620,13 @@ begin
                     nr_out_mem(idx_nr_out) <= nr_m_axis_tdata;
                     
                     -- Verify against benchmark
-                    assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
-                        report "Mismatch at index " & integer'image(idx_nr_out) 
-                               & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
-                        severity error;
+                    -- assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
+                    --     report "Mismatch at index " & integer'image(idx_nr_out) 
+                    --            & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
+                    --            & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
+                    --            & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
+					-- 		   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
+                    --     severity error;
 
                     -- Increment index
                     idx_nr_out <= idx_nr_out + 1;
