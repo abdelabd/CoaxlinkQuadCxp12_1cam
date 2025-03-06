@@ -46,7 +46,7 @@ module norm_reader #(
     end 
 
     logic [PIXEL_BIT_WIDTH-1:0] norm_coef;
-    division_LUT_ap_fixed_16_10_s15 norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+    division_LUT_ap_fixed_16_10_s16 norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
     assign s_axis_tready = ready_to_norm && m_axis_tready;
     assign m_axis_tvalid = ready_to_norm && s_axis_tvalid;
@@ -59,7 +59,7 @@ module norm_reader #(
         .ovr(m_axis_tdata_ovr));
 
     logic [PIXEL_BIT_WIDTH-1:0] den_test, out_test;
-    division_LUT_ap_fixed_16_10_s15 div_test (.number_in(den_test), .reciprocal(out_test));
+    division_LUT_ap_fixed_16_10_s16 div_test (.number_in(den_test), .reciprocal(out_test));
 
     int cc_counter;
     always_ff @(posedge clk) begin
@@ -76,7 +76,7 @@ module norm_reader #(
         else if (cc_counter < 700) den_test <= 16'b0000010101100000;
         else if (cc_counter < 800) den_test <= 16'b0000010111100000;
         else if (cc_counter < 900) den_test <= 16'b0000011110100000;
-        else den_test <= 16'b0000100001100000;
+        else den_test <= 16'b0100111001100000;
     end
 
     logic [PIXEL_BIT_WIDTH-1:0] a_test, b_test, c_test;

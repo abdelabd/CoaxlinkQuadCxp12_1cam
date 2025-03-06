@@ -1,12 +1,14 @@
-module division_LUT_ap_fixed_16_10 #(
+module division_LUT_ap_fixed_16_10_s15 #(
 )(
-    input logic [15:0] number_in,
-    output logic [15:0] reciprocal
+    input logic [16-1:0] number_in,
+    output logic [16-1:0] reciprocal
 
 );
 
     logic [32767:0] reciprocal_LUT [16-1:0];
 
+    always_comb begin
+        case (number_in[16-1:16-15])
         15'b000000000000001 : reciprocal = 16'b0000001000000000;
         15'b000000000000010 : reciprocal = 16'b0000000100000000;
         15'b000000000000011 : reciprocal = 16'b0000000010101011;
@@ -2055,6 +2057,9 @@ module division_LUT_ap_fixed_16_10 #(
         15'b111110000000010 : reciprocal = 1111111111111111;
         15'b111110000000001 : reciprocal = 1111111111111111;
 
+
+        endcase
+    end
     
 
 
