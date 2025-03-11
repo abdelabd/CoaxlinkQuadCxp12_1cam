@@ -42,21 +42,22 @@ architecture behav of SimulationCtrl_tb is
 
 	constant NUM_FRAMES : integer := 5;
 
-	constant IN_ROWS : integer := 32;
-	constant IN_COLS : integer := 32;
-	constant OUT_ROWS : integer := 20;
-	constant OUT_COLS : integer := 20;
+	constant IN_ROWS : integer := 16;
+	constant IN_COLS : integer := 16;
+	constant OUT_ROWS : integer := 5;
+	constant OUT_COLS : integer := 5;
 
-	constant PIXEL_BIT_WIDTH : integer  := 16;
+	constant PIXEL_BIT_WIDTH : integer  := 8;
 	constant PIXELS_PER_BURST : integer := 16;
 	constant USER_WIDTH : integer := 4;
 	constant CROP_Y0_CONST : integer := 0;
 	constant CROP_X0_CONST : integer := 0;
 
-	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH)
-									& "_x/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+	/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/8bit/16x16_to_5x5x1/img_precrop_INDEX.bin
+	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/" & integer'image(PIXEL_BIT_WIDTH)
+									& "bit/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 									& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
-									& "x1" & "/img_precrop_hex_INDEX.dat";
+									& "x1" & "/img_precrop_INDEX.dat";
 
 		
 begin
