@@ -25,7 +25,7 @@ package Simulation_FileIO_pkg is
 	-- Windows users do not need to update the default FILE_PATH_LENGTH
 	-- of 200 characters.
 
-	constant FILE_PATH_LENGTH : natural := 106;
+	constant FILE_PATH_LENGTH : natural := 102;
 
 end Simulation_FileIO_pkg;
 

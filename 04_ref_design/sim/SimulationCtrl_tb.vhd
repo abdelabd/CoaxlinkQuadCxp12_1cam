@@ -42,21 +42,18 @@ architecture behav of SimulationCtrl_tb is
 
 	constant NUM_FRAMES : integer := 5;
 
-	constant IN_ROWS : integer := 32;
-	constant IN_COLS : integer := 32;
-	constant OUT_ROWS : integer := 20;
-	constant OUT_COLS : integer := 20;
+	constant IN_ROWS : integer := 100; -- MUST BE MULTIPLE OF 16 AND : If Mono8 then *AT LEAST* 32, if Mono16 then *AT LEAST* 16
+	constant IN_COLS : integer := 160;
+	constant OUT_ROWS : integer := 48;
+	constant OUT_COLS : integer := 48;
 
-	constant PIXEL_BIT_WIDTH : integer  := 16;
-	constant PIXELS_PER_BURST : integer := 16;
-	constant USER_WIDTH : integer := 4;
 	constant CROP_Y0_CONST : integer := 0;
 	constant CROP_X0_CONST : integer := 0;
 
-	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_" & integer'image(PIXEL_BIT_WIDTH)
-									& "_x/" & integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+									& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 									& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
-									& "x1" & "/img_precrop_hex_INDEX.dat";
+									& "x1" & "/img_precrop_Mono8_INDEX.dat";
 
 		
 begin
@@ -294,8 +291,17 @@ begin
 		Ref_MementoEvent_gen	(clk,status,ctrl, 0, x"AAAAAAAA");
 		Ref_PixelLut_Negative_on(clk,status,ctrl, 0);
 		EnableDataStream		(clk,status,ctrl, 0);
+
 		-- FrameRequest			(clk,status,ctrl, 0, 5, 160, 100, Mono8, FALSE);
-		FrameRequest			(clk,status,ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono16, TRUE, FALSE, INPUT_FILE);
+		-- FrameRequest(clk,status,ctrl, 0, 5, 16, 20, Mono16, FALSE, TRUE);  -- <-- WORKS
+		-- FrameRequest(clk,status,ctrl, 0, 5, 32, 20, Mono8, FALSE, TRUE);  -- <-- WORKS
+		-- FrameRequest         (clk,status,ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono8, FALSE, FALSE); 
+		FrameRequest			(clk,status,ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono8, TRUE, FALSE, INPUT_FILE);
+
+
+		-- FrameRequest			(clk,status,ctrl, 0, 5, 256, 10, Mono8, FALSE);
+		-- FrameRequest			(clk,status,ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono8, TRUE, FALSE, INPUT_FILE);
+		-- FrameRequest			(clk, status, ctrl, 0, NUM_FRAMES, IN_COLS, IN_ROWS, Mono16, TRUE, FALSE, INPUT_FILE);
 		-- FrameRequest			(clk,status,ctrl, 0, 1, 160, 104, Mono16, TRUE, FALSE, "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data/ap_fixed_16_15/104x160_to_48x48x1/img_precrop_hex_INDEX.dat");
 
 
