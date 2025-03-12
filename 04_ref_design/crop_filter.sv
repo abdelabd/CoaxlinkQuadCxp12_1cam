@@ -69,7 +69,7 @@ module crop_filter #(
             intmd_axis_tdata = 0;
         end
         
-    end 
+    end
 
     //////////////////////// intmd_axis_tready ////////////////////////
 

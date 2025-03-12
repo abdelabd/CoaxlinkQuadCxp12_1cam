@@ -30,6 +30,21 @@ module norm_reader #(
 
 );
 
+    logic intmd_axis_tvalid;
+    logic intmd_axis_tready;
+    logic [PIXEL_BIT_WIDTH-1:0] intmd_axis_tdata;
+
+    axis_fifo nr_axis_fifo (.s_aclk(clk),
+                            .s_aresetn(~reset),
+                            .s_axis_tvalid(intmd_axis_tvalid),
+                            .s_axis_tready(intmd_axis_tready),
+                            .s_axis_tdata(intmd_axis_tdata),
+                            .m_axis_tvalid(m_axis_tvalid),
+                            .m_axis_tready(m_axis_tready),
+                            .m_axis_tdata(m_axis_tdata)
+                            );
+
+
     // Combine both reset signals into one for simplicity
     logic reset;
     assign reset = srst || (!s_axis_resetn);
@@ -66,9 +81,9 @@ module norm_reader #(
 
 
     // assign s_axis_tready = ready_to_norm && m_axis_tready;
-    assign s_axis_tready = m_axis_tready && ready_to_norm; // pass-through for now
-    assign m_axis_tvalid = s_axis_tvalid && ready_to_norm;
-    assign m_axis_tdata = s_axis_tdata; 
+    assign s_axis_tready = intmd_axis_tready && ready_to_norm; // pass-through for now
+    assign intmd_axis_tvalid = s_axis_tvalid && ready_to_norm;
+    assign intmd_axis_tdata = s_axis_tdata; 
     
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
