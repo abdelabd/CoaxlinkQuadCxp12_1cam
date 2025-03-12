@@ -90,7 +90,7 @@ module sequentializer_Mono8 #(
 
             DONE: begin
                 ap_done = 1'b1;
-                ap_ready = 1'b0;
+                ap_ready = 1'b0; 
                 
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b0;

@@ -12,7 +12,7 @@ module crop_filter #(
 
     // ap control signals
     input logic seq_ap_done,
-    input logic ap_start, 
+    input logic ap_start,  
     output logic ap_done,
     
     // output logic ap_ready, // TODO
