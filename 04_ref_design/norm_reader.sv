@@ -8,6 +8,7 @@ module norm_reader #(
     input  logic                     s_axis_resetn,
 
     // ap control signals
+    input logic seq_ap_idle,
     input logic cf_ap_done,
 
     input logic ap_start, 
@@ -58,10 +59,24 @@ module norm_reader #(
         else if (m_axis_tvalid && m_axis_tready) cnt_fifo_reads <= cnt_fifo_reads + 1;
     end
 
+    enum logic {IDLE, NORMALIZING} ps, ns;
     always_ff @(posedge clk) begin
-        if (reset) ap_ready <= 1'b1;
-        else if (ap_start) ap_ready <= 1'b0;
-        else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) ap_ready <= 1'b1; 
+        if (reset) ps <= IDLE;
+        else ps <= ns;
+    end
+    always_comb begin
+        case(ps)
+            IDLE: begin
+                ap_ready = 1'b1;
+                if (ap_start && seq_ap_idle) ns = NORMALIZING;
+                else ns = IDLE;
+            end
+            NORMALIZING: begin
+                ap_ready = 1'b0;
+                if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) ns = IDLE;
+                else ns = NORMALIZING;
+            end
+        endcase
     end
 
     //////////////////////// ready_to_norm: only true if the upstream crop-filter is done with its task ////////////////////////

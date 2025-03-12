@@ -253,7 +253,7 @@ architecture behav of CustomLogic is
 
 	-- Stuff for testbenching
 	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 27;
+	constant CROP_X0_CONST : integer := 0;
 	
 	-- synthesis translate_off
 	signal reset : std_logic;
@@ -272,8 +272,8 @@ architecture behav of CustomLogic is
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/img_postcrop_INDEX.txt";	
-											-- & "/img_postnorm_INDEX.txt";
+											-- & "/img_postcrop_INDEX.txt";	
+											& "/img_postnorm_INDEX.txt";
 	signal nr_out_mem          : mem_array;
     signal nr_out_benchmark_mem: mem_array;
 	signal idx_nr_out : integer := 0;
@@ -299,6 +299,7 @@ architecture behav of CustomLogic is
 	signal seq_ap_done : std_logic;
 	signal ap_start_seq : std_logic; -- This is an INPUT to the sequentializer
 	signal seq_ap_ready : std_logic;
+	signal seq_ap_idle : std_logic;
 
 	-- Crop-filter output signals
 	signal cf_s_axis_tready : std_logic;
@@ -427,6 +428,7 @@ begin
 	  ap_start => ap_start_seq,
 	  ap_done => seq_ap_done,
 	  ap_ready => seq_ap_ready,
+	  ap_idle => seq_ap_idle,
 
 	  cf_ap_ready => cf_ap_ready,
 	  
@@ -500,6 +502,7 @@ begin
 	  srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
+	  seq_ap_idle => seq_ap_idle,
 	  cf_ap_done => cf_ap_done,
 
 	  ap_start => ap_start_cf,
