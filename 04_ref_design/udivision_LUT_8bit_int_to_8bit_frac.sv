@@ -1,5 +1,4 @@
-module udivision_LUT_8bit_int_to_8bit_frac #(
-)(
+module udivision_LUT_8bit_int_to_8bit_frac (
     input logic [8-1:0] number_in,
     output logic [8-1:0] reciprocal
 
@@ -142,9 +141,6 @@ module udivision_LUT_8bit_int_to_8bit_frac #(
 
         endcase
     end
-    
-
-
 
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
