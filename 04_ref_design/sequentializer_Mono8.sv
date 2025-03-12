@@ -1,11 +1,6 @@
-module sequentializer #(
-    parameter PIXEL_BIT_WIDTH   = 10,
-    parameter PIXELS_PER_BURST  = 10,
-    parameter USER_WIDTH        = 2,
+module sequentializer_Mono8 #(
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
-    parameter IN_COLS           = 20,
-    parameter OUT_ROWS          = 10,
-    parameter OUT_COLS          = 10
+    parameter IN_COLS           = 20
 )(
     input  logic clk, 
     input  logic srst,           // Synchronous reset
@@ -20,16 +15,18 @@ module sequentializer #(
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
-    input  logic [PIXEL_BIT_WIDTH*PIXELS_PER_BURST-1:0] s_axis_tdata,
+    input  logic [255:0]             s_axis_tdata,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
+    output logic [7:0] m_axis_tdata,
+
     output logic [$clog2(IN_COLS)-1:0] cnt_col,
     output logic [$clog2(IN_ROWS)-1:0] cnt_row
 );
 
+    localparam PIXELS_PER_BURST = 32;
     //////////////////////// Internal signals ////////////////////////
 
     // Combine both reset signals into one for simplicity
@@ -103,11 +100,11 @@ module sequentializer #(
 
     //////////////////////// Shift-register to store data-burst ////////////////////////
 
-    logic [PIXEL_BIT_WIDTH-1:0] pixel_buffer [PIXELS_PER_BURST-1:0];
+    logic [7:0] pixel_buffer [PIXELS_PER_BURST-1:0];
     logic load, shift;
-    shift_register #(.WIDTH(PIXEL_BIT_WIDTH), .DEPTH(PIXELS_PER_BURST)) 
+    shift_register #(.WIDTH(8), .DEPTH(PIXELS_PER_BURST)) 
     seq_sr (.clk(clk), .reset(reset), .load(load), .shift(shift),
-    .parallel_in(s_axis_tdata), .serial_in({PIXEL_BIT_WIDTH{1'b0}}), .data_out(pixel_buffer));
+    .parallel_in(s_axis_tdata), .serial_in(16'b0000000000000000), .data_out(pixel_buffer));
 
     assign m_axis_tdata = pixel_buffer[0]; // Output is the bottom byte of pixel_buffer
 
