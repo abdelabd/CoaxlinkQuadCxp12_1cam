@@ -32,7 +32,7 @@ module sequentializer_Mono8 #(
     //////////////////////// Internal signals ////////////////////////
 
     // Combine both reset signals into one for simplicity
-    logic reset;
+    logic reset; 
     assign reset = srst || (!s_axis_resetn);
 
     // frame_started tells us not to do anything until we're receiving pixels from the actual frame 

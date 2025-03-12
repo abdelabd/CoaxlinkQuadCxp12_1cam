@@ -446,7 +446,7 @@ begin
 
 	---------------------- Crop-filter ----------------------
 
-	ap_start_cf <= s_axis_tuser(0);
+	ap_start_cf <= s_axis_tuser(0) and cf_ap_ready;
 	iCropFilter: entity work.crop_filter
 	generic map(
 	  PIXEL_BIT_WIDTH => FP_TOTAL,
@@ -488,7 +488,7 @@ begin
 
 	---------------------- Norm-reader ----------------------
 
-	ap_start_nr <= s_axis_tuser(0);
+	ap_start_nr <= s_axis_tuser(0) and nr_ap_ready;
 	iNormReader: entity work.norm_reader
 	generic map(
 	  PIXEL_BIT_WIDTH => FP_TOTAL,
@@ -599,13 +599,13 @@ begin
                     cf_out_mem(idx_cf_out) <= cf_m_axis_tdata;
                     
                     -- Verify against benchmark
-                    assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata
-                        report "Mismatch at index " & integer'image(idx_cf_out) 
-                               & " (Row=" & integer'image(idx_cf_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(cf_out_benchmark_mem(idx_cf_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(cf_m_axis_tdata)))  
-                        severity error;
+                    -- assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata
+                    --     report "Mismatch at index " & integer'image(idx_cf_out) 
+                    --            & " (Row=" & integer'image(idx_cf_out/OUT_COLS) 
+                    --            & ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" 
+                    --            & " Expected: " & integer'image(to_integer(unsigned(cf_out_benchmark_mem(idx_cf_out))))
+					-- 		   & " Received: " & integer'image(to_integer(unsigned(cf_m_axis_tdata)))  
+                    --     severity error;
 
                     -- Increment index
                     idx_cf_out <= idx_cf_out + 1;
@@ -625,13 +625,13 @@ begin
                     nr_out_mem(idx_nr_out) <= nr_m_axis_tdata;
                     
                     -- Verify against benchmark
-                    -- assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
-                    --     report "Mismatch at index " & integer'image(idx_nr_out) 
-                    --            & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
-                    --            & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
-                    --            & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
-					-- 		   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
-                    --     severity error;
+                    assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
+                        report "Mismatch at index " & integer'image(idx_nr_out) 
+                               & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
+                               & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
+                               & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
+							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
+                        severity error;
 
                     -- Increment index
                     idx_nr_out <= idx_nr_out + 1;

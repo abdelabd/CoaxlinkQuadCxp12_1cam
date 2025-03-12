@@ -37,10 +37,17 @@ module norm_reader #(
     
     //////////////////////// ap_ready ////////////////////////
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads;
+    always_ff @(posedge clk) begin
+        if (reset || ap_start) cnt_fifo_reads <= 0;
+        else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) cnt_fifo_reads <= 0;
+        else if (m_axis_tvalid && m_axis_tready) cnt_fifo_reads <= cnt_fifo_reads + 1;
+    end
 
     // assign ap_ready = 1'b1;
     always_ff @(posedge clk) begin
         if (reset) ap_ready <= 1'b1;
+        else if (ap_start) ap_ready <= 1'b0;
+        else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) ap_ready <= 1'b1; 
     end
 
     //////////////////////// ready_to_norm: only true if the upstream crop-filter is done with its task ////////////////////////
@@ -59,8 +66,8 @@ module norm_reader #(
 
 
     // assign s_axis_tready = ready_to_norm && m_axis_tready;
-    assign s_axis_tready = m_axis_tready; // pass-through for now
-    assign m_axis_tvalid = ready_to_norm && s_axis_tvalid;
+    assign s_axis_tready = m_axis_tready && ready_to_norm; // pass-through for now
+    assign m_axis_tvalid = s_axis_tvalid && ready_to_norm;
     assign m_axis_tdata = s_axis_tdata; 
     
     //////////////////////// For testbenching ////////////////////////
