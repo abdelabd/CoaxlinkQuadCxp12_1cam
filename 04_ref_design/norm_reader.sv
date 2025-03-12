@@ -1,5 +1,7 @@
 module norm_reader #(
-    parameter PIXEL_BIT_WIDTH   = 10
+    parameter PIXEL_BIT_WIDTH   = 10,
+    parameter OUT_ROWS          = 10,
+    parameter OUT_COLS          = 10
 )(
     input  logic                     clk,
     input  logic                     srst,
@@ -10,7 +12,7 @@ module norm_reader #(
 
     input logic ap_start, 
     output logic ap_done,
-    // output logic ap_ready, // TODO
+    output logic ap_ready, 
     // output logic ap_idle, // TODO
 
     // AXI Stream Slave Interface
@@ -32,6 +34,15 @@ module norm_reader #(
     logic reset;
     assign reset = srst || (!s_axis_resetn);
 
+    
+    //////////////////////// ap_ready ////////////////////////
+    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads;
+
+    // assign ap_ready = 1'b1;
+    always_ff @(posedge clk) begin
+        if (reset) ap_ready <= 1'b1;
+    end
+
     //////////////////////// ready_to_norm: only true if the upstream crop-filter is done with its task ////////////////////////
     logic ready_to_norm;
     always_ff @(posedge clk) begin
@@ -46,12 +57,9 @@ module norm_reader #(
     logic [PIXEL_BIT_WIDTH-1:0] norm_coef;
     udivision_LUT_8bit_int_to_8bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
-    // always_ff @(posedge clk) begin
-    //     if (reset) s_axis_tready <= 1'b0;
-    //     else s_axis_tready <= ready_to_norm && m_axis_tready;
-    // end
 
-    assign s_axis_tready = ready_to_norm && m_axis_tready;
+    // assign s_axis_tready = ready_to_norm && m_axis_tready;
+    assign s_axis_tready = m_axis_tready; // pass-through for now
     assign m_axis_tvalid = ready_to_norm && s_axis_tvalid;
     assign m_axis_tdata = s_axis_tdata; 
     

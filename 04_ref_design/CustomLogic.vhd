@@ -305,15 +305,20 @@ architecture behav of CustomLogic is
 	signal cf_m_axis_tvalid : std_logic;
 	signal cf_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
 	signal cf_max_value : std_logic_vector(FP_TOTAL-1 downto 0);
+
 	signal cf_ap_done : std_logic;
 	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
+	signal cf_ap_ready : std_logic;
+
 
 	-- Norm-reader output signals
 	signal nr_s_axis_tready : std_logic;
 	signal nr_m_axis_tvalid : std_logic;
 	signal nr_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
+
 	signal nr_ap_done : std_logic;
 	signal ap_start_nr : std_logic; -- This is an INPUT to the crop-filter
+	signal nr_ap_ready : std_logic;
 
 begin
 	
@@ -422,6 +427,8 @@ begin
 	  ap_start => ap_start_seq,
 	  ap_done => seq_ap_done,
 	  ap_ready => seq_ap_ready,
+
+	  cf_ap_ready => cf_ap_ready,
 	  
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => seq_s_axis_tready,
@@ -458,6 +465,9 @@ begin
 
 	  ap_start => ap_start_cf,
 	  ap_done => cf_ap_done,
+	  ap_ready => cf_ap_ready,
+
+	  nr_ap_ready => nr_ap_ready,
 	  
 	  s_axis_tvalid => seq_m_axis_tvalid,
 	  s_axis_tready => cf_s_axis_tready,
@@ -478,31 +488,34 @@ begin
 
 	---------------------- Norm-reader ----------------------
 
-	-- ap_start_nr <= s_axis_tuser(0);
-	-- iNormReader: entity work.norm_reader
-	-- generic map(
-	--   PIXEL_BIT_WIDTH => FP_TOTAL
-	--   )
-	-- port map(
-	--   clk => clk250, 
-	--   srst => srst250, 
-	--   s_axis_resetn => s_axis_resetn,
+	ap_start_nr <= s_axis_tuser(0);
+	iNormReader: entity work.norm_reader
+	generic map(
+	  PIXEL_BIT_WIDTH => FP_TOTAL,
+	  OUT_ROWS => OUT_ROWS,
+	  OUT_COLS => OUT_COLS
+	  )
+	port map(
+	  clk => clk250, 
+	  srst => srst250, 
+	  s_axis_resetn => s_axis_resetn,
 
-	--   cf_ap_done => cf_ap_done,
+	  cf_ap_done => cf_ap_done,
 
-	--   ap_start => ap_start_cf,
-	--   ap_done => nr_ap_done,
+	  ap_start => ap_start_cf,
+	  ap_done => nr_ap_done,
+	  ap_ready => nr_ap_ready,
 	  
-	--   s_axis_tvalid => cf_m_axis_tvalid,
-	--   s_axis_tready => nr_s_axis_tready,
-	--   s_axis_tdata => cf_m_axis_tdata,
+	  s_axis_tvalid => cf_m_axis_tvalid,
+	  s_axis_tready => nr_s_axis_tready,
+	  s_axis_tdata => cf_m_axis_tdata,
 
-	--   norm_denominator => cf_max_value,
+	  norm_denominator => cf_max_value,
 
-	--   m_axis_tvalid => nr_m_axis_tvalid,
-	--   m_axis_tready => my_m_axis_tready,
-	--   m_axis_tdata => nr_m_axis_tdata
-	-- );
+	  m_axis_tvalid => nr_m_axis_tvalid,
+	  m_axis_tready => my_m_axis_tready,
+	  m_axis_tdata => nr_m_axis_tdata
+	);
 
 
 	----------------------- For testbenching -----------------------
@@ -518,8 +531,8 @@ begin
 	);
 	-- s_axis_tready <= lfsr_16bit_out(0);
 	-- cf_s_axis_tready <= lfsr_16bit_out(0);
-	nr_s_axis_tready <= lfsr_16bit_out(0);
-	-- my_m_axis_tready <= lfsr_16bit_out(0);
+	-- nr_s_axis_tready <= lfsr_16bit_out(0);
+	my_m_axis_tready <= lfsr_16bit_out(0);
 
 
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
@@ -612,7 +625,7 @@ begin
                     nr_out_mem(idx_nr_out) <= nr_m_axis_tdata;
                     
                     -- Verify against benchmark
-                    -- assert nr_out_benchmark_mem(idx_nr_out) = nr_out_mem(idx_nr_out)
+                    -- assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
                     --     report "Mismatch at index " & integer'image(idx_nr_out) 
                     --            & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
                     --            & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 

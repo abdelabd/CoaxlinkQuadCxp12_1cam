@@ -12,11 +12,13 @@ module crop_filter #(
 
     // ap control signals
     input logic seq_ap_done,
+
     input logic ap_start,  
     output logic ap_done,
-    
-    // output logic ap_ready, // TODO
+    output logic ap_ready,
     // output logic ap_idle, // TODO
+
+    input logic nr_ap_ready,
 
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
@@ -42,6 +44,9 @@ module crop_filter #(
     // Combine both reset signals into one for simplicity
     logic reset;
     assign reset = srst || (!s_axis_resetn);
+
+    //////////////////////// ap_ready ////////////////////////
+    assign ap_ready = nr_ap_ready;
 
     // 's_' = slave
     // 'intmd_' = intermediate
