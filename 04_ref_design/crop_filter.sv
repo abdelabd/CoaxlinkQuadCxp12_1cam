@@ -37,7 +37,7 @@ module crop_filter #(
     input  logic                   m_axis_tready,
     output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
     input logic [$clog2(IN_COLS)-1:0] cnt_col,
-    input logic [$clog2(IN_ROWS)-1:0] cnt_row
+    input logic [$clog2(IN_ROWS)-1:0] cnt_row 
 
 );
 

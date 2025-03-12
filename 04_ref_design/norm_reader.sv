@@ -58,7 +58,6 @@ module norm_reader #(
         else if (m_axis_tvalid && m_axis_tready) cnt_fifo_reads <= cnt_fifo_reads + 1;
     end
 
-    // assign ap_ready = 1'b1;
     always_ff @(posedge clk) begin
         if (reset) ap_ready <= 1'b1;
         else if (ap_start) ap_ready <= 1'b0;
@@ -76,14 +75,21 @@ module norm_reader #(
         end
     end 
 
+
+    //////////////////////// Normalization logic ////////////////////////
+
+    // reciprocal of max value to get normalization coefficient
     logic [PIXEL_BIT_WIDTH-1:0] norm_coef;
     udivision_LUT_8bit_int_to_8bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
+    // multiplication: 
+    umult_int_frac #(.WIDTH(PIXEL_BIT_WIDTH)) normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .out(intmd_axis_tdata));
+    // assign intmd_axis_tdata = s_axis_tdata; 
 
     // assign s_axis_tready = ready_to_norm && m_axis_tready;
     assign s_axis_tready = intmd_axis_tready && ready_to_norm; // pass-through for now
     assign intmd_axis_tvalid = s_axis_tvalid && ready_to_norm;
-    assign intmd_axis_tdata = s_axis_tdata; 
+    
     
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off

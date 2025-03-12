@@ -46,7 +46,7 @@ module sequentializer_Mono8 #(
     //////////////////////// Finite-state machine ////////////////////////
     enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT, DONE} ps, ns;
     always_ff @(posedge clk) begin 
-        if (reset) ps <= IDLE;
+        if (reset) ps <= IDLE; 
         else ps <= ns;
     end
 

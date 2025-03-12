@@ -252,7 +252,7 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 5;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 3;
+	constant CROP_Y0_CONST : integer := 0;
 	constant CROP_X0_CONST : integer := 27;
 	
 	-- synthesis translate_off
@@ -273,7 +273,7 @@ architecture behav of CustomLogic is
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
 											& "/img_postcrop_INDEX.txt";	
-	-- 										& "/img_postnorm_INDEX.txt";
+											-- & "/img_postnorm_INDEX.txt";
 	signal nr_out_mem          : mem_array;
     signal nr_out_benchmark_mem: mem_array;
 	signal idx_nr_out : integer := 0;
