@@ -599,7 +599,7 @@ begin
             else
                 if cf_m_axis_tvalid = '1' and nr_s_axis_tready = '1' then
                     -- Capture DUT output
-                    cf_out_mem(idx_cf_out) <= cf_m_axis_tdata;
+                    cf_out_mem(idx_cf_out) <= cf_m_axis_tdata; 
                     
                     -- Verify against benchmark
                     assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata

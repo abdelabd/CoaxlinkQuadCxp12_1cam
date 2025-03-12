@@ -82,7 +82,7 @@ module norm_reader #(
     //////////////////////// ready_to_norm: only true if the upstream crop-filter is done with its task ////////////////////////
     logic ready_to_norm;
     always_ff @(posedge clk) begin
-        if (reset || ap_start) begin
+        if (reset || ap_start) begin 
             ready_to_norm <= 1'b0;
         end
         else if (cf_ap_done) begin

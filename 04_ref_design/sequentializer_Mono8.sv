@@ -17,7 +17,7 @@ module sequentializer_Mono8 #(
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
-    input  logic [255:0]             s_axis_tdata,
+    input  logic [255:0]             s_axis_tdata, 
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
