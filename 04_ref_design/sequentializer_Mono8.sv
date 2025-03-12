@@ -9,7 +9,7 @@ module sequentializer_Mono8 #(
     // ap control signals
     input logic ap_start, 
     output logic ap_done,
-    // output logic ap_ready, // TODO
+    output logic ap_ready, // TODO
     // output logic ap_idle, // TODO
 
     // AXI Stream Slave Interface
@@ -53,6 +53,7 @@ module sequentializer_Mono8 #(
 
             IDLE: begin
                 ap_done = 1'b0;
+                ap_ready = 1'b1;
 
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b0;
@@ -64,6 +65,7 @@ module sequentializer_Mono8 #(
 
             LOAD_IN: begin
                 ap_done = 1'b0;
+                ap_ready = 1'b0;
 
                 s_axis_tready = 1'b1;
                 m_axis_tvalid = 1'b0;
@@ -75,6 +77,7 @@ module sequentializer_Mono8 #(
 
             STREAM_OUT: begin
                 ap_done = 1'b0;
+                ap_ready = 1'b0;
 
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b1;
@@ -87,6 +90,7 @@ module sequentializer_Mono8 #(
 
             DONE: begin
                 ap_done = 1'b1;
+                ap_ready = 1'b0;
                 
                 s_axis_tready = 1'b0;
                 m_axis_tvalid = 1'b0;
