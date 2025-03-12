@@ -17,29 +17,3 @@ module lfsr_16bit(clk, reset, Q);
 	endgenerate
 	
 endmodule 
-
-
-module lfsr_16bit_testbench();
-	logic [15:0] Q;
-	logic clk, reset;
-	
-	lfsr_16bit dut (.clk(clk), .reset(reset), .Q(Q));
-	
-	// Set up a simulated clock.  
-	parameter CLOCK_PERIOD=100;  
-	initial begin  
-		clk <= 0;  
-		forever #(CLOCK_PERIOD/2) clk <= ~clk; // Forever toggle the clock 
-	end  
-	
-	initial begin
-		reset <= 1; @(posedge clk);
-		reset <= 0; repeat(5000) @(posedge clk);
-		
-		$stop;
-	
-	end
-
-endmodule
-
-
