@@ -252,8 +252,8 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 5;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
+	constant CROP_Y0_CONST : integer := 3;
+	constant CROP_X0_CONST : integer := 13;
 	
 	-- synthesis translate_off
 	signal reset : std_logic;
@@ -493,7 +493,6 @@ begin
 	ap_start_nr <= s_axis_tuser(0) and nr_ap_ready;
 	iNormReader: entity work.norm_reader
 	generic map(
-	  PIXEL_BIT_WIDTH => FP_TOTAL,
 	  OUT_ROWS => OUT_ROWS,
 	  OUT_COLS => OUT_COLS
 	  )
@@ -603,7 +602,7 @@ begin
                     
                     -- Verify against benchmark
                     assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata
-                        report "Mismatch at index " & integer'image(idx_cf_out) 
+                        report "CropFilter mismatch at index " & integer'image(idx_cf_out) 
                                & " (Row=" & integer'image(idx_cf_out/OUT_COLS) 
                                & ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" 
                                & " Expected: " & integer'image(to_integer(unsigned(cf_out_benchmark_mem(idx_cf_out))))
@@ -629,11 +628,12 @@ begin
                     
                     -- Verify against benchmark
                     assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
-                        report "Mismatch at index " & integer'image(idx_nr_out) 
+                        report "NormReader mismatch at index " & integer'image(idx_nr_out) 
                                & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
                                & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
                                & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata)))  
+							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata))) 
+							   & " Diff = " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))) - to_integer(unsigned(nr_m_axis_tdata)))
                         severity error;
 
                     -- Increment index

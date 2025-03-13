@@ -1,5 +1,4 @@
 module norm_reader #(
-    parameter PIXEL_BIT_WIDTH   = 10,
     parameter OUT_ROWS          = 10,
     parameter OUT_COLS          = 10
 )(
@@ -19,21 +18,25 @@ module norm_reader #(
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
-    input  logic [PIXEL_BIT_WIDTH-1:0] s_axis_tdata,
+    input  logic [7:0] s_axis_tdata,
 
     // Normalization value
-    input logic [PIXEL_BIT_WIDTH-1:0] norm_denominator,
+    input logic [7:0] norm_denominator,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata
+    output logic [7:0] m_axis_tdata
 
 );
 
+    localparam INT_WIDTH = 8;
+    localparam FRAC_WIDTH = 32;
+    localparam OUT_WIDTH = 8;
+
     logic intmd_axis_tvalid;
     logic intmd_axis_tready;
-    logic [PIXEL_BIT_WIDTH-1:0] intmd_axis_tdata;
+    logic [7:0] intmd_axis_tdata;
 
     axis_fifo nr_axis_fifo (.s_aclk(clk),
                             .s_aresetn(~reset),
@@ -94,11 +97,12 @@ module norm_reader #(
     //////////////////////// Normalization logic ////////////////////////
 
     // reciprocal of max value to get normalization coefficient
-    logic [PIXEL_BIT_WIDTH-1:0] norm_coef;
-    udivision_LUT_8bit_int_to_8bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+    logic [FRAC_WIDTH-1:0] norm_coef;
+    udivision_LUT_8bit_int_to_32bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
     // multiplication: 
-    umult_int_frac #(.WIDTH(PIXEL_BIT_WIDTH)) normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .out(intmd_axis_tdata));
+    umult_int_frac #(.INT_WIDTH(INT_WIDTH), .FRAC_WIDTH(FRAC_WIDTH), .OUT_WIDTH(OUT_WIDTH)) 
+        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .out(intmd_axis_tdata));
     // assign intmd_axis_tdata = s_axis_tdata; 
 
     // assign s_axis_tready = ready_to_norm && m_axis_tready;
