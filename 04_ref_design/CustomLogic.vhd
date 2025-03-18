@@ -259,24 +259,15 @@ architecture behav of CustomLogic is
 	signal reset : std_logic;
 	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(FP_TOTAL-1 downto 0);
 
-	constant CF_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
-											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
-											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
-											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/img_postcrop_INDEX.txt";	
-	signal cf_out_mem          : mem_array;
-    signal cf_out_benchmark_mem: mem_array;
-	signal idx_cf_out : integer := 0;
-
-	constant NR_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	constant CN_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
 											-- & "/img_postcrop_INDEX.txt";	
 											& "/img_postnorm_INDEX.txt";
-	signal nr_out_mem          : mem_array;
-    signal nr_out_benchmark_mem: mem_array;
-	signal idx_nr_out : integer := 0;
+	signal cn_out_mem          : mem_array;
+    signal cn_out_benchmark_mem: mem_array;
+	signal idx_cn_out : integer := 0;
 
 	-- synthesis translate_on
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
@@ -287,7 +278,7 @@ architecture behav of CustomLogic is
 	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
 	-- Custom downstream tready signal for randomized testbenching
-	signal my_m_axis_tready : std_logic;
+	signal tb_s_axis_tready : std_logic;
 
 	-- Sequentializer output signals
 	signal seq_s_axis_tready : std_logic; 
@@ -297,29 +288,20 @@ architecture behav of CustomLogic is
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
 	signal seq_ap_done : std_logic;
-	signal ap_start_seq : std_logic; -- This is an INPUT to the sequentializer
 	signal seq_ap_ready : std_logic;
 	signal seq_ap_idle : std_logic;
 
-	-- Crop-filter output signals
-	signal cf_s_axis_tready : std_logic;
-	signal cf_m_axis_tvalid : std_logic;
-	signal cf_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
-	signal cf_max_value : std_logic_vector(FP_TOTAL-1 downto 0);
+	-- Crop-Norm output signals
+	signal cn_ap_done : std_logic;
+	signal cn_ap_ready : std_logic;
 
-	signal cf_ap_done : std_logic;
-	signal ap_start_cf : std_logic; -- This is an INPUT to the crop-filter
-	signal cf_ap_ready : std_logic;
-
-
-	-- Norm-reader output signals
-	signal nr_s_axis_tready : std_logic;
-	signal nr_m_axis_tvalid : std_logic;
-	signal nr_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
-
-	signal nr_ap_done : std_logic;
-	signal ap_start_nr : std_logic; -- This is an INPUT to the crop-filter
-	signal nr_ap_ready : std_logic;
+	signal cn_s_axis_tready : std_logic;
+	signal cn_m_axis_tvalid : std_logic;
+	signal cn_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
+	
+	-- synthesis translate_off
+	signal cn_diff : integer;
+	-- synthesis translate_on
 
 begin
 	
@@ -413,8 +395,6 @@ begin
 	-- s_axis_tready <= '1';
 
 	s_axis_tready <= seq_s_axis_tready; -- For clarity's sake
-	ap_start_seq <= s_axis_tuser(0) and seq_ap_ready;
-
 	iSequentializer: entity work.sequentializer_Mono8
     generic map (
       IN_ROWS => IN_ROWS,
@@ -425,19 +405,19 @@ begin
       srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
-	  ap_start => ap_start_seq,
+	  ap_start => s_axis_tuser(0),
 	  ap_done => seq_ap_done,
 	  ap_ready => seq_ap_ready,
 	  ap_idle => seq_ap_idle,
 
-	  cf_ap_ready => cf_ap_ready,
+	  cf_ap_ready => cn_ap_ready,
 	  
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => seq_s_axis_tready,
       s_axis_tdata => s_axis_tdata,
 
 	  m_axis_tvalid => seq_m_axis_tvalid,
-	  m_axis_tready => cf_s_axis_tready,
+	  m_axis_tready => cn_s_axis_tready,
 	  m_axis_tdata => seq_m_axis_tdata,
 
 	  cnt_col => seq_cnt_col,
@@ -446,13 +426,11 @@ begin
 
 
 
-	---------------------- Crop-filter ----------------------
+	---------------------- CropNorm ----------------------
 
-	ap_start_cf <= s_axis_tuser(0) and cf_ap_ready;
-	iCropFilter: entity work.crop_filter
+	iCropNorm: entity work.crop_norm
 	generic map(
 	  PIXEL_BIT_WIDTH => FP_TOTAL,
-	  USER_WIDTH => USER_WIDTH,
       IN_ROWS => IN_ROWS,
       IN_COLS => IN_COLS, 
       OUT_ROWS => OUT_ROWS,
@@ -464,67 +442,33 @@ begin
 	  s_axis_resetn => s_axis_resetn,
 
 	  seq_ap_done => seq_ap_done,
+	  seq_ap_idle => seq_ap_idle,
 
-	  ap_start => ap_start_cf,
-	  ap_done => cf_ap_done,
-	  ap_ready => cf_ap_ready,
-
-	  nr_ap_ready => nr_ap_ready,
+	  ap_start => s_axis_tuser(0),
+	  ap_done => cn_ap_done,
+	  ap_ready => cn_ap_ready,
 	  
 	  s_axis_tvalid => seq_m_axis_tvalid,
-	  s_axis_tready => cf_s_axis_tready,
+	  s_axis_tready => cn_s_axis_tready,
 	  s_axis_tdata => seq_m_axis_tdata,
 
 	  crop_x0 => crop_x0,
 	  crop_y0 => crop_y0,
-
-	  max_value => cf_max_value,
-
-	  m_axis_tvalid => cf_m_axis_tvalid,
-	  m_axis_tready => nr_s_axis_tready,
-	  m_axis_tdata => cf_m_axis_tdata,
-
 	  cnt_col => seq_cnt_col,
-	  cnt_row => seq_cnt_row
-	);
+	  cnt_row => seq_cnt_row,
 
-	---------------------- Norm-reader ----------------------
-
-	ap_start_nr <= s_axis_tuser(0) and nr_ap_ready;
-	iNormReader: entity work.norm_reader
-	generic map(
-	  OUT_ROWS => OUT_ROWS,
-	  OUT_COLS => OUT_COLS
-	  )
-	port map(
-	  clk => clk250, 
-	  srst => srst250, 
-	  s_axis_resetn => s_axis_resetn,
-
-	  seq_ap_idle => seq_ap_idle,
-	  cf_ap_done => cf_ap_done,
-
-	  ap_start => ap_start_cf,
-	  ap_done => nr_ap_done,
-	  ap_ready => nr_ap_ready,
+	  m_axis_tvalid => cn_m_axis_tvalid,
+	  m_axis_tready => tb_s_axis_tready,
+	  m_axis_tdata => cn_m_axis_tdata
 	  
-	  s_axis_tvalid => cf_m_axis_tvalid,
-	  s_axis_tready => nr_s_axis_tready,
-	  s_axis_tdata => cf_m_axis_tdata,
-
-	  norm_denominator => cf_max_value,
-
-	  m_axis_tvalid => nr_m_axis_tvalid,
-	  m_axis_tready => my_m_axis_tready,
-	  m_axis_tdata => nr_m_axis_tdata
 	);
 
 
 	----------------------- For testbenching -----------------------
 
 	-- Drive downstream tready
-	-- my_m_axis_tready <= '1';
-	-- my_m_axis_tready <= m_axis_tready;
+	-- tb_s_axis_tready <= '1';
+	-- tb_s_axis_tready <= m_axis_tready;
 	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
@@ -534,7 +478,7 @@ begin
 	-- s_axis_tready <= lfsr_16bit_out(0);
 	-- cf_s_axis_tready <= lfsr_16bit_out(0);
 	-- nr_s_axis_tready <= lfsr_16bit_out(0);
-	my_m_axis_tready <= lfsr_16bit_out(0);
+	tb_s_axis_tready <= lfsr_16bit_out(0);
 
 
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
@@ -543,13 +487,13 @@ begin
 	-- synthesis translate_off
 
 	-- Read benchmark file into memory
-    load_cf_benchmark: process
+	load_cn_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
         variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
         variable row, col      : integer;
     begin
-        file_open(file_handle, CF_BENCHMARK_FILE, read_mode);
+        file_open(file_handle, CN_BENCHMARK_FILE, read_mode);
         
         for row in 0 to OUT_ROWS-1 loop
             readline(file_handle, line_content);
@@ -557,29 +501,7 @@ begin
                 -- Read hexadecimal value from line
                 hread(line_content, temp_vector);
                 -- Calculate 1D index from 2D coordinates
-                cf_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
-            end loop;
-        end loop;
-        
-        file_close(file_handle);
-        wait;
-    end process;
-
-	load_nr_benchmark: process
-        file file_handle       : text;
-        variable line_content  : line;
-        variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
-        variable row, col      : integer;
-    begin
-        file_open(file_handle, NR_BENCHMARK_FILE, read_mode);
-        
-        for row in 0 to OUT_ROWS-1 loop
-            readline(file_handle, line_content);
-            for col in 0 to OUT_COLS-1 loop
-                -- Read hexadecimal value from line
-                hread(line_content, temp_vector);
-                -- Calculate 1D index from 2D coordinates
-                nr_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
+                cn_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
             end loop;
         end loop;
         
@@ -590,54 +512,31 @@ begin
 	-- Data capture and verification process
 	reset <= (not s_axis_resetn) or srst250;
 
-    cf_data_capture: process(clk250)
+    cn_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
-            if reset = '1' or idx_cf_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-                idx_cf_out <= 0;
+            if reset = '1' or idx_cn_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+                idx_cn_out <= 0;
+				cn_diff <= 0;
             else
-                if cf_m_axis_tvalid = '1' and nr_s_axis_tready = '1' then
+                if cn_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
                     -- Capture DUT output
-                    cf_out_mem(idx_cf_out) <= cf_m_axis_tdata; 
+                    cn_out_mem(idx_cn_out) <= cn_m_axis_tdata;
+					cn_diff <= to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))) - to_integer(unsigned(cn_m_axis_tdata));
                     
                     -- Verify against benchmark
-                    assert cf_out_benchmark_mem(idx_cf_out) = cf_m_axis_tdata
-                        report "CropFilter mismatch at index " & integer'image(idx_cf_out) 
-                               & " (Row=" & integer'image(idx_cf_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_cf_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(cf_out_benchmark_mem(idx_cf_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(cf_m_axis_tdata)))  
+					assert (cn_diff = 0)
+                    -- assert (nr_diff < 3) and (nr_diff > -3)
+                        report "CropNorm mismatch at index " & integer'image(idx_cn_out) 
+                               & " (Row=" & integer'image(idx_cn_out/OUT_COLS) 
+                               & ", Col=" & integer'image(idx_cn_out mod OUT_COLS) & ")" 
+                               & " Expected: " & integer'image(to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))))
+							   & " Received: " & integer'image(to_integer(unsigned(cn_m_axis_tdata))) 
+							   & " Diff = " & integer'image(cn_diff)
                         severity error;
 
                     -- Increment index
-                    idx_cf_out <= idx_cf_out + 1;
-                end if;
-            end if;
-        end if;
-	end process;
-
-    nr_data_capture: process(clk250)
-    begin
-        if rising_edge(clk250) then
-            if reset = '1' or idx_nr_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-                idx_nr_out <= 0;
-            else
-                if nr_m_axis_tvalid = '1' and my_m_axis_tready = '1' then
-                    -- Capture DUT output
-                    nr_out_mem(idx_nr_out) <= nr_m_axis_tdata;
-                    
-                    -- Verify against benchmark
-                    assert nr_out_benchmark_mem(idx_nr_out) = nr_m_axis_tdata
-                        report "NormReader mismatch at index " & integer'image(idx_nr_out) 
-                               & " (Row=" & integer'image(idx_nr_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_nr_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(nr_m_axis_tdata))) 
-							   & " Diff = " & integer'image(to_integer(unsigned(nr_out_benchmark_mem(idx_nr_out))) - to_integer(unsigned(nr_m_axis_tdata)))
-                        severity error;
-
-                    -- Increment index
-                    idx_nr_out <= idx_nr_out + 1;
+                    idx_cn_out <= idx_cn_out + 1;
                 end if;
             end if;
         end if;

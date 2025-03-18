@@ -1,0 +1,99 @@
+module crop_norm #(
+    parameter PIXEL_BIT_WIDTH   = 10,
+    parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
+    parameter IN_COLS           = 20,
+    parameter OUT_ROWS          = 10,
+    parameter OUT_COLS          = 10
+)(
+    input  logic                     clk,
+    input  logic                     srst,
+    input  logic                     s_axis_resetn,
+
+    // ap control signals
+    input logic seq_ap_done,
+    input logic seq_ap_idle,
+
+    input logic ap_start,  
+    output logic ap_done,
+    output logic ap_ready,
+
+    // AXI Stream Slave Interface
+    input  logic                     s_axis_tvalid,
+    output logic                     s_axis_tready,
+    input  logic [PIXEL_BIT_WIDTH-1:0] s_axis_tdata,
+
+    // Crop-coordinates
+    input logic [$clog2(IN_COLS)-1:0] crop_x0,
+    input logic [$clog2(IN_ROWS)-1:0] crop_y0,
+    input logic [$clog2(IN_COLS)-1:0] cnt_col,
+    input logic [$clog2(IN_ROWS)-1:0] cnt_row,  
+
+    // AXI Stream Master Interface
+    output logic                   m_axis_tvalid,
+    input  logic                   m_axis_tready,
+    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata
+
+);
+
+    //////////////////////// Internal signals ////////////////////////
+
+    // crop-filter outputs
+    logic cf_ap_done, cf_ap_ready, cf_m_axis_tvalid;
+    logic [PIXEL_BIT_WIDTH-1:0] cf_max_value, cf_m_axis_tdata;
+    
+    // crop-filter inputs
+    logic ap_start_cf;
+
+    // norm-reader outputs
+    logic nr_ap_ready, nr_ap_done, nr_s_axis_tready;
+
+    // norm-reader inputs
+    logic ap_start_nr;
+
+    //////////////////////// Instantiate crop-filter  ////////////////////////
+
+    assign ap_start_cf = ap_start && cf_ap_ready;
+    assign ap_done = cf_ap_done;
+    assign ap_ready = cf_ap_ready;
+    crop_filter #(.PIXEL_BIT_WIDTH(PIXEL_BIT_WIDTH),
+                  .IN_ROWS(IN_ROWS),
+                  .IN_COLS(IN_COLS),
+                  .OUT_ROWS(OUT_ROWS),
+                  .OUT_COLS(OUT_COLS))
+    iCropFilter (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),
+
+            .seq_ap_done(seq_ap_done), .nr_ap_ready(nr_ap_ready),
+
+            .ap_start(ap_start_cf), .ap_done(cf_ap_done), .ap_ready(cf_ap_ready),
+
+            .s_axis_tvalid(s_axis_tvalid), .s_axis_tready(s_axis_tready), .s_axis_tdata(s_axis_tdata),
+
+            .crop_x0(crop_x0), .crop_y0(crop_y0), .max_value(cf_max_value),
+
+            .m_axis_tvalid(cf_m_axis_tvalid), .m_axis_tready(nr_s_axis_tready), .m_axis_tdata(cf_m_axis_tdata),
+
+            .cnt_col(cnt_col), .cnt_row(cnt_row)
+    );
+    
+    //////////////////////// Instantiate norm-reader  ////////////////////////
+    assign ap_start_nr = ap_start && nr_ap_ready;
+    norm_reader #(.OUT_ROWS(OUT_ROWS), .OUT_COLS(OUT_COLS)) 
+    iNormReader (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),
+            
+            .seq_ap_idle(seq_ap_idle), .cf_ap_done(cf_ap_done),
+            
+            .ap_start(ap_start_nr), .ap_done(nr_ap_done), .ap_ready(nr_ap_ready),
+
+            .s_axis_tvalid(cf_m_axis_tvalid), .s_axis_tready(nr_s_axis_tready), .s_axis_tdata(cf_m_axis_tdata),
+
+            .norm_denominator(cf_max_value), 
+
+            .m_axis_tvalid(m_axis_tvalid), .m_axis_tready(m_axis_tready), .m_axis_tdata(m_axis_tdata)
+    ); 
+
+    //////////////////////// For testbenching ////////////////////////
+    // synthesis translate_off
+
+    // synthesis translate_on
+
+endmodule

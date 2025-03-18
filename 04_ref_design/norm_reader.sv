@@ -58,10 +58,14 @@ module norm_reader #(
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads;
     always_ff @(posedge clk) begin
         if (reset || ap_start) cnt_fifo_reads <= 0;
-        else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) cnt_fifo_reads <= 0;
+        else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS) cnt_fifo_reads <= 0;
         else if (m_axis_tvalid && m_axis_tready) cnt_fifo_reads <= cnt_fifo_reads + 1;
     end
 
+    //////////////////////// ap_done ////////////////////////
+    assign ap_done = (cnt_fifo_reads==OUT_ROWS*OUT_COLS);
+
+    //////////////////////// FSM ////////////////////////
     enum logic {IDLE, NORMALIZING} ps, ns;
     always_ff @(posedge clk) begin
         if (reset) ps <= IDLE;
@@ -76,7 +80,7 @@ module norm_reader #(
             end
             NORMALIZING: begin
                 ap_ready = 1'b0;
-                if (cnt_fifo_reads == OUT_ROWS*OUT_COLS-1) ns = IDLE;
+                if (cnt_fifo_reads == OUT_ROWS*OUT_COLS) ns = IDLE;
                 else ns = NORMALIZING;
             end
         endcase

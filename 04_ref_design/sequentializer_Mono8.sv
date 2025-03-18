@@ -40,7 +40,7 @@ module sequentializer_Mono8 #(
     always_comb begin
         if (reset) frame_started = 1'b0;
         else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) frame_started = 1'b0;
-        else if (ap_start) frame_started = 1'b1;
+        else if (ap_start && ap_ready) frame_started = 1'b1;
     end
 
     //////////////////////// Finite-state machine ////////////////////////

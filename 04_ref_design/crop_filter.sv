@@ -1,6 +1,5 @@
 module crop_filter #(
     parameter PIXEL_BIT_WIDTH   = 10,
-    parameter USER_WIDTH        = 2,
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 10,
