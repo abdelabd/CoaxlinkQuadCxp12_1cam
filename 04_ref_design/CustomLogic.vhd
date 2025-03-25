@@ -252,7 +252,7 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 48;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 52;
+	constant CROP_Y0_CONST : integer := 0;
 	constant CROP_X0_CONST : integer := 112;
 	
 	-- synthesis translate_off
@@ -478,7 +478,8 @@ begin
 	-- s_axis_tready <= lfsr_16bit_out(0);
 	-- cf_s_axis_tready <= lfsr_16bit_out(0);
 	-- nr_s_axis_tready <= lfsr_16bit_out(0);
-	tb_s_axis_tready <= lfsr_16bit_out(0);
+	-- tb_s_axis_tready <= lfsr_16bit_out(0);
+	tb_s_axis_tready <= '1';
 
 
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
