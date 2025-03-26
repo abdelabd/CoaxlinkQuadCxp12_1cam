@@ -250,32 +250,35 @@ architecture behav of CustomLogic is
 	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
+	constant NUM_CROPS : integer := 5;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 27;
-	constant CROP_X0_CONST : integer := 112;
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
 	
-	-- synthesis translate_off
-	signal reset : std_logic;
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(FP_TOTAL-1 downto 0);
+	-- -- synthesis translate_off
+	-- signal reset : std_logic;
+	-- type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(FP_TOTAL-1 downto 0);
 
-	constant CN_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
-											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
-											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
-											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											-- & "/img_postcrop_INDEX.txt";	
-											& "/img_postnorm_INDEX.txt";
-	signal cn_out_mem          : mem_array;
-    signal cn_out_benchmark_mem: mem_array;
-	signal idx_cn_out : integer := 0;
+	-- constant CN_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	-- 										& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+	-- 										& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
+	-- 										& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
+	-- 										-- & "/img_postcrop_INDEX.txt";	
+	-- 										& "/img_postnorm_INDEX.txt";
+	-- signal cn_out_mem          : mem_array;
+    -- signal cn_out_benchmark_mem: mem_array;
+	-- signal idx_cn_out : integer := 0;
 
-	-- synthesis translate_on
+	-- -- synthesis translate_on
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 	
 	
 	-- Crop-coordinates 
-  	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
-	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	type crop_coords_x is array (0 to NUM_CROPS-1) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
+  	signal crop_x0   : crop_coords_x;
+	type crop_coords_y is array (0 to NUM_CROPS-1) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	signal crop_y0   : crop_coords_y;
 
 	-- Custom downstream tready signal for randomized testbenching
 	signal tb_s_axis_tready : std_logic;
@@ -299,9 +302,9 @@ architecture behav of CustomLogic is
 	signal cn_m_axis_tvalid : std_logic;
 	signal cn_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
 	
-	-- synthesis translate_off
-	signal cn_diff : integer;
-	-- synthesis translate_on
+	-- -- synthesis translate_off
+	-- signal cn_diff : integer;
+	-- -- synthesis translate_on
 
 begin
 	
@@ -391,8 +394,6 @@ begin
 	m_axis_tvalid <= '1';
 
 	---------------------- Sequentializer ----------------------
-	
-	-- s_axis_tready <= '1';
 
 	s_axis_tready <= seq_s_axis_tready; -- For clarity's sake
 	iSequentializer: entity work.sequentializer_Mono8
@@ -427,8 +428,7 @@ begin
 
 
 	---------------------- CropNorm ----------------------
-
-	iCropNorm: entity work.crop_norm
+	iCropNorm5Seq: entity work.crop_norm_5_seq 
 	generic map(
 	  PIXEL_BIT_WIDTH => FP_TOTAL,
       IN_ROWS => IN_ROWS,
@@ -478,70 +478,78 @@ begin
 	-- s_axis_tready <= lfsr_16bit_out(0);
 	-- cf_s_axis_tready <= lfsr_16bit_out(0);
 	-- nr_s_axis_tready <= lfsr_16bit_out(0);
-	-- tb_s_axis_tready <= lfsr_16bit_out(0);
-	tb_s_axis_tready <= '1';
+	tb_s_axis_tready <= lfsr_16bit_out(0);
+	-- tb_s_axis_tready <= '1';
 
+	-- THESE MUST BE IN ORDER: top to bottom, left to right
+	crop_y0(0) <= std_logic_vector(to_unsigned(0, clog2(IN_ROWS)));
+	crop_x0(0) <= std_logic_vector(to_unsigned(0, clog2(IN_COLS)));
+	crop_y0(1) <= std_logic_vector(to_unsigned(0, clog2(IN_ROWS)));
+	crop_x0(1) <= std_logic_vector(to_unsigned(27, clog2(IN_COLS)));
+	crop_y0(2) <= std_logic_vector(to_unsigned(13, clog2(IN_ROWS)));
+	crop_x0(2) <= std_logic_vector(to_unsigned(0, clog2(IN_COLS)));
+	crop_y0(3) <= std_logic_vector(to_unsigned(43, clog2(IN_ROWS)));
+	crop_x0(3) <= std_logic_vector(to_unsigned(43, clog2(IN_COLS)));
+	crop_y0(4) <= std_logic_vector(to_unsigned(52, clog2(IN_ROWS)));
+	crop_x0(4) <= std_logic_vector(to_unsigned(112, clog2(IN_COLS)));
 
-	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
-	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
+	-- -- synthesis translate_off
 
-	-- synthesis translate_off
-
-	-- Read benchmark file into memory
-	load_cn_benchmark: process
-        file file_handle       : text;
-        variable line_content  : line;
-        variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
-        variable row, col      : integer;
-    begin
-        file_open(file_handle, CN_BENCHMARK_FILE, read_mode);
+	-- -- Read benchmark file into memory
+	-- load_cn_benchmark: process
+    --     file file_handle       : text;
+    --     variable line_content  : line;
+    --     variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
+    --     variable row, col      : integer;
+    -- begin
+    --     file_open(file_handle, CN_BENCHMARK_FILE, read_mode);
         
-        for row in 0 to OUT_ROWS-1 loop
-            readline(file_handle, line_content);
-            for col in 0 to OUT_COLS-1 loop
-                -- Read hexadecimal value from line
-                hread(line_content, temp_vector);
-                -- Calculate 1D index from 2D coordinates
-                cn_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
-            end loop;
-        end loop;
+    --     for row in 0 to OUT_ROWS-1 loop
+    --         readline(file_handle, line_content);
+    --         for col in 0 to OUT_COLS-1 loop
+    --             -- Read hexadecimal value from line
+    --             hread(line_content, temp_vector);
+    --             -- Calculate 1D index from 2D coordinates
+    --             cn_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
+    --         end loop;
+    --     end loop;
         
-        file_close(file_handle);
-        wait;
-    end process;
+    --     file_close(file_handle);
+    --     wait;
+    -- end process;
 
-	-- Data capture and verification process
-	reset <= (not s_axis_resetn) or srst250;
+	-- -- Data capture and verification process
+	-- reset <= (not s_axis_resetn) or srst250;
 
-    cn_data_capture: process(clk250)
-    begin
-        if rising_edge(clk250) then
-            if reset = '1' or idx_cn_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-                idx_cn_out <= 0;
-				cn_diff <= 0;
-            else
-                if cn_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
-                    -- Capture DUT output
-                    cn_out_mem(idx_cn_out) <= cn_m_axis_tdata;
-					cn_diff <= to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))) - to_integer(unsigned(cn_m_axis_tdata));
+    -- cn_data_capture: process(clk250)
+    -- begin
+    --     if rising_edge(clk250) then
+    --         if reset = '1' or idx_cn_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+    --             idx_cn_out <= 0;
+	-- 			cn_diff <= 0;
+    --         else
+    --             if cn_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+    --                 -- Capture DUT output
+    --                 cn_out_mem(idx_cn_out) <= cn_m_axis_tdata;
+	-- 				cn_diff <= to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))) - to_integer(unsigned(cn_m_axis_tdata));
                     
-                    -- Verify against benchmark
-					assert (cn_diff < 3) and (cn_diff > -3)
-                        report "CropNorm mismatch at index " & integer'image(idx_cn_out) 
-                               & " (Row=" & integer'image(idx_cn_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_cn_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(cn_m_axis_tdata))) 
-							   & " Diff = " & integer'image(cn_diff)
-                        severity error;
+    --                 -- Verify against benchmark
+	-- 				assert (cn_diff < 3) and (cn_diff > -3)
+    --                     report "CropNorm mismatch at index " & integer'image(idx_cn_out) 
+    --                            & " (Row=" & integer'image(idx_cn_out/OUT_COLS) 
+    --                            & ", Col=" & integer'image(idx_cn_out mod OUT_COLS) & ")" 
+    --                            & " Expected: " & integer'image(to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))))
+	-- 						   & " Received: " & integer'image(to_integer(unsigned(cn_m_axis_tdata))) 
+	-- 						   & " Diff = " & integer'image(cn_diff)
+    --                     severity error;
 
-                    -- Increment index
-                    idx_cn_out <= idx_cn_out + 1;
-                end if;
-            end if;
-        end if;
-	end process;
+    --                 -- Increment index
+    --                 idx_cn_out <= idx_cn_out + 1;
+    --             end if;
+    --         end if;
+    --     end if;
+	-- end process;
 
-	-- synthesis translate_on
+	-- -- synthesis translate_on
 	
 end behav;

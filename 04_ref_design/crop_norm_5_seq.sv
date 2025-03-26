@@ -90,7 +90,7 @@ module crop_norm_5_seq #(
                 m_axis_tready_internal = 5'b00001;
                 m_axis_tdata = m_axis_tdata_internal[0];
                 ap_done = 1'b0;
-                if (ap_done_internal[0]) ns = CP1;
+                if (ap_ready_internal[0]) ns = CP1;
                 else ns = CP0;
             end
 
@@ -99,7 +99,7 @@ module crop_norm_5_seq #(
                 m_axis_tready_internal = 5'b00010;
                 m_axis_tdata = m_axis_tdata_internal[1];
                 ap_done = 1'b0;
-                if (ap_done_internal[1]) ns = CP2;
+                if (ap_ready_internal[1]) ns = CP2;
                 else ns = CP1;
             end
 
@@ -108,7 +108,7 @@ module crop_norm_5_seq #(
                 m_axis_tready_internal = 5'b00100;
                 m_axis_tdata = m_axis_tdata_internal[2];
                 ap_done = 1'b0;
-                if (ap_done_internal[2]) ns = CP3;
+                if (ap_ready_internal[2]) ns = CP3;
                 else ns = CP2;
             end
 
@@ -117,7 +117,7 @@ module crop_norm_5_seq #(
                 m_axis_tready_internal = 5'b01000;
                 m_axis_tdata = m_axis_tdata_internal[3];
                 ap_done = 1'b0;
-                if (ap_done_internal[3]) ns = CP4;
+                if (ap_ready_internal[3]) ns = CP4;
                 else ns = CP3;
             end
 
@@ -126,7 +126,7 @@ module crop_norm_5_seq #(
                 m_axis_tready_internal = 5'b10000;
                 m_axis_tdata = m_axis_tdata_internal[4];
                 ap_done = 1'b0;
-                if (ap_done_internal[4]) ns = DONE;
+                if (ap_ready_internal[4]) ns = DONE;
                 else ns = CP4;
             end
 
