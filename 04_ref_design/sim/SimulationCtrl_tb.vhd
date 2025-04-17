@@ -47,9 +47,6 @@ architecture behav of SimulationCtrl_tb is
 	constant OUT_ROWS : integer := 5;
 	constant OUT_COLS : integer := 5;
 
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
-
 	constant INPUT_FILE : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 									& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 									& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
