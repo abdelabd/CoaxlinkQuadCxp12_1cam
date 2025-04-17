@@ -19,7 +19,6 @@ module norm_reader #(
     input logic ap_start, 
     output logic ap_done,
     output logic ap_ready, 
-    // output logic ap_idle, // TODO
 
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
@@ -35,11 +34,53 @@ module norm_reader #(
     output logic [7:0] m_axis_tdata
 
 );
+    
+    
+    /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
 
-    logic intmd_axis_tvalid;
-    logic intmd_axis_tready;
+    logic reset;
+
+    logic ready_to_norm; // Must wait for upstream crop_filter to finish cropping an entire-image; otherwise, max_value might be incorrect.
+
+    logic [23:0] norm_coef; // To store value of normalization coefficient 
+
+    // FIFO handshake wires
+    logic intmd_axis_tvalid, intmd_axis_tready;
     logic [7:0] intmd_axis_tdata;
 
+    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads; // Allows us to determine when we're done normalizing the current image
+
+    enum logic {IDLE, NORMALIZING} ps, ns; // For FSM
+
+    /////////////////////////////////// LOGIC ///////////////////////////////////
+
+    // Combine both reset signals into one for simplicity
+    assign reset = srst || (!s_axis_resetn);
+
+    // Drive ready_to_norm: only true if the upstream crop-filter is done cropping.
+    always_ff @(posedge clk) begin
+        if (reset || ap_start) begin 
+            ready_to_norm <= 1'b0;
+        end
+        else if (cf_ap_done) begin
+            ready_to_norm <= 1'b1;
+        end
+    end 
+
+    // Pass through s_axis_tready if ready_to_norm
+    assign s_axis_tready = intmd_axis_tready && ready_to_norm;
+
+    // Pass through intmd_axis_tvalid if ready_to_norm
+    assign intmd_axis_tvalid = s_axis_tvalid && ready_to_norm;
+
+    // norm_coef = 1/norm_denominator. LUT for efficiency
+    udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+
+    // intmd_axis_tdata = s_axis_tdata * norm_coef 
+    umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
+        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(intmd_axis_tdata));
+
+    // Write to FIFO 
     axis_fifo nr_axis_fifo (.s_aclk(clk),
                             .s_aresetn(~reset),
                             .s_axis_tvalid(intmd_axis_tvalid),
@@ -50,25 +91,17 @@ module norm_reader #(
                             .m_axis_tdata(m_axis_tdata)
                             );
 
-
-    // Combine both reset signals into one for simplicity
-    logic reset;
-    assign reset = srst || (!s_axis_resetn);
-
-    
-    //////////////////////// ap_ready ////////////////////////
-    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads;
+    // Drive cnt_fifo_reads
     always_ff @(posedge clk) begin
         if (reset || ap_start) cnt_fifo_reads <= 0;
         else if (cnt_fifo_reads == OUT_ROWS*OUT_COLS) cnt_fifo_reads <= 0;
         else if (m_axis_tvalid && m_axis_tready) cnt_fifo_reads <= cnt_fifo_reads + 1;
     end
 
-    //////////////////////// ap_done ////////////////////////
+    // Assert ap_done if downstream module has read out a cropped-images worth of pixels
     assign ap_done = (cnt_fifo_reads==OUT_ROWS*OUT_COLS);
 
-    //////////////////////// FSM ////////////////////////
-    enum logic {IDLE, NORMALIZING} ps, ns;
+    // FSM: drive ap_ready
     always_ff @(posedge clk) begin
         if (reset) ps <= IDLE;
         else ps <= ns;
@@ -87,34 +120,6 @@ module norm_reader #(
             end
         endcase
     end
-
-    //////////////////////// ready_to_norm: only true if the upstream crop-filter is done with its task ////////////////////////
-    logic ready_to_norm;
-    always_ff @(posedge clk) begin
-        if (reset || ap_start) begin 
-            ready_to_norm <= 1'b0;
-        end
-        else if (cf_ap_done) begin
-            ready_to_norm <= 1'b1;
-        end
-    end 
-
-
-    //////////////////////// Normalization logic ////////////////////////
-
-    // reciprocal of max value to get normalization coefficient
-    logic [23:0] norm_coef;
-    udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
-
-    // multiplication: 
-    umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
-        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(intmd_axis_tdata));
-    // assign intmd_axis_tdata = s_axis_tdata; 
-
-    // assign s_axis_tready = ready_to_norm && m_axis_tready;
-    assign s_axis_tready = intmd_axis_tready && ready_to_norm; // pass-through for now
-    assign intmd_axis_tvalid = s_axis_tvalid && ready_to_norm;
-    
     
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off

@@ -9,7 +9,7 @@
 
 module crop_norm #(
     parameter PIXEL_BIT_WIDTH   = 10,
-    parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
+    parameter IN_ROWS           = 20, // Must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 10,
     parameter OUT_COLS          = 10
@@ -44,23 +44,24 @@ module crop_norm #(
 
 );
 
-    //////////////////////// Internal signals ////////////////////////
+    /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
 
-    // crop-filter outputs
+    // crop_filter inputs
+    logic ap_start_cf;
+
+    // crop_filter outputs
     logic cf_ap_done, cf_ap_ready, cf_m_axis_tvalid;
     logic [PIXEL_BIT_WIDTH-1:0] cf_max_value, cf_m_axis_tdata;
     
-    // crop-filter inputs
-    logic ap_start_cf;
-
-    // norm-reader outputs
+    // norm_reader outputs
     logic nr_ap_ready, nr_ap_done, nr_s_axis_tready;
 
-    // norm-reader inputs
+    // norm_reader inputs
     logic ap_start_nr;
 
-    //////////////////////// Instantiate crop-filter  ////////////////////////
+    /////////////////////////////////// LOGIC ///////////////////////////////////
 
+    // crop_filter
     assign ap_start_cf = ap_start && cf_ap_ready;
     assign ap_done = cf_ap_done;
     assign ap_ready = cf_ap_ready;
@@ -84,7 +85,7 @@ module crop_norm #(
             .cnt_col(cnt_col), .cnt_row(cnt_row)
     );
     
-    //////////////////////// Instantiate norm-reader  ////////////////////////
+    // norm_reader
     assign ap_start_nr = ap_start && nr_ap_ready;
     norm_reader #(.OUT_ROWS(OUT_ROWS), .OUT_COLS(OUT_COLS)) 
     iNormReader (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),

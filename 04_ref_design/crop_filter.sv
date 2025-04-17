@@ -46,23 +46,25 @@ module crop_filter #(
     input logic [$clog2(IN_ROWS)-1:0] cnt_row  
 
 );
+    /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
+    
+    logic reset;
+
+    // FIFO handshake wires
+    logic intmd_axis_tvalid, intmd_axis_tready;
+    logic [PIXEL_BIT_WIDTH-1:0] intmd_axis_tdata;  
+
+    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes; // Allows us to determine when we're done cropping
+ 
+    /////////////////////////////////// LOGIC ///////////////////////////////////
 
     // Combine both reset signals into one for simplicity
-    logic reset;
     assign reset = srst || (!s_axis_resetn);
 
-    //////////////////////// ap_ready ////////////////////////
-    assign ap_ready = nr_ap_ready;
+    // Drive ap_ready 
+    assign ap_ready = nr_ap_ready; // pass-through the ap_ready signal; we're ready to start cropping if the downstream norm-reader is ready to start normalizing
 
-    // 's_' = slave
-    // 'intmd_' = intermediate
-    // 'm_' = master
-
-    //////////////////////// intmd_axis_tvalid, intmd_axis_tdata ////////////////////////
-    logic intmd_axis_tvalid;
-    logic [PIXEL_BIT_WIDTH-1:0] intmd_axis_tdata;    
-
-    // Turn them on if they pass crop_filter
+    // Main-logic: Assert tvalid and save data to FIFO if (x,y) coordinates are inside of crop-box
     always_comb begin
         s_axis_tready = intmd_axis_tready;
 
@@ -77,12 +79,7 @@ module crop_filter #(
         
     end
 
-    //////////////////////// intmd_axis_tready ////////////////////////
-
-    logic intmd_axis_tready; // Depends on the downstream FIFO
-
-    //////////////////////// FIFO ////////////////////////
-
+    // Write to FIFO 
     axis_fifo cf_axis_fifo (.s_aclk(clk),
                             .s_aresetn(~reset),
                             .s_axis_tvalid(intmd_axis_tvalid),
@@ -93,9 +90,7 @@ module crop_filter #(
                             .m_axis_tdata(m_axis_tdata)
                             );
 
-    //////////////////////// ap_done signal ////////////////////////
-
-    logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes;
+    // Drive cnt_fifo_writes
     always_ff @(posedge clk) begin
 
         if (reset) cnt_fifo_writes <= 0;
@@ -104,21 +99,16 @@ module crop_filter #(
 
     end
 
+    // Assert ap_done once we've written a cropped-images worth of pixels
     assign ap_done = (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1);
 
-    // always_ff @(posedge clk) begin
-    //     if (reset || cnt_fifo_writes==0) ap_done <= 1'b0;
-    //     else if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) ap_done <= 1'b1;
-    // end
-
-    //////////////////////// Computing max-value for normalization ////////////////////////
+    // Drive max_value: the largest pixel value that passes the crop_filter
     always_ff @(posedge clk) begin
         if (reset || ap_start) max_value <= 0;
         else if (intmd_axis_tvalid && intmd_axis_tready) begin
             if (intmd_axis_tdata > max_value) max_value <= intmd_axis_tdata;
         end
     end
-
 
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off

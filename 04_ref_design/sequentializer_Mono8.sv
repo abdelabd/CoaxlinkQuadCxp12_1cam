@@ -7,7 +7,7 @@
 // This module also outputs the x- and y- coordinate of the current output pixel - helpful/necessary for the downstream crop_norm module
 
 module sequentializer_Mono8 #(
-    parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
+    parameter IN_ROWS           = 20, // Must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20
 )(
     input  logic clk, 
@@ -37,22 +37,81 @@ module sequentializer_Mono8 #(
 );
 
     localparam PIXELS_PER_BURST = 32;
-    //////////////////////// Internal signals ////////////////////////
+
+    /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
+    
+    logic reset;
+
+    logic frame_started; // Tells us not to do anything until we're receiving pixels from the actual frame 
+
+    logic [7:0] pixel_buffer [PIXELS_PER_BURST-1:0]; // Shift-register memory
+    logic load, shift; // Shift-register control signals
+
+    // Index-tracking
+    logic [$clog2(PIXELS_PER_BURST)-1:0] cnt_idx_in_burst;
+    logic [$clog2(IN_ROWS*IN_COLS)-1:0] cnt_idx_in_frame;
+
+    // For FSM
+    enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT, DONE} ps, ns;
+
+    /////////////////////////////////// LOGIC ///////////////////////////////////
 
     // Combine both reset signals into one for simplicity
-    logic reset;
     assign reset = srst || (!s_axis_resetn);
 
-    // frame_started tells us not to do anything until we're receiving pixels from the actual frame 
-    logic frame_started;
+    // Drive frame-started
     always_comb begin
         if (reset) frame_started = 1'b0;
         else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) frame_started = 1'b0;
         else if (ap_start && ap_ready) frame_started = 1'b1;
     end
 
-    //////////////////////// Finite-state machine ////////////////////////
-    enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT, DONE} ps, ns;
+    // Drive shift-register to store pixel-burst ////////////////////////
+    shift_register #(.WIDTH(8), .DEPTH(PIXELS_PER_BURST)) 
+    seq_sr (.clk(clk), .reset(reset), .load(load), .shift(shift),
+    .parallel_in(s_axis_tdata), .serial_in(16'b0000000000000000), .data_out(pixel_buffer));
+
+    // Drive cnt_idx_in_frame
+    always_ff @(posedge clk) begin
+        if (reset) cnt_idx_in_frame <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_idx_in_frame <= 0;
+        else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_frame <= cnt_idx_in_frame + 1;
+    end
+
+    // Drive cnt_col
+    always_ff @(posedge clk) begin
+        if (reset) cnt_col <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_col <= 0;
+        else if (m_axis_tvalid && m_axis_tready) begin
+            if (cnt_col==IN_COLS-1) cnt_col <= 0;
+            else cnt_col <= cnt_col + 1;
+        end
+    end
+
+    // Drive cnt_row
+    always_ff @(posedge clk) begin
+        if (reset) cnt_row <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_row <= 0;
+        else if (m_axis_tvalid && m_axis_tready) begin
+            if (cnt_col==IN_COLS-1) begin
+                if (cnt_row==IN_ROWS-1) cnt_row <= 0;
+                else cnt_row <= cnt_row + 1;
+            end
+        end
+    end
+
+    // Drive cnt_idx_in_burst
+    always_ff @(posedge clk) begin
+        if (reset) cnt_idx_in_burst <= 0;
+        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_idx_in_burst <= 0;
+        else if (s_axis_tvalid && s_axis_tready) cnt_idx_in_burst <= 0;
+        else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_burst <= cnt_idx_in_burst + 1;
+    end
+
+    // Finite-state machine: drive ap_done, ap_ready, ap_idle,
+    //                             load, shift
+    //                             ps, ns
+    //                             s_axis_tready, m_axis_tvalid
     always_ff @(posedge clk) begin 
         if (reset) ps <= IDLE; 
         else ps <= ns;
@@ -116,58 +175,10 @@ module sequentializer_Mono8 #(
         endcase 
     end
 
-    //////////////////////// Shift-register to store data-burst ////////////////////////
-
-    logic [7:0] pixel_buffer [PIXELS_PER_BURST-1:0];
-    logic load, shift;
-    shift_register #(.WIDTH(8), .DEPTH(PIXELS_PER_BURST)) 
-    seq_sr (.clk(clk), .reset(reset), .load(load), .shift(shift),
-    .parallel_in(s_axis_tdata), .serial_in(16'b0000000000000000), .data_out(pixel_buffer));
-
+    // Drive m_axis_tdata
     assign m_axis_tdata = pixel_buffer[0]; // Output is the bottom byte of pixel_buffer
 
-    //////////////////////// Counters ////////////////////////
-
-    // cnt_idx_in_burst
-    logic [$clog2(PIXELS_PER_BURST)-1:0] cnt_idx_in_burst;
-    always_ff @(posedge clk) begin
-        if (reset) cnt_idx_in_burst <= 0;
-        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_idx_in_burst <= 0;
-        else if (s_axis_tvalid && s_axis_tready) cnt_idx_in_burst <= 0;
-        else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_burst <= cnt_idx_in_burst + 1;
-    end
-
-    // cnt_idx_in_frame
-    logic [$clog2(IN_ROWS*IN_COLS)-1:0] cnt_idx_in_frame;
-    always_ff @(posedge clk) begin
-        if (reset) cnt_idx_in_frame <= 0;
-        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_idx_in_frame <= 0;
-        else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_frame <= cnt_idx_in_frame + 1;
-    end
-
-    // cnt_col
-    always_ff @(posedge clk) begin
-        if (reset) cnt_col <= 0;
-        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_col <= 0;
-        else if (m_axis_tvalid && m_axis_tready) begin
-            if (cnt_col==IN_COLS-1) cnt_col <= 0;
-            else cnt_col <= cnt_col + 1;
-        end
-    end
-
-    // cnt_row
-    always_ff @(posedge clk) begin
-        if (reset) cnt_row <= 0;
-        else if (cnt_idx_in_frame==IN_ROWS*IN_COLS-1) cnt_row <= 0;
-        else if (m_axis_tvalid && m_axis_tready) begin
-            if (cnt_col==IN_COLS-1) begin
-                if (cnt_row==IN_ROWS-1) cnt_row <= 0;
-                else cnt_row <= cnt_row + 1;
-            end
-        end
-    end
-
-    //////////////////////// For testbenching ////////////////////////
+    /////////////////////////////////// TESTBENCHING ///////////////////////////////////
 
     // synthesis translate_off
     logic downstream_handshake;
