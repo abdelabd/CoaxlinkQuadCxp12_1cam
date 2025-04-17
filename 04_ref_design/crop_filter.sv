@@ -1,3 +1,10 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Lab, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: This module crops an incoming streamed image of size IN_ROWS x IN_COLS to an outgoing streamed image of size OUT_ROWS x OUT_COLS,
+// with crop-coordinates specified by the inputs [top = crop_y0, left = crop_x0, bottom = crop_y0 + OUT_ROWS, right = crop_x0 + OUT_COLS]
+// This module also outputs the maximum pixel value of the outgoing post-cropped image - this is helpful/necessary for the downstream norm_reader module
+
 module crop_filter #(
     parameter PIXEL_BIT_WIDTH   = 10,
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd

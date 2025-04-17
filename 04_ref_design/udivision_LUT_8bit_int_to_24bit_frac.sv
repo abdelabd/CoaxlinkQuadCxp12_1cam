@@ -1,3 +1,8 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Labs, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: This module takes an 8bit integer value, 'number_in', and returns a 24-bit fractional value for its reciprocal value, 'reciprocal'. 
+
 module udivision_LUT_8bit_int_to_24bit_frac #(
 )(
     input logic [8-1:0] number_in,

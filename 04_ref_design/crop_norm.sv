@@ -1,3 +1,12 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Lab, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: This module accepts a stream of pixels from sequentializer_Mono8 - this is the full image coming out of the FrameGrabber.
+// This module then crops the incoming image to the coordinates provided by the inputs crop_x0, crop_y0 - i.e. 
+// the only pixels it passes on to downstream modules are those bounded by [top = crop_y0, left = crop_x0, bottom = crop_y0 + OUT_ROWS, right = crop_x0 + OUT_COLS]
+// Moreover, this module first normalizes the outgoing pixels by the maximum pixel value within the crop-box. 
+// The cropping is done by the crop_filter module and the normalization is done by the norm_reader module
+
 module crop_norm #(
     parameter PIXEL_BIT_WIDTH   = 10,
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd

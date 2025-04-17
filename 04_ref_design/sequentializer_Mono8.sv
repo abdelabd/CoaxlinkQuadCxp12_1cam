@@ -1,3 +1,11 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Lab, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: The CustomLogic framegrabber spits out 256 bits at a time: either 16 16-bit pixels or 32 8-bit pixels
+// This module takes the 32 8-bit pixels and 'sequentializes' them - i.e. it spits out only one pixel at a time
+// This is necessary because the downstream hls4ml module only accepts a stream of one pixel per clock-cycle
+// This module also outputs the x- and y- coordinate of the current output pixel - helpful/necessary for the downstream crop_norm module
+
 module sequentializer_Mono8 #(
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20

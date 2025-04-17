@@ -1,17 +1,23 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Lab, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: This module multiplies a fully-integer fixed-point value, 'pixel', by a fully-fractional fixed-point value, 'norm_factor',
+// and outputs a fully-fractional fixed-point value 'module_out'. The output is always less than 1. 
+
 module umult_int_frac // IMPORTANT: Assumes FRAC_WIDTH >= OUT_WIDTH
 #(
     parameter INT_WIDTH = 8,
     parameter FRAC_WIDTH = 8,
-    parameter OUT_WIDTH = 8
+    parameter MODULE_OUT_WIDTH = 8
 )
 (
     input logic [INT_WIDTH-1:0] pixel, // integer, unsigned
     input logic [FRAC_WIDTH-1:0] norm_factor, // fractional, unsigned
-    output logic [OUT_WIDTH-1:0] out // fractional, unsigned
+    output logic [MODULE_OUT_WIDTH-1:0] module_out // fractional, unsigned
 );
     
-    logic [INT_WIDTH+FRAC_WIDTH-1:0] val;
-    assign val = pixel * norm_factor;
-    assign out = val[FRAC_WIDTH-1:FRAC_WIDTH-OUT_WIDTH];
+    logic [INT_WIDTH+FRAC_WIDTH-1:0] mult_out_full;
+    assign mult_out_full = pixel * norm_factor;
+    assign module_out = mult_out_full[FRAC_WIDTH-1:FRAC_WIDTH-MODULE_OUT_WIDTH];
 
 endmodule

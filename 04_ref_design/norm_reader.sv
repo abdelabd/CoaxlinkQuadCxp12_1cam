@@ -1,3 +1,9 @@
+// Author: Abdelrahman Elabd
+// Lab: ACME Lab, U. Washington ECE
+// Date: 04/17/2025
+// Module purpose: This module normalizes each pixel of an incoming (post-crop) streamed image by the specified 'norm_denominator'.
+// It then passes those pixels on to the downstream module. 
+
 module norm_reader #(
     parameter OUT_ROWS          = 10,
     parameter OUT_COLS          = 10
@@ -29,10 +35,6 @@ module norm_reader #(
     output logic [7:0] m_axis_tdata
 
 );
-
-    localparam INT_WIDTH = 8;
-    localparam FRAC_WIDTH = 24;
-    localparam OUT_WIDTH = 8;
 
     logic intmd_axis_tvalid;
     logic intmd_axis_tready;
@@ -101,12 +103,12 @@ module norm_reader #(
     //////////////////////// Normalization logic ////////////////////////
 
     // reciprocal of max value to get normalization coefficient
-    logic [FRAC_WIDTH-1:0] norm_coef;
+    logic [23:0] norm_coef;
     udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
     // multiplication: 
-    umult_int_frac #(.INT_WIDTH(INT_WIDTH), .FRAC_WIDTH(FRAC_WIDTH), .OUT_WIDTH(OUT_WIDTH)) 
-        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .out(intmd_axis_tdata));
+    umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
+        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(intmd_axis_tdata));
     // assign intmd_axis_tdata = s_axis_tdata; 
 
     // assign s_axis_tready = ready_to_norm && m_axis_tready;
