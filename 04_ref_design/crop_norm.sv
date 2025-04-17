@@ -19,7 +19,6 @@ module crop_norm #(
     input  logic                     s_axis_resetn,
 
     // ap control signals
-    input logic seq_ap_done,
     input logic seq_ap_idle,
 
     input logic ap_start,  
@@ -72,9 +71,9 @@ module crop_norm #(
                   .OUT_COLS(OUT_COLS))
     iCropFilter (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),
 
-            .seq_ap_done(seq_ap_done), .nr_ap_ready(nr_ap_ready),
-
             .ap_start(ap_start_cf), .ap_done(cf_ap_done), .ap_ready(cf_ap_ready),
+
+            .nr_ap_ready(nr_ap_ready),
 
             .s_axis_tvalid(s_axis_tvalid), .s_axis_tready(s_axis_tready), .s_axis_tdata(s_axis_tdata),
 

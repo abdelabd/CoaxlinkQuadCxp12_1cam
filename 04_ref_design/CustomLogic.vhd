@@ -252,8 +252,8 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 5;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 3;
-	constant CROP_X0_CONST : integer := 13;
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
 	
 	-- synthesis translate_off
 	signal reset : std_logic;
@@ -287,7 +287,6 @@ architecture behav of CustomLogic is
 	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
-	signal seq_ap_done : std_logic;
 	signal seq_ap_ready : std_logic;
 	signal seq_ap_idle : std_logic;
 
@@ -406,7 +405,6 @@ begin
 	  s_axis_resetn => s_axis_resetn,
 
 	  ap_start => s_axis_tuser(0),
-	  ap_done => seq_ap_done,
 	  ap_ready => seq_ap_ready,
 	  ap_idle => seq_ap_idle,
 
@@ -441,7 +439,6 @@ begin
 	  srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
-	  seq_ap_done => seq_ap_done,
 	  seq_ap_idle => seq_ap_idle,
 
 	  ap_start => s_axis_tuser(0),

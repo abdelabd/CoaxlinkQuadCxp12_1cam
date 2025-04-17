@@ -16,7 +16,6 @@ module sequentializer_Mono8 #(
 
     // ap control signals
     input logic ap_start, 
-    output logic ap_done,
     output logic ap_ready, 
     output logic ap_idle,
 
@@ -108,7 +107,7 @@ module sequentializer_Mono8 #(
         else if (m_axis_tvalid && m_axis_tready) cnt_idx_in_burst <= cnt_idx_in_burst + 1;
     end
 
-    // Finite-state machine: drive ap_done, ap_ready, ap_idle,
+    // Finite-state machine: drive ap_ready, ap_idle,
     //                             load, shift
     //                             ps, ns
     //                             s_axis_tready, m_axis_tvalid
@@ -121,7 +120,6 @@ module sequentializer_Mono8 #(
         case (ps)
 
             IDLE: begin
-                ap_done = 1'b0;
                 ap_ready = cf_ap_ready;
                 ap_idle = 1'b1;
 
@@ -134,7 +132,6 @@ module sequentializer_Mono8 #(
             end
 
             LOAD_IN: begin
-                ap_done = 1'b0;
                 ap_ready = 1'b0;
                 ap_idle = 1'b0;
 
@@ -147,7 +144,6 @@ module sequentializer_Mono8 #(
             end
 
             STREAM_OUT: begin
-                ap_done = 1'b0;
                 ap_ready = 1'b0;
                 ap_idle = 1'b0;
 
@@ -161,7 +157,6 @@ module sequentializer_Mono8 #(
             end
 
             DONE: begin
-                ap_done = 1'b1;
                 ap_ready = 1'b0; 
                 ap_idle = 1'b0;
                 
