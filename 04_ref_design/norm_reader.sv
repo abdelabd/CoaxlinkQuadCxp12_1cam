@@ -45,8 +45,8 @@ module norm_reader #(
     logic [23:0] norm_coef; // To store value of normalization coefficient 
 
     // FIFO handshake wires
-    logic intmd_axis_tvalid, intmd_axis_tready;
-    logic [7:0] intmd_axis_tdata;
+    logic wren_to_fifo, fifo_s_axis_tready;
+    logic [7:0] data_to_fifo;
 
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_reads; // Allows us to determine when we're done normalizing the current image
 
@@ -68,24 +68,24 @@ module norm_reader #(
     end 
 
     // Pass through s_axis_tready if ready_to_norm
-    assign s_axis_tready = intmd_axis_tready && ready_to_norm;
+    assign s_axis_tready = fifo_s_axis_tready && ready_to_norm;
 
-    // Pass through intmd_axis_tvalid if ready_to_norm
-    assign intmd_axis_tvalid = s_axis_tvalid && ready_to_norm;
+    // Pass through wren_to_fifo if ready_to_norm
+    assign wren_to_fifo = s_axis_tvalid && ready_to_norm;
 
     // norm_coef = 1/norm_denominator. LUT for efficiency
     udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
-    // intmd_axis_tdata = s_axis_tdata * norm_coef 
+    // data_to_fifo = s_axis_tdata * norm_coef 
     umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
-        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(intmd_axis_tdata));
+        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(data_to_fifo));
 
     // Write to FIFO 
     axis_fifo nr_axis_fifo (.s_aclk(clk),
                             .s_aresetn(~reset),
-                            .s_axis_tvalid(intmd_axis_tvalid),
-                            .s_axis_tready(intmd_axis_tready),
-                            .s_axis_tdata(intmd_axis_tdata),
+                            .s_axis_tvalid(wren_to_fifo),
+                            .s_axis_tready(fifo_s_axis_tready),
+                            .s_axis_tdata(data_to_fifo),
                             .m_axis_tvalid(m_axis_tvalid),
                             .m_axis_tready(m_axis_tready),
                             .m_axis_tdata(m_axis_tdata)

@@ -51,8 +51,8 @@ module crop_filter #(
     logic reset;
 
     // FIFO handshake wires
-    logic intmd_axis_tvalid, intmd_axis_tready;
-    logic [PIXEL_BIT_WIDTH-1:0] intmd_axis_tdata;  
+    logic wren_to_fifo, fifo_s_axis_tready;
+    logic [PIXEL_BIT_WIDTH-1:0] data_to_fifo;  
 
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes; // Allows us to determine when we're done cropping
  
@@ -66,15 +66,15 @@ module crop_filter #(
 
     // Main-logic: Assert tvalid and save data to FIFO if (x,y) coordinates are inside of crop-box
     always_comb begin
-        s_axis_tready = intmd_axis_tready;
+        s_axis_tready = fifo_s_axis_tready;
 
         if((cnt_row >= crop_y0) && (cnt_row < crop_y0+OUT_ROWS) && (cnt_col >= crop_x0) && (cnt_col < crop_x0+OUT_COLS)) begin 
-            intmd_axis_tvalid = 1'b1 && s_axis_tvalid;
-            intmd_axis_tdata = s_axis_tdata;
+            wren_to_fifo = 1'b1 && s_axis_tvalid;
+            data_to_fifo = s_axis_tdata;
         end
         else begin 
-            intmd_axis_tvalid = 1'b0;
-            intmd_axis_tdata = 0;
+            wren_to_fifo = 1'b0;
+            data_to_fifo = 0;
         end
         
     end
@@ -82,9 +82,9 @@ module crop_filter #(
     // Write to FIFO 
     axis_fifo cf_axis_fifo (.s_aclk(clk),
                             .s_aresetn(~reset),
-                            .s_axis_tvalid(intmd_axis_tvalid),
-                            .s_axis_tready(intmd_axis_tready),
-                            .s_axis_tdata(intmd_axis_tdata),
+                            .s_axis_tvalid(wren_to_fifo),
+                            .s_axis_tready(fifo_s_axis_tready),
+                            .s_axis_tdata(data_to_fifo),
                             .m_axis_tvalid(m_axis_tvalid),
                             .m_axis_tready(m_axis_tready),
                             .m_axis_tdata(m_axis_tdata)
@@ -95,7 +95,7 @@ module crop_filter #(
 
         if (reset) cnt_fifo_writes <= 0;
         else if (cnt_fifo_writes == OUT_ROWS*OUT_COLS-1) cnt_fifo_writes <= 0;
-        else if (intmd_axis_tready && intmd_axis_tvalid) cnt_fifo_writes <= cnt_fifo_writes + 1;
+        else if (fifo_s_axis_tready && wren_to_fifo) cnt_fifo_writes <= cnt_fifo_writes + 1;
 
     end
 
@@ -105,8 +105,8 @@ module crop_filter #(
     // Drive max_value: the largest pixel value that passes the crop_filter
     always_ff @(posedge clk) begin
         if (reset || ap_start) max_value <= 0;
-        else if (intmd_axis_tvalid && intmd_axis_tready) begin
-            if (intmd_axis_tdata > max_value) max_value <= intmd_axis_tdata;
+        else if (wren_to_fifo && fifo_s_axis_tready) begin
+            if (data_to_fifo > max_value) max_value <= data_to_fifo;
         end
     end
 
