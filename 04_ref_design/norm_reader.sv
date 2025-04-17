@@ -31,7 +31,7 @@ module norm_reader #(
 );
 
     localparam INT_WIDTH = 8;
-    localparam FRAC_WIDTH = 32;
+    localparam FRAC_WIDTH = 16;
     localparam OUT_WIDTH = 8;
 
     logic intmd_axis_tvalid;
@@ -102,7 +102,7 @@ module norm_reader #(
 
     // reciprocal of max value to get normalization coefficient
     logic [FRAC_WIDTH-1:0] norm_coef;
-    udivision_LUT_8bit_int_to_32bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+    udivision_LUT_8bit_int_to_16bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
 
     // multiplication: 
     umult_int_frac #(.INT_WIDTH(INT_WIDTH), .FRAC_WIDTH(FRAC_WIDTH), .OUT_WIDTH(OUT_WIDTH)) 
