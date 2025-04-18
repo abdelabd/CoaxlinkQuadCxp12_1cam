@@ -61,9 +61,6 @@ module norm_reader #(
     // Pass through s_axis_tready if norm_coef_tvalid
     assign s_axis_tready = fifo_s_axis_tready && norm_coef_tvalid;
 
-    // Pass through wren_to_fifo if norm_coef_tvalid
-    assign wren_to_fifo = s_axis_tvalid && norm_coef_tvalid;
-
     // norm_coef = 1/norm_denominator. LUT for efficiency
     udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.clk(clk), 
                                                             .number_in(norm_denominator), .number_in_tvalid(norm_denominator_tvalid),
@@ -71,7 +68,10 @@ module norm_reader #(
 
     // data_to_fifo = s_axis_tdata * norm_coef 
     umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
-        normed_pixel_getter (.pixel(s_axis_tdata), .norm_factor(norm_coef), .module_out(data_to_fifo));
+        normed_pixel_getter (.clk(clk),
+                            .pixel(s_axis_tdata), .pixel_tvalid(s_axis_tvalid),
+                            .norm_factor(norm_coef), .norm_factor_tvalid(norm_coef_tvalid),
+                            .module_out(data_to_fifo), .module_out_tvalid(wren_to_fifo));
 
     // Write to FIFO 
     axis_fifo nr_axis_fifo (.s_aclk(clk),
