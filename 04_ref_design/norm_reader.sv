@@ -43,7 +43,9 @@ module norm_reader #(
 
     logic ready_to_norm; // Must wait for upstream crop_filter to finish cropping an entire-image; otherwise, max_value might be incorrect.
 
-    logic [23:0] norm_coef; // To store value of normalization coefficient 
+    // Output of LUT: stores value of normalization coefficient 
+    logic [23:0] norm_coef; 
+    logic norm_coef_tvalid;
 
     // FIFO handshake wires
     logic wren_to_fifo, fifo_s_axis_tready;
@@ -75,7 +77,9 @@ module norm_reader #(
     assign wren_to_fifo = s_axis_tvalid && ready_to_norm;
 
     // norm_coef = 1/norm_denominator. LUT for efficiency
-    udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.number_in(norm_denominator), .reciprocal(norm_coef));
+    udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.clk(clk), 
+                                                            .number_in(norm_denominator), .number_in_tvalid(norm_denominator_tvalid),
+                                                            .reciprocal(norm_coef), .reciprocal_tvalid(norm_coef_tvalid));
 
     // data_to_fifo = s_axis_tdata * norm_coef 
     umult_int_frac #(.INT_WIDTH(8), .FRAC_WIDTH(24), .MODULE_OUT_WIDTH(8)) 
