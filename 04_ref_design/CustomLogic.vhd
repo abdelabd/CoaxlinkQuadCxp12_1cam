@@ -252,8 +252,8 @@ architecture behav of CustomLogic is
 	constant OUT_COLS : integer := 5;
 
 	-- Stuff for testbenching
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
+	constant CROP_Y0_CONST : integer := 3;
+	constant CROP_X0_CONST : integer := 27;
 	
 	-- synthesis translate_off
 	signal reset : std_logic;
