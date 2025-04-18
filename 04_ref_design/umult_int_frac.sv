@@ -24,9 +24,13 @@ module umult_int_frac // IMPORTANT: Assumes FRAC_WIDTH >= OUT_WIDTH
 );
     
     logic [INT_WIDTH+FRAC_WIDTH-1:0] mult_out_full;
-    assign mult_out_full = pixel * norm_factor;
-    assign module_out = mult_out_full[FRAC_WIDTH-1:FRAC_WIDTH-MODULE_OUT_WIDTH];
+    logic module_out_tvalid_reg;
+    always_ff @(posedge clk) begin
+        mult_out_full <= pixel * norm_factor;
+        module_out_tvalid_reg <= pixel_tvalid && norm_factor_tvalid;
+    end
 
-    assign module_out_tvalid = pixel_tvalid && norm_factor_tvalid;
+    assign module_out = mult_out_full[FRAC_WIDTH-1:FRAC_WIDTH-MODULE_OUT_WIDTH];
+    assign module_out_tvalid = module_out_tvalid_reg;
 
 endmodule
