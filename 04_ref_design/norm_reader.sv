@@ -41,8 +41,6 @@ module norm_reader #(
 
     logic reset;
 
-    logic ready_to_norm; // Must wait for upstream crop_filter to finish cropping an entire-image; otherwise, max_value might be incorrect.
-
     // Output of LUT: stores value of normalization coefficient 
     logic [23:0] norm_coef; 
     logic norm_coef_tvalid;
@@ -60,21 +58,11 @@ module norm_reader #(
     // Combine both reset signals into one for simplicity
     assign reset = srst || (!s_axis_resetn);
 
-    // Drive ready_to_norm: only true if the upstream crop-filter is done cropping.
-    always_ff @(posedge clk) begin
-        if (reset || ap_start) begin 
-            ready_to_norm <= 1'b0;
-        end
-        else if (cf_ap_done) begin
-            ready_to_norm <= 1'b1;
-        end
-    end 
+    // Pass through s_axis_tready if norm_coef_tvalid
+    assign s_axis_tready = fifo_s_axis_tready && norm_coef_tvalid;
 
-    // Pass through s_axis_tready if ready_to_norm
-    assign s_axis_tready = fifo_s_axis_tready && ready_to_norm;
-
-    // Pass through wren_to_fifo if ready_to_norm
-    assign wren_to_fifo = s_axis_tvalid && ready_to_norm;
+    // Pass through wren_to_fifo if norm_coef_tvalid
+    assign wren_to_fifo = s_axis_tvalid && norm_coef_tvalid;
 
     // norm_coef = 1/norm_denominator. LUT for efficiency
     udivision_LUT_8bit_int_to_24bit_frac norm_coef_getter (.clk(clk), 
