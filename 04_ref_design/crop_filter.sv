@@ -34,6 +34,7 @@ module crop_filter #(
 
     // Max-value for normalization 
     output logic [PIXEL_BIT_WIDTH-1:0] max_value,
+    output logic max_value_tvalid,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
@@ -101,9 +102,13 @@ module crop_filter #(
 
     // Drive max_value: the largest pixel value that passes the crop_filter
     always_ff @(posedge clk) begin
-        if (reset || ap_start) max_value <= 0;
+        if (reset || ap_start) begin 
+            max_value <= 0;
+            max_value_tvalid <= 1'b0;
+        end
         else if (wren_to_fifo && fifo_s_axis_tready) begin
             if (data_to_fifo > max_value) max_value <= data_to_fifo;
+            if (cnt_fifo_writes==OUT_ROWS*OUT_COLS-1) max_value_tvalid <= 1'b1;
         end
     end
 

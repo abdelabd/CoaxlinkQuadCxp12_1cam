@@ -49,8 +49,9 @@ module crop_norm #(
     logic ap_start_cf;
 
     // crop_filter outputs
-    logic cf_ap_done, cf_ap_ready, cf_m_axis_tvalid;
+    logic cf_ap_done, cf_ap_ready;
     logic [PIXEL_BIT_WIDTH-1:0] cf_max_value, cf_m_axis_tdata;
+    logic cf_max_value_tvalid, cf_m_axis_tvalid;
     
     // norm_reader outputs
     logic nr_ap_ready, nr_ap_done, nr_s_axis_tready;
@@ -77,11 +78,13 @@ module crop_norm #(
 
             .s_axis_tvalid(s_axis_tvalid), .s_axis_tready(s_axis_tready), .s_axis_tdata(s_axis_tdata),
 
-            .crop_x0(crop_x0), .crop_y0(crop_y0), .max_value(cf_max_value),
+            .crop_x0(crop_x0), .crop_y0(crop_y0), 
 
             .m_axis_tvalid(cf_m_axis_tvalid), .m_axis_tready(nr_s_axis_tready), .m_axis_tdata(cf_m_axis_tdata),
 
-            .cnt_col(cnt_col), .cnt_row(cnt_row)
+            .cnt_col(cnt_col), .cnt_row(cnt_row),
+
+            .max_value(cf_max_value), .max_value_tvalid(cf_max_value_tvalid)
     );
     
     // norm_reader
@@ -95,7 +98,7 @@ module crop_norm #(
 
             .s_axis_tvalid(cf_m_axis_tvalid), .s_axis_tready(nr_s_axis_tready), .s_axis_tdata(cf_m_axis_tdata),
 
-            .norm_denominator(cf_max_value), 
+            .norm_denominator(cf_max_value), .norm_denominator_tvalid(cf_max_value_tvalid),
 
             .m_axis_tvalid(m_axis_tvalid), .m_axis_tready(m_axis_tready), .m_axis_tdata(m_axis_tdata)
     ); 

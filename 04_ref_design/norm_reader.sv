@@ -27,6 +27,7 @@ module norm_reader #(
 
     // Normalization value
     input logic [7:0] norm_denominator,
+    input logic norm_denominator_tvalid,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
