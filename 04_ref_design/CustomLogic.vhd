@@ -180,7 +180,7 @@ architecture behav of CustomLogic is
 	signal crop_x0_n : crop_coords_x_wire;
 
 	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-
+	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	----------------------------------------------------------------------------
 	-- Signals
 	----------------------------------------------------------------------------
@@ -192,11 +192,11 @@ architecture behav of CustomLogic is
 	signal rheed_s_axis_tready : std_logic; 
 
 	-- Master-side handshake
-	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal rheed_m_axis_tvalid : std_logic_vector(NUM_CROPS-1 downto 0);
+	signal rheed_m_axis_tdata : cropped_output_array;
 
 	-- Custom downstream tready signal for randomized testbenching
-	signal tb_s_axis_tready : std_logic;
+	signal tb_s_axis_tready : std_logic_vector(NUM_CROPS-1 downto 0);
 
 	-- Crop-coordinates 
   	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
@@ -309,7 +309,7 @@ begin
 		reset => reset_rheed,
 		Q => lfsr_16bit_out
 	);
-	tb_s_axis_tready <= lfsr_16bit_out(0);
+	tb_s_axis_tready <= lfsr_16bit_out(4 downto 0);
 
 	-- Drive crop-coordiantes
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
@@ -377,10 +377,10 @@ begin
                 idx_out <= 0;
 				out_diff <= 0;
             else
-                if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+                if rheed_m_axis_tvalid(0) = '1' and tb_s_axis_tready(0) = '1' then
                     -- Capture DUT output
-                    out_mem(0, idx_out) <= rheed_m_axis_tdata;
-					out_diff <= to_integer(unsigned(out_benchmark_mem(0, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
+                    out_mem(0, idx_out) <= rheed_m_axis_tdata(0);
+					out_diff <= to_integer(unsigned(out_benchmark_mem(0, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(0) ) );
                     
                     -- Verify against benchmark
 					assert (out_diff = 1)
@@ -389,7 +389,7 @@ begin
                                & " (Row=" & integer'image(idx_out/OUT_COLS) 
                                & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
                                & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(0, idx_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
+							   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(0)))) 
 							   & " Diff = " & integer'image(out_diff)
                         severity error;
 

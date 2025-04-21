@@ -21,9 +21,9 @@ module RHEED_inference #(
     input  logic [255:0]             s_axis_tdata, 
 
     // AXI Stream Master Interface outgoing, post-crop pixels
-    output logic                   m_axis_tvalid,
-    input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata
+    output logic [NUM_CROPS-1:0]            m_axis_tvalid,
+    input  logic [NUM_CROPS-1:0]            m_axis_tready,
+    output logic [PIXEL_BIT_WIDTH-1:0]      m_axis_tdata [NUM_CROPS-1:0]
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -78,38 +78,42 @@ module RHEED_inference #(
     );
 
     // Crop-Norm
-    assign m_axis_tvalid = cn_m_axis_tvalid;
-    assign m_axis_tdata = cn_m_axis_tdata;
-    crop_norm #(
-	  .PIXEL_BIT_WIDTH(PIXEL_BIT_WIDTH),
-      .IN_ROWS(IN_ROWS),
-      .IN_COLS(IN_COLS), 
-      .OUT_ROWS(OUT_ROWS),
-      .OUT_COLS(OUT_COLS)
-    ) 
-    iCropNorm (
-	  .clk(clk), 
-	  .reset(reset),
+    genvar crop_idx;
+    generate 
+        for (crop_idx=0; crop_idx < NUM_CROPS; crop_idx ++) begin
+            crop_norm #(
+                .PIXEL_BIT_WIDTH(PIXEL_BIT_WIDTH),
+                .IN_ROWS(IN_ROWS),
+                .IN_COLS(IN_COLS), 
+                .OUT_ROWS(OUT_ROWS),
+                .OUT_COLS(OUT_COLS)
+                ) 
+            CropNorm_i (
+                .clk(clk), 
+                .reset(reset),
 
-	  .seq_ap_idle(seq_ap_idle),
+                .seq_ap_idle(seq_ap_idle),
 
-	  .ap_start(ap_start),
-	  .ap_done(cn_ap_done),
-	  .ap_ready(cn_ap_ready),
-	  
-	  .s_axis_tvalid(seq_m_axis_tvalid),
-	  .s_axis_tready(cn_s_axis_tready),
-	  .s_axis_tdata(seq_m_axis_tdata),
+                .ap_start(ap_start),
+                .ap_done(cn_ap_done),
+                .ap_ready(cn_ap_ready),
+                
+                .s_axis_tvalid(seq_m_axis_tvalid),
+                .s_axis_tready(cn_s_axis_tready),
+                .s_axis_tdata(seq_m_axis_tdata),
 
-	  .crop_x0(crop_x0[0]),
-	  .crop_y0(crop_y0[0]),
-	  .cnt_col(seq_cnt_col),
-	  .cnt_row(seq_cnt_row),
+                .crop_x0(crop_x0[crop_idx]),
+                .crop_y0(crop_y0[crop_idx]),
+                .cnt_col(seq_cnt_col),
+                .cnt_row(seq_cnt_row),
 
-	  .m_axis_tvalid(cn_m_axis_tvalid),
-	  .m_axis_tready(m_axis_tready),
-	  .m_axis_tdata(cn_m_axis_tdata)
-	);
+                .m_axis_tvalid(m_axis_tvalid[crop_idx]),
+                .m_axis_tready(m_axis_tready[crop_idx]),
+                .m_axis_tdata(m_axis_tdata[crop_idx])
+                );
+        end
+    endgenerate
+    
 
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     
