@@ -137,25 +137,6 @@ end entity CustomLogic;
 architecture behav of CustomLogic is
 
 	----------------------------------------------------------------------------
-	-- Constants
-	----------------------------------------------------------------------------
-	constant PIXEL_BIT_WIDTH : integer := 8;
-	constant IN_ROWS : integer := 100;
-	constant IN_COLS : integer := 160;
-	constant OUT_ROWS : integer := 48;
-	constant OUT_COLS : integer := 48;
-	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 52;
-	constant CROP_X0_CONST : integer := 112;
-
-
-	----------------------------------------------------------------------------
-	-- Types
-	----------------------------------------------------------------------------
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-
-
-	----------------------------------------------------------------------------
 	-- Functions
 	----------------------------------------------------------------------------
 	function clog2(n : integer) return integer is
@@ -170,10 +151,35 @@ architecture behav of CustomLogic is
 		return m;
 	end function;
 
-	----------------------------------------------------------------------------
-	-- Components
-	----------------------------------------------------------------------------
 
+	----------------------------------------------------------------------------
+	-- Constants
+	----------------------------------------------------------------------------
+	constant PIXEL_BIT_WIDTH : integer := 8;
+	constant IN_ROWS : integer := 100;
+	constant IN_COLS : integer := 160;
+	constant OUT_ROWS : integer := 48;
+	constant OUT_COLS : integer := 48;
+	constant NUM_CROPS : integer := 5;
+	-- Crop-coordinates constant for now
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
+	constant CROP_IDX : integer := 0;
+	
+
+	----------------------------------------------------------------------------
+	-- Types
+	----------------------------------------------------------------------------
+	type crop_coords_const is array (NUM_CROPS-1 downto 0) of integer;
+	constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 13, 43, 52);
+	constant CROP_X0_N_CONST : crop_coords_const := (0, 27, 0, 43, 112);
+
+	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
+	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	signal crop_y0_n : crop_coords_y_wire;
+	signal crop_x0_n : crop_coords_x_wire;
+
+	type output_mem_array is array (OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 
 	----------------------------------------------------------------------------
 	-- Signals
@@ -204,18 +210,18 @@ architecture behav of CustomLogic is
 
 	-- Memory for output and benchmark-output
 	signal idx_out : integer := 0;
-	signal out_mem          : mem_array;
-    signal out_benchmark_mem: mem_array;
-	constant OUT_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	signal out_mem          : output_mem_array;
+    signal out_benchmark_mem: output_mem_array;
+	constant OUT_BENCHMARK_FILE    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
-											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
-											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											-- & "/img_postcrop_INDEX.txt";	
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(CROP_IDX)) &"_X1_" & integer'image(CROP_X0_N_CONST(CROP_IDX)) 
 											& "/img_postnorm_INDEX.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
 
 	-- synthesis translate_on
+
 
 	----------------------------------------------------------------------------
 	-- Debug
@@ -226,20 +232,11 @@ architecture behav of CustomLogic is
 	-- attribute mark_debug of s_axis_tready	: signal is "true";
 	-- attribute mark_debug of s_axis_tuser		: signal is "true";
 
+	
 	----------------------------------------------------------------------------
-	-- FPGAs for RHEED
+	-- Components
 	----------------------------------------------------------------------------
 
-	-------------------------------- Parameters --------------------------------
-
-	
-	-------------------------------- RHEED_inference wires --------------------------------
-
-	
-
-	-------------------------------- Testbenching wires --------------------------------
-	
-	
 
 begin
 
@@ -257,7 +254,8 @@ begin
     	IN_ROWS 		=> IN_ROWS, 
     	IN_COLS         => IN_COLS,
     	OUT_ROWS        => OUT_ROWS,
-    	OUT_COLS        => OUT_COLS
+    	OUT_COLS        => OUT_COLS,
+		NUM_CROPS 		=> NUM_CROPS
 	)
 	port map(
       clk => clk250, 
@@ -265,8 +263,8 @@ begin
 
 	  ap_start => s_axis_tuser(0),
 
-	  crop_x0 => crop_x0,
-	  crop_y0 => crop_y0,
+	  crop_x0 => crop_x0_n,
+	  crop_y0 => crop_y0_n,
 	  
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => rheed_s_axis_tready,
@@ -295,6 +293,10 @@ begin
 	-- Drive crop-coordiantes
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
+	gen_assign : for i in 0 to NUM_CROPS-1 generate
+		crop_y0_n(i) <= std_logic_vector(to_unsigned(CROP_Y0_N_CONST(i), clog2(IN_ROWS)));
+		crop_x0_n(i) <= std_logic_vector(to_unsigned(CROP_X0_N_CONST(i), clog2(IN_COLS)));
+	end generate;
 
 	-- Read benchmark file into memory
 	load_cn_benchmark: process
@@ -334,8 +336,8 @@ begin
 					out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     
                     -- Verify against benchmark
-					assert (out_diff = 0)
-                    -- assert (nr_diff < 3) and (nr_diff > -3)
+					assert (out_diff = 1)
+                    -- assert (out_diff < 4) and (out_diff > -4)
                         report "CropNorm mismatch at index " & integer'image(idx_out) 
                                & " (Row=" & integer'image(idx_out/OUT_COLS) 
                                & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 

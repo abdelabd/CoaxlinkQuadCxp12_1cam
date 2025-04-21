@@ -3,7 +3,8 @@ module RHEED_inference #(
     parameter IN_ROWS           = 20, // Must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 20,
-    parameter OUT_COLS          = 20
+    parameter OUT_COLS          = 20,
+    parameter NUM_CROPS         = 3
 )(
     input  logic clk, 
     input  logic reset,
@@ -11,8 +12,8 @@ module RHEED_inference #(
     input  logic ap_start,
 
     // Crop-coordinates
-    input logic [$clog2(IN_COLS)-1:0] crop_x0,
-    input logic [$clog2(IN_ROWS)-1:0] crop_y0,
+    input logic [$clog2(IN_COLS)-1:0] crop_x0 [NUM_CROPS-1:0],
+    input logic [$clog2(IN_ROWS)-1:0] crop_y0 [NUM_CROPS-1:0],
 
     // AXI Stream Slave Interface for incoming pixels
     input  logic                     s_axis_tvalid,
@@ -100,8 +101,8 @@ module RHEED_inference #(
 	  .s_axis_tready(cn_s_axis_tready),
 	  .s_axis_tdata(seq_m_axis_tdata),
 
-	  .crop_x0(crop_x0),
-	  .crop_y0(crop_y0),
+	  .crop_x0(crop_x0[0]),
+	  .crop_y0(crop_y0[0]),
 	  .cnt_col(seq_cnt_col),
 	  .cnt_row(seq_cnt_row),
 
