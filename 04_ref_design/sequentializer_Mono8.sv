@@ -19,7 +19,7 @@ module sequentializer_Mono8 #(
     output logic ap_ready, 
     output logic ap_idle,
 
-    input logic cf_ap_ready,
+    input logic cn_ap_ready,
 
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
@@ -120,7 +120,7 @@ module sequentializer_Mono8 #(
         case (ps)
 
             IDLE: begin
-                ap_ready = cf_ap_ready;
+                ap_ready = cn_ap_ready;
                 ap_idle = 1'b1;
 
                 s_axis_tready = 1'b0;

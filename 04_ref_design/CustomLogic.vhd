@@ -408,7 +408,7 @@ begin
 	  ap_ready => seq_ap_ready,
 	  ap_idle => seq_ap_idle,
 
-	  cf_ap_ready => cn_ap_ready,
+	  cn_ap_ready => cn_ap_ready,
 	  
       s_axis_tvalid => s_axis_tvalid,
       s_axis_tready => seq_s_axis_tready,
