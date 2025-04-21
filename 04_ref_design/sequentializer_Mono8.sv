@@ -187,7 +187,7 @@ module sequentializer_Mono8 #(
 
     always_ff @(posedge clk) begin
         if (downstream_handshake) begin
-            assert(m_axis_tdata == cnt_idx_in_frame); // Only true for systematic testbench data of course
+            // assert(m_axis_tdata == cnt_idx_in_frame); // Only true for systematic testbench data of course
             assert((cnt_idx_in_frame%IN_COLS)==cnt_col);
             assert(col_diff==0);
             assert((cnt_idx_in_frame/IN_COLS)==cnt_row);
