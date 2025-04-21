@@ -65,7 +65,7 @@ module sequentializer_Mono8 #(
         else if (ap_start && ap_ready) frame_started = 1'b1;
     end
 
-    // Drive shift-register to store pixel-burst ////////////////////////
+    // Drive shift-register to store pixel-burst
     shift_register #(.WIDTH(8), .DEPTH(PIXELS_PER_BURST)) 
     seq_sr (.clk(clk), .reset(reset), .load(load), .shift(shift),
     .parallel_in(s_axis_tdata), .serial_in(8'b00000000), .data_out(pixel_buffer));

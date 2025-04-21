@@ -239,67 +239,56 @@ architecture behav of CustomLogic is
 	-- FPGAs for RHEED
 	----------------------------------------------------------------------------
 
-	-- Parameters (constant for now)
-	constant FP_TOTAL : integer := 8;
-	constant FP_INT : integer := 8;
-	constant FP_FRAC : integer := FP_TOTAL - FP_INT; -- UNSIGNED!!
-	constant PIXELS_PER_BURST : integer := 32;
-	constant USER_WIDTH : integer := 4;
+	-------------------------------- Parameters --------------------------------
 
+	constant PIXEL_BIT_WIDTH : integer := 8;
 	constant IN_ROWS : integer := 100;
 	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
-
-	-- Stuff for testbenching
+	-- Crop-coordinates constant for now
 	constant CROP_Y0_CONST : integer := 0;
 	constant CROP_X0_CONST : integer := 0;
+
+	-------------------------------- RHEED_inference wires --------------------------------
+
+	-- Slave-side handshake
+	signal rheed_s_axis_tready : std_logic; 
+
+	-- Master-side handshake
+	signal rheed_m_axis_tvalid : std_logic;
+	signal rheed_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+
+	-- Custom downstream tready signal for randomized testbenching
+	signal tb_s_axis_tready : std_logic;
+
+	-- Crop-coordinates 
+  	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
+	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+
+	-------------------------------- Testbenching wires --------------------------------
 	
 	-- synthesis translate_off
-	signal reset : std_logic;
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(FP_TOTAL-1 downto 0);
 
-	constant CN_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	-- For random-bit generator (drives downstream tready)
+	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
+
+	-- Memory for output and benchmark-output
+	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal idx_out : integer := 0;
+	signal out_mem          : mem_array;
+    signal out_benchmark_mem: mem_array;
+	constant OUT_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
 											-- & "/img_postcrop_INDEX.txt";	
 											& "/img_postnorm_INDEX.txt";
-	signal cn_out_mem          : mem_array;
-    signal cn_out_benchmark_mem: mem_array;
-	signal idx_cn_out : integer := 0;
 
-	-- synthesis translate_on
-	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
+	signal out_diff : integer; -- to compare output and benchmark output
 	
-	
-	-- Crop-coordinates 
-  	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
-	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	signal reset : std_logic;
 
-	-- Custom downstream tready signal for randomized testbenching
-	signal tb_s_axis_tready : std_logic;
-
-	-- Sequentializer output signals
-	signal seq_s_axis_tready : std_logic; 
-	signal seq_m_axis_tvalid : std_logic;
-	signal seq_m_axis_tdata : std_logic_vector(7 downto 0);
-	signal seq_cnt_col : std_logic_vector(clog2(IN_COLS)-1 downto 0);
-	signal seq_cnt_row : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-
-	signal seq_ap_ready : std_logic;
-	signal seq_ap_idle : std_logic;
-
-	-- Crop-Norm output signals
-	signal cn_ap_done : std_logic;
-	signal cn_ap_ready : std_logic;
-
-	signal cn_s_axis_tready : std_logic;
-	signal cn_m_axis_tvalid : std_logic;
-	signal cn_m_axis_tdata : std_logic_vector(FP_TOTAL-1 downto 0);
-	
-	-- synthesis translate_off
-	signal cn_diff : integer;
 	-- synthesis translate_on
 
 begin
@@ -384,113 +373,70 @@ begin
 	m_memento_arg0		<= MementoEvent_arg0;
 	m_memento_arg1		<= Wraparound_cnt;
 
-	---------------------- Bypassed connections ----------------------
+
+	-------------------------------- RHEED_inference --------------------------------
+
+	-- Bypass these connections for now. 
 	m_axis_tdata <= s_axis_tdata;
 	m_axis_tuser <= s_axis_tuser;
 	m_axis_tvalid <= '1';
 
-	---------------------- Sequentializer ----------------------
-	
-	-- s_axis_tready <= '1';
-
-	s_axis_tready <= seq_s_axis_tready; -- For clarity's sake
-	iSequentializer: entity work.sequentializer_Mono8
-    generic map (
-      IN_ROWS => IN_ROWS,
-      IN_COLS => IN_COLS
-    )
-    port map (
+	-- Instantiate RHEED_inference module
+	s_axis_tready <= rheed_s_axis_tready; -- For clarity's sake
+	iRHEED : entity work.RHEED_inference
+	generic map (
+		PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
+    	IN_ROWS 		=> IN_ROWS, 
+    	IN_COLS         => IN_COLS,
+    	OUT_ROWS        => OUT_ROWS,
+    	OUT_COLS        => OUT_COLS
+	)
+	port map(
       clk => clk250, 
       srst => srst250, 
 	  s_axis_resetn => s_axis_resetn,
 
 	  ap_start => s_axis_tuser(0),
-	  ap_ready => seq_ap_ready,
-	  ap_idle => seq_ap_idle,
-
-	  cn_ap_ready => cn_ap_ready,
-	  
-      s_axis_tvalid => s_axis_tvalid,
-      s_axis_tready => seq_s_axis_tready,
-      s_axis_tdata => s_axis_tdata,
-
-	  m_axis_tvalid => seq_m_axis_tvalid,
-	  m_axis_tready => cn_s_axis_tready,
-	  m_axis_tdata => seq_m_axis_tdata,
-
-	  cnt_col => seq_cnt_col,
-	  cnt_row => seq_cnt_row
-    );
-
-
-
-	---------------------- CropNorm ----------------------
-
-	iCropNorm: entity work.crop_norm
-	generic map(
-	  PIXEL_BIT_WIDTH => FP_TOTAL,
-      IN_ROWS => IN_ROWS,
-      IN_COLS => IN_COLS, 
-      OUT_ROWS => OUT_ROWS,
-      OUT_COLS => OUT_COLS
-	  )
-	port map(
-	  clk => clk250, 
-	  srst => srst250, 
-	  s_axis_resetn => s_axis_resetn,
-
-	  seq_ap_idle => seq_ap_idle,
-
-	  ap_start => s_axis_tuser(0),
-	  ap_done => cn_ap_done,
-	  ap_ready => cn_ap_ready,
-	  
-	  s_axis_tvalid => seq_m_axis_tvalid,
-	  s_axis_tready => cn_s_axis_tready,
-	  s_axis_tdata => seq_m_axis_tdata,
 
 	  crop_x0 => crop_x0,
 	  crop_y0 => crop_y0,
-	  cnt_col => seq_cnt_col,
-	  cnt_row => seq_cnt_row,
-
-	  m_axis_tvalid => cn_m_axis_tvalid,
-	  m_axis_tready => tb_s_axis_tready,
-	  m_axis_tdata => cn_m_axis_tdata
 	  
-	);
+      s_axis_tvalid => s_axis_tvalid,
+      s_axis_tready => rheed_s_axis_tready,
+      s_axis_tdata => s_axis_tdata,
+
+	  m_axis_tvalid => rheed_m_axis_tvalid,
+	  m_axis_tready => tb_s_axis_tready,
+	  m_axis_tdata => rheed_m_axis_tdata
+    );
 
 
-	----------------------- For testbenching -----------------------
+	-------------------------------- RHEED_inference testbenching --------------------------------
+
+	-- synthesis translate_off
 
 	-- Drive downstream tready
 	-- tb_s_axis_tready <= '1';
-	-- tb_s_axis_tready <= m_axis_tready;
 	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
 		reset => srst250,
 		Q => lfsr_16bit_out
 	);
-	-- s_axis_tready <= lfsr_16bit_out(0);
-	-- cf_s_axis_tready <= lfsr_16bit_out(0);
-	-- nr_s_axis_tready <= lfsr_16bit_out(0);
 	tb_s_axis_tready <= lfsr_16bit_out(0);
 
-
+	-- Drive crop-coordiantes
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
-
-	-- synthesis translate_off
 
 	-- Read benchmark file into memory
 	load_cn_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
-        variable temp_vector   : std_logic_vector(FP_TOTAL-1 downto 0);
+        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
         variable row, col      : integer;
     begin
-        file_open(file_handle, CN_BENCHMARK_FILE, read_mode);
+        file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
         
         for row in 0 to OUT_ROWS-1 loop
             readline(file_handle, line_content);
@@ -498,7 +444,7 @@ begin
                 -- Read hexadecimal value from line
                 hread(line_content, temp_vector);
                 -- Calculate 1D index from 2D coordinates
-                cn_out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
+                out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
             end loop;
         end loop;
         
@@ -512,28 +458,28 @@ begin
     cn_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
-            if reset = '1' or idx_cn_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-                idx_cn_out <= 0;
-				cn_diff <= 0;
+            if reset = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+                idx_out <= 0;
+				out_diff <= 0;
             else
-                if cn_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+                if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
                     -- Capture DUT output
-                    cn_out_mem(idx_cn_out) <= cn_m_axis_tdata;
-					cn_diff <= to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))) - to_integer(unsigned(cn_m_axis_tdata));
+                    out_mem(idx_out) <= rheed_m_axis_tdata;
+					out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     
                     -- Verify against benchmark
-					assert (cn_diff = 0)
+					assert (out_diff = 0)
                     -- assert (nr_diff < 3) and (nr_diff > -3)
-                        report "CropNorm mismatch at index " & integer'image(idx_cn_out) 
-                               & " (Row=" & integer'image(idx_cn_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_cn_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(cn_out_benchmark_mem(idx_cn_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(cn_m_axis_tdata))) 
-							   & " Diff = " & integer'image(cn_diff)
+                        report "CropNorm mismatch at index " & integer'image(idx_out) 
+                               & " (Row=" & integer'image(idx_out/OUT_COLS) 
+                               & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
+                               & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(idx_out))))
+							   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
+							   & " Diff = " & integer'image(out_diff)
                         severity error;
 
                     -- Increment index
-                    idx_cn_out <= idx_cn_out + 1;
+                    idx_out <= idx_out + 1;
                 end if;
             end if;
         end if;
