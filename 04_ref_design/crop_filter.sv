@@ -13,8 +13,7 @@ module crop_filter #(
     parameter OUT_COLS          = 10
 )(
     input  logic                     clk,
-    input  logic                     srst,
-    input  logic                     s_axis_resetn,
+    input  logic                     reset,
 
     // ap control signals
     input logic ap_start,  
@@ -45,8 +44,6 @@ module crop_filter #(
 
 );
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
-    
-    logic reset;
 
     // FIFO handshake wires
     logic wren_to_fifo, fifo_s_axis_tready;
@@ -55,9 +52,6 @@ module crop_filter #(
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes; // Allows us to determine when we're done cropping
  
     /////////////////////////////////// LOGIC ///////////////////////////////////
-
-    // Combine both reset signals into one for simplicity
-    assign reset = srst || (!s_axis_resetn);
 
     // Drive ap_ready 
     assign ap_ready = nr_ap_ready; // pass-through the ap_ready signal; we're ready to start cropping if the downstream norm-reader is ready to start normalizing

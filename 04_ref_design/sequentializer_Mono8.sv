@@ -11,8 +11,7 @@ module sequentializer_Mono8 #(
     parameter IN_COLS           = 20
 )(
     input  logic clk, 
-    input  logic srst,           // Synchronous reset
-    input  logic s_axis_resetn,  // AXI Stream interface reset (active-low)
+    input  logic reset,
 
     // ap control signals
     input logic ap_start, 
@@ -39,8 +38,6 @@ module sequentializer_Mono8 #(
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
     
-    logic reset;
-
     logic frame_started; // Tells us not to do anything until we're receiving pixels from the actual frame 
 
     logic [7:0] pixel_buffer [PIXELS_PER_BURST-1:0]; // Shift-register memory
@@ -54,9 +51,6 @@ module sequentializer_Mono8 #(
     enum logic [1:0] {IDLE, LOAD_IN, STREAM_OUT, DONE} ps, ns;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
-
-    // Combine both reset signals into one for simplicity
-    assign reset = srst || (!s_axis_resetn);
 
     // Drive frame-started
     always_ff @(posedge clk) begin

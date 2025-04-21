@@ -15,8 +15,7 @@ module crop_norm #(
     parameter OUT_COLS          = 10
 )(
     input  logic                     clk,
-    input  logic                     srst,
-    input  logic                     s_axis_resetn,
+    input  logic                     reset,
 
     // ap control signals
     input logic seq_ap_idle,
@@ -70,7 +69,7 @@ module crop_norm #(
                   .IN_COLS(IN_COLS),
                   .OUT_ROWS(OUT_ROWS),
                   .OUT_COLS(OUT_COLS))
-    iCropFilter (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),
+    iCropFilter (.clk(clk), .reset(reset),
 
             .ap_start(ap_start_cf), .ap_done(cf_ap_done), .ap_ready(cf_ap_ready),
 
@@ -90,7 +89,7 @@ module crop_norm #(
     // norm_reader
     assign ap_start_nr = ap_start && nr_ap_ready;
     norm_reader #(.OUT_ROWS(OUT_ROWS), .OUT_COLS(OUT_COLS)) 
-    iNormReader (.clk(clk), .srst(srst), .s_axis_resetn(s_axis_resetn),
+    iNormReader (.clk(clk), .reset(reset),
             
             .seq_ap_idle(seq_ap_idle), .cf_ap_done(cf_ap_done),
             

@@ -252,6 +252,9 @@ architecture behav of CustomLogic is
 
 	-------------------------------- RHEED_inference wires --------------------------------
 
+	-- reset
+	signal reset_rheed : std_logic;
+
 	-- Slave-side handshake
 	signal rheed_s_axis_tready : std_logic; 
 
@@ -286,8 +289,6 @@ architecture behav of CustomLogic is
 											& "/img_postnorm_INDEX.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
-	
-	signal reset : std_logic;
 
 	-- synthesis translate_on
 
@@ -382,6 +383,7 @@ begin
 	m_axis_tvalid <= '1';
 
 	-- Instantiate RHEED_inference module
+	reset_rheed <= (not s_axis_resetn) or srst250;
 	s_axis_tready <= rheed_s_axis_tready; -- For clarity's sake
 	iRHEED : entity work.RHEED_inference
 	generic map (
@@ -393,8 +395,7 @@ begin
 	)
 	port map(
       clk => clk250, 
-      srst => srst250, 
-	  s_axis_resetn => s_axis_resetn,
+      reset => reset_rheed,
 
 	  ap_start => s_axis_tuser(0),
 
@@ -420,7 +421,7 @@ begin
 	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
-		reset => srst250,
+		reset => reset_rheed,
 		Q => lfsr_16bit_out
 	);
 	tb_s_axis_tready <= lfsr_16bit_out(0);
@@ -453,12 +454,11 @@ begin
     end process;
 
 	-- Data capture and verification process
-	reset <= (not s_axis_resetn) or srst250;
 
     cn_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
-            if reset = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+            if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_out <= 0;
 				out_diff <= 0;
             else

@@ -9,8 +9,7 @@ module norm_reader #(
     parameter OUT_COLS          = 10
 )(
     input  logic                     clk,
-    input  logic                     srst,
-    input  logic                     s_axis_resetn,
+    input  logic                     reset,
 
     // ap control signals
     input logic seq_ap_idle,
@@ -39,8 +38,6 @@ module norm_reader #(
     
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
 
-    logic reset;
-
     // Output of LUT: stores value of normalization coefficient 
     logic [23:0] norm_coef; 
     logic norm_coef_tvalid;
@@ -54,9 +51,6 @@ module norm_reader #(
     enum logic {IDLE, NORMALIZING} ps, ns; // For FSM
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
-
-    // Combine both reset signals into one for simplicity
-    assign reset = srst || (!s_axis_resetn);
 
     // Pass through s_axis_tready if norm_coef_tvalid
     assign s_axis_tready = fifo_s_axis_tready && norm_coef_tvalid;

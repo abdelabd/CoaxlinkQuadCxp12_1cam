@@ -6,8 +6,7 @@ module RHEED_inference #(
     parameter OUT_COLS          = 20
 )(
     input  logic clk, 
-    input  logic srst,           // Synchronous reset
-    input  logic s_axis_resetn,  // AXI Stream interface reset (active-low)
+    input  logic reset,
 
     input  logic ap_start,
 
@@ -57,8 +56,7 @@ module RHEED_inference #(
     )
     iSequentializer (
       .clk(clk), 
-      .srst(srst), 
-	  .s_axis_resetn(s_axis_resetn),
+      .reset(reset),
 
 	  .ap_start(ap_start),
 	  .ap_ready(seq_ap_ready),
@@ -90,8 +88,7 @@ module RHEED_inference #(
     ) 
     iCropNorm (
 	  .clk(clk), 
-	  .srst(srst), 
-	  .s_axis_resetn(s_axis_resetn),
+	  .reset(reset),
 
 	  .seq_ap_idle(seq_ap_idle),
 
