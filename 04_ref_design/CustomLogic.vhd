@@ -135,6 +135,29 @@ entity CustomLogic is
 end entity CustomLogic;
 
 architecture behav of CustomLogic is
+
+	----------------------------------------------------------------------------
+	-- Constants
+	----------------------------------------------------------------------------
+	constant PIXEL_BIT_WIDTH : integer := 8;
+	constant IN_ROWS : integer := 100;
+	constant IN_COLS : integer := 160;
+	constant OUT_ROWS : integer := 48;
+	constant OUT_COLS : integer := 48;
+	-- Crop-coordinates constant for now
+	constant CROP_Y0_CONST : integer := 52;
+	constant CROP_X0_CONST : integer := 112;
+
+
+	----------------------------------------------------------------------------
+	-- Types
+	----------------------------------------------------------------------------
+	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+
+
+	----------------------------------------------------------------------------
+	-- Functions
+	----------------------------------------------------------------------------
 	function clog2(n : integer) return integer is
 		variable m, p : integer;
 	begin
@@ -148,21 +171,6 @@ architecture behav of CustomLogic is
 	end function;
 
 	----------------------------------------------------------------------------
-	-- Constants
-	----------------------------------------------------------------------------
-	
-
-	----------------------------------------------------------------------------
-	-- Types
-	----------------------------------------------------------------------------
-
-
-	----------------------------------------------------------------------------
-	-- Functions
-	----------------------------------------------------------------------------
-
-
-	----------------------------------------------------------------------------
 	-- Components
 	----------------------------------------------------------------------------
 
@@ -170,87 +178,6 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Signals
 	----------------------------------------------------------------------------
-	-- Control Registers
-	signal MemTrafficGen_en		    	: std_logic;
-	signal Frame2Line_bypass	    	: std_logic;
-	signal MementoEvent_en		    	: std_logic;
-	signal MementoEvent_arg0	    	: std_logic_vector(31 downto 0);
-	signal PixelLut_bypass		    	: std_logic;
-	signal PixelLut_coef_start	    	: std_logic;
-	signal PixelLut_coef		    	: std_logic_vector( 7 downto 0);
-	signal PixelLut_coef_vld	    	: std_logic;
-	signal PixelLut_coef_done	    	: std_logic;
-	signal PixelThreshold_bypass    	: std_logic;
-	signal PixelThreshold_level			: std_logic_vector( 7 downto 0);
-	
-	-- Pixel LUT
-	signal PixelLut_tvalid		    	: std_logic;
-	signal PixelLut_tready		    	: std_logic;
-	signal PixelLut_tdata		    	: std_logic_vector(STREAM_DATA_WIDTH - 1 downto 0);
-	signal PixelLut_tuser		    	: std_logic_vector( 3 downto 0);
-	signal PixelLut_StreamId			: std_logic_vector( 7 downto 0);
-	signal PixelLut_SourceTag			: std_logic_vector(15 downto 0);
-	signal PixelLut_Xsize				: std_logic_vector(23 downto 0);
-	signal PixelLut_Xoffs				: std_logic_vector(23 downto 0);
-	signal PixelLut_Ysize				: std_logic_vector(23 downto 0);
-	signal PixelLut_Yoffs				: std_logic_vector(23 downto 0);
-	signal PixelLut_DsizeL				: std_logic_vector(23 downto 0);
-	signal PixelLut_PixelF				: std_logic_vector(15 downto 0);
-	signal PixelLut_TapG				: std_logic_vector(15 downto 0);
-	signal PixelLut_Flags				: std_logic_vector( 7 downto 0);
-	signal PixelLut_Timestamp			: std_logic_vector(31 downto 0);
-	signal PixelLut_PixProcFlgs			: std_logic_vector( 7 downto 0);
-	signal PixelLut_Status				: std_logic_vector(31 downto 0);
-	
-	-- HLS Pixel Threshold
-	signal HlsPixTh_tvalid		    	: std_logic;
-	signal HlsPixTh_tready		    	: std_logic;
-	signal HlsPixTh_tdata		    	: std_logic_vector(STREAM_DATA_WIDTH - 1 downto 0);
-	signal HlsPixTh_tuser		    	: std_logic_vector( 3 downto 0);
-	signal HlsPixTh_StreamId			: std_logic_vector( 7 downto 0);
-	signal HlsPixTh_SourceTag			: std_logic_vector(15 downto 0);
-	signal HlsPixTh_Xsize				: std_logic_vector(23 downto 0);
-	signal HlsPixTh_Xoffs				: std_logic_vector(23 downto 0);
-	signal HlsPixTh_Ysize				: std_logic_vector(23 downto 0);
-	signal HlsPixTh_Yoffs				: std_logic_vector(23 downto 0);
-	signal HlsPixTh_DsizeL				: std_logic_vector(23 downto 0);
-	signal HlsPixTh_PixelF				: std_logic_vector(15 downto 0);
-	signal HlsPixTh_TapG				: std_logic_vector(15 downto 0);
-	signal HlsPixTh_Flags				: std_logic_vector( 7 downto 0);
-	signal HlsPixTh_Timestamp			: std_logic_vector(31 downto 0);
-	signal HlsPixTh_PixProcFlgs			: std_logic_vector( 7 downto 0);
-	signal HlsPixTh_Status				: std_logic_vector(31 downto 0);
-	
-	-- Memento Events
-	signal Wraparound_pls		    	: std_logic;
-	signal Wraparound_cnt		    	: std_logic_vector(31 downto 0);
-
-
-	----------------------------------------------------------------------------
-	-- Debug
-	----------------------------------------------------------------------------
-	-- attribute mark_debug : string;
-	-- attribute mark_debug of s_axis_resetn	: signal is "true";
-	-- attribute mark_debug of s_axis_tvalid	: signal is "true";
-	-- attribute mark_debug of s_axis_tready	: signal is "true";
-	-- attribute mark_debug of s_axis_tuser		: signal is "true";
-
-	----------------------------------------------------------------------------
-	-- FPGAs for RHEED
-	----------------------------------------------------------------------------
-
-	-------------------------------- Parameters --------------------------------
-
-	constant PIXEL_BIT_WIDTH : integer := 8;
-	constant IN_ROWS : integer := 100;
-	constant IN_COLS : integer := 160;
-	constant OUT_ROWS : integer := 48;
-	constant OUT_COLS : integer := 48;
-	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
-
-	-------------------------------- RHEED_inference wires --------------------------------
 
 	-- reset
 	signal reset_rheed : std_logic;
@@ -269,15 +196,13 @@ architecture behav of CustomLogic is
   	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
-	-------------------------------- Testbenching wires --------------------------------
-	
+	--------- For testbenching ---------
 	-- synthesis translate_off
 
 	-- For random-bit generator (drives downstream tready)
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
 	-- Memory for output and benchmark-output
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	signal idx_out : integer := 0;
 	signal out_mem          : mem_array;
     signal out_benchmark_mem: mem_array;
@@ -292,90 +217,31 @@ architecture behav of CustomLogic is
 
 	-- synthesis translate_on
 
+	----------------------------------------------------------------------------
+	-- Debug
+	----------------------------------------------------------------------------
+	-- attribute mark_debug : string;
+	-- attribute mark_debug of s_axis_resetn	: signal is "true";
+	-- attribute mark_debug of s_axis_tvalid	: signal is "true";
+	-- attribute mark_debug of s_axis_tready	: signal is "true";
+	-- attribute mark_debug of s_axis_tuser		: signal is "true";
+
+	----------------------------------------------------------------------------
+	-- FPGAs for RHEED
+	----------------------------------------------------------------------------
+
+	-------------------------------- Parameters --------------------------------
+
+	
+	-------------------------------- RHEED_inference wires --------------------------------
+
+	
+
+	-------------------------------- Testbenching wires --------------------------------
+	
+	
+
 begin
-	
-	-- Control Registers
-	iControlRegs : entity work.control_registers
-		port map (
-			clk							=> clk250,
-			srst						=> srst250,
-			s_ctrl_addr					=> s_ctrl_addr,
-			s_ctrl_data_wr_en			=> s_ctrl_data_wr_en,
-			s_ctrl_data_wr				=> s_ctrl_data_wr,
-			s_ctrl_data_rd				=> s_ctrl_data_rd,
-			MemTrafficGen_en			=> MemTrafficGen_en,
-			UserOutput_ctrl				=> user_output_ctrl,
-			UserOutput_status			=> user_output_status,
-			StandardIoSet1_status		=> standard_io_set1_status,
-			StandardIoSet2_status		=> standard_io_set2_status,
-			ModuleIoSet_status			=> module_io_set_status,
-			Qdc1Position_status			=> qdc1_position_status,
-			CustomLogicOutput_ctrl		=> custom_logic_output_ctrl,
-			Frame2Line_bypass(0)		=> Frame2Line_bypass,
-			MementoEvent_en(0)			=> MementoEvent_en,
-			MementoEvent_arg0			=> MementoEvent_arg0,
-			PixelLut_bypass(0)			=> PixelLut_bypass,
-			PixelLut_coef_start(0)		=> PixelLut_coef_start,
-			PixelLut_coef_vld(0)		=> PixelLut_coef_vld,
-			PixelLut_coef				=> PixelLut_coef,
-			PixelLut_coef_done(0)		=> PixelLut_coef_done,
-			PixelThreshold_bypass(0)	=> PixelThreshold_bypass,
-			PixelThreshold_level		=> PixelThreshold_level
-		);
-		
-	-- Read/Write On-Board Memory
-	iMemTrafficGen : entity work.mem_traffic_gen
-		generic map (
-			DATA_WIDTH 			=> MEMORY_DATA_WIDTH
-		)
-		port map (
-			clk					=> clk250,
-			MemTrafficGen_en	=> MemTrafficGen_en,
-			Wraparound_pls		=> Wraparound_pls,
-			Wraparound_cnt		=> Wraparound_cnt,
-			m_axi_resetn		=> m_axi_resetn,
-			m_axi_awaddr 		=> m_axi_awaddr,
-			m_axi_awlen 		=> m_axi_awlen,
-			m_axi_awsize 		=> m_axi_awsize,
-			m_axi_awburst 		=> m_axi_awburst,
-			m_axi_awlock 		=> m_axi_awlock,
-			m_axi_awcache 		=> m_axi_awcache,
-			m_axi_awprot 		=> m_axi_awprot,
-			m_axi_awqos 		=> m_axi_awqos,
-			m_axi_awvalid 		=> m_axi_awvalid,
-			m_axi_awready 		=> m_axi_awready,
-			m_axi_wdata 		=> m_axi_wdata,
-			m_axi_wstrb 		=> m_axi_wstrb,
-			m_axi_wlast 		=> m_axi_wlast,
-			m_axi_wvalid 		=> m_axi_wvalid,
-			m_axi_wready 		=> m_axi_wready,
-			m_axi_bresp 		=> m_axi_bresp,
-			m_axi_bvalid 		=> m_axi_bvalid,
-			m_axi_bready 		=> m_axi_bready,
-			m_axi_araddr 		=> m_axi_araddr,
-			m_axi_arlen 		=> m_axi_arlen,
-			m_axi_arsize 		=> m_axi_arsize,
-			m_axi_arburst 		=> m_axi_arburst,
-			m_axi_arlock 		=> m_axi_arlock,
-			m_axi_arcache 		=> m_axi_arcache,
-			m_axi_arprot 		=> m_axi_arprot,
-			m_axi_arqos 		=> m_axi_arqos,
-			m_axi_arvalid 		=> m_axi_arvalid,
-			m_axi_arready 		=> m_axi_arready,
-			m_axi_rdata 		=> m_axi_rdata,
-			m_axi_rresp 		=> m_axi_rresp,
-			m_axi_rlast 		=> m_axi_rlast,
-			m_axi_rvalid 		=> m_axi_rvalid,
-			m_axi_rready 		=> m_axi_rready
-		);
-	
-
-	m_memento_event 	<= MementoEvent_en or Wraparound_pls;
-	m_memento_arg0		<= MementoEvent_arg0;
-	m_memento_arg1		<= Wraparound_cnt;
-
-
-	-------------------------------- RHEED_inference --------------------------------
 
 	-- Bypass these connections for now. 
 	m_axis_tdata <= s_axis_tdata;
@@ -412,7 +278,7 @@ begin
     );
 
 
-	-------------------------------- RHEED_inference testbenching --------------------------------
+	--------- For testbenching ---------
 
 	-- synthesis translate_off
 
