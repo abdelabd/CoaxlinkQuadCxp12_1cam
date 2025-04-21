@@ -171,15 +171,15 @@ architecture behav of CustomLogic is
 	-- Types
 	----------------------------------------------------------------------------
 	type crop_coords_const is array (NUM_CROPS-1 downto 0) of integer;
-	constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 13, 43, 52);
-	constant CROP_X0_N_CONST : crop_coords_const := (0, 27, 0, 43, 112);
+	constant CROP_Y0_N_CONST : crop_coords_const := (10, 10, 23, 43, 52);
+	constant CROP_X0_N_CONST : crop_coords_const := (10, 37, 10, 53, 99);
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 	signal crop_y0_n : crop_coords_y_wire;
 	signal crop_x0_n : crop_coords_x_wire;
 
-	type output_mem_array is array (OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 
 	----------------------------------------------------------------------------
 	-- Signals
@@ -212,10 +212,31 @@ architecture behav of CustomLogic is
 	signal idx_out : integer := 0;
 	signal out_mem          : output_mem_array;
     signal out_benchmark_mem: output_mem_array;
-	constant OUT_BENCHMARK_FILE    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	--VHDL makes this so goddamn difficult to do in a loop
+	constant OUT_BENCHMARK_FILE_0    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
-											& "/Y1_" & integer'image(CROP_Y0_N_CONST(CROP_IDX)) &"_X1_" & integer'image(CROP_X0_N_CONST(CROP_IDX)) 
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(0)) &"_X1_" & integer'image(CROP_X0_N_CONST(0)) 
+											& "/img_postnorm_INDEX.txt";
+	constant OUT_BENCHMARK_FILE_1    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(1)) &"_X1_" & integer'image(CROP_X0_N_CONST(1)) 
+											& "/img_postnorm_INDEX.txt";
+	constant OUT_BENCHMARK_FILE_2    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(2)) &"_X1_" & integer'image(CROP_X0_N_CONST(2)) 
+											& "/img_postnorm_INDEX.txt";
+	constant OUT_BENCHMARK_FILE_3    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(3)) &"_X1_" & integer'image(CROP_X0_N_CONST(3)) 
+											& "/img_postnorm_INDEX.txt";
+	constant OUT_BENCHMARK_FILE_4    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+											& "/Y1_" & integer'image(CROP_Y0_N_CONST(4)) &"_X1_" & integer'image(CROP_X0_N_CONST(4)) 
 											& "/img_postnorm_INDEX.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
@@ -300,24 +321,50 @@ begin
 
 	-- Read benchmark file into memory
 	load_cn_benchmark: process
-        file file_handle       : text;
-        variable line_content  : line;
-        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-        variable row, col      : integer;
+        file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
+        variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
+        variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable row_0, col_0, row_1, col_1, row_2, col_2, row_3, col_3, row_4, col_4      : integer;
     begin
-        file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
+        file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
+        file_open(file_handle_1, OUT_BENCHMARK_FILE_1, read_mode);
+        file_open(file_handle_2, OUT_BENCHMARK_FILE_2, read_mode);
+        file_open(file_handle_3, OUT_BENCHMARK_FILE_3, read_mode);
+        file_open(file_handle_4, OUT_BENCHMARK_FILE_4, read_mode);
+
         
         for row in 0 to OUT_ROWS-1 loop
-            readline(file_handle, line_content);
+
+            readline(file_handle_0, line_content_0);
+            readline(file_handle_1, line_content_1);
+            readline(file_handle_2, line_content_2);
+            readline(file_handle_3, line_content_3);
+            readline(file_handle_4, line_content_4);
+
             for col in 0 to OUT_COLS-1 loop
                 -- Read hexadecimal value from line
-                hread(line_content, temp_vector);
+                hread(line_content_0, temp_vector_0);
+                hread(line_content_1, temp_vector_1);
+                hread(line_content_2, temp_vector_2);
+                hread(line_content_3, temp_vector_3);
+                hread(line_content_4, temp_vector_4);
+
                 -- Calculate 1D index from 2D coordinates
-                out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
+                out_benchmark_mem(0, row * OUT_COLS + col) <= temp_vector_0;
+                out_benchmark_mem(1, row * OUT_COLS + col) <= temp_vector_1;
+                out_benchmark_mem(2, row * OUT_COLS + col) <= temp_vector_2;
+                out_benchmark_mem(3, row * OUT_COLS + col) <= temp_vector_3;
+                out_benchmark_mem(4, row * OUT_COLS + col) <= temp_vector_4;
+
             end loop;
         end loop;
         
-        file_close(file_handle);
+        file_close(file_handle_0);
+        file_close(file_handle_1);
+        file_close(file_handle_2);
+        file_close(file_handle_3);
+        file_close(file_handle_4);
+
         wait;
     end process;
 
@@ -332,8 +379,8 @@ begin
             else
                 if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
                     -- Capture DUT output
-                    out_mem(idx_out) <= rheed_m_axis_tdata;
-					out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
+                    out_mem(0, idx_out) <= rheed_m_axis_tdata;
+					out_diff <= to_integer(unsigned(out_benchmark_mem(0, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     
                     -- Verify against benchmark
 					assert (out_diff = 1)
@@ -341,7 +388,7 @@ begin
                         report "CropNorm mismatch at index " & integer'image(idx_out) 
                                & " (Row=" & integer'image(idx_out/OUT_COLS) 
                                & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(idx_out))))
+                               & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(0, idx_out))))
 							   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
 							   & " Diff = " & integer'image(out_diff)
                         severity error;
