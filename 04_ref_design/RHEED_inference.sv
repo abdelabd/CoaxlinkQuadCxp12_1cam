@@ -29,7 +29,6 @@ module RHEED_inference #(
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
 
     // Sequentializer output wires
-    logic seq_s_axis_tready;
     logic seq_m_axis_tvalid;
     logic [7:0] seq_m_axis_tdata;
 
@@ -52,7 +51,6 @@ module RHEED_inference #(
 
     // Sequentializer
     assign cn_s_axis_tready = cn_s_axis_tready_all[0] && cn_s_axis_tready_all[1] && cn_s_axis_tready_all[2] && cn_s_axis_tready_all[3] && cn_s_axis_tready_all[4];
-    assign s_axis_tready = seq_s_axis_tready;
     sequentializer_Mono8 #(
       .IN_ROWS(IN_ROWS),
       .IN_COLS(IN_COLS)
@@ -68,7 +66,7 @@ module RHEED_inference #(
 	  .cn_ap_ready(cn_ap_ready),
 	  
       .s_axis_tvalid(s_axis_tvalid),
-      .s_axis_tready(seq_s_axis_tready),
+      .s_axis_tready(s_axis_tready),
       .s_axis_tdata(s_axis_tdata),
 
 	  .m_axis_tvalid(seq_m_axis_tvalid),

@@ -211,7 +211,7 @@ architecture behav of CustomLogic is
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
 	-- Memory for output and benchmark-output
-	signal idx_out : integer := 0;
+	signal idx_out : diff_array;
 	signal out_mem          : output_mem_array;
     signal out_benchmark_mem: output_mem_array;
 	--VHDL makes this so goddamn difficult to do in a loop
@@ -308,7 +308,7 @@ begin
 	end process;
 
 	-- Drive downstream tready
-	-- tb_s_axis_tready <= '1';
+	-- tb_s_axis_tready <= "11111";
 	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
@@ -318,7 +318,7 @@ begin
 	tb_s_axis_tready <= lfsr_16bit_out(4 downto 0);
 
 	-- Drive crop-coordiantes
-	gen_assign : for i in 0 to NUM_CROPS-1 generate
+	gen_assign : for i in NUM_CROPS-1 downto 0 generate
 		crop_y0_n(i) <= std_logic_vector(to_unsigned(CROP_Y0_N_CONST(i), clog2(IN_ROWS)));
 		crop_x0_n(i) <= std_logic_vector(to_unsigned(CROP_X0_N_CONST(i), clog2(IN_COLS)));
 	end generate;
@@ -377,31 +377,33 @@ begin
     cn_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
-            if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-                idx_out <= 0;
-            else
-				for crop_idx in NUM_CROPS-1 downto 0 loop
+			-- for crop_idx in 1 downto 0 loop
+			for crop_idx in NUM_CROPS-1 downto 0 loop
+				if reset_rheed = '1' or idx_out(crop_idx) = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+					idx_out(crop_idx) <= 0;
+				else
+				
 					if rheed_m_axis_tvalid(crop_idx) = '1' and tb_s_axis_tready(crop_idx) = '1' then
 						-- Capture DUT output
-						out_mem(crop_idx, idx_out) <= rheed_m_axis_tdata(crop_idx);
+						out_mem(crop_idx, idx_out(crop_idx)) <= rheed_m_axis_tdata(crop_idx);
 						
 						-- Verify against benchmark
-						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
-						-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 4) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -4)
-							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out) 
-								& " (Row=" & integer'image(idx_out/OUT_COLS) 
-								& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-								& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))))
+						-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
+						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 4) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -4)
+							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out(crop_idx)) 
+								& " (Row=" & integer'image(idx_out(crop_idx)/OUT_COLS) 
+								& ", Col=" & integer'image(idx_out(crop_idx) mod OUT_COLS) & ")" 
+								& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))))
 								& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(crop_idx)))) 
-								& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ))
+								& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ))
 							severity error;
 
 						-- Increment index
-						idx_out <= idx_out + 1;
+						idx_out(crop_idx) <= idx_out(crop_idx) + 1;
 					end if;
-				end loop;
+				end if;
+			end loop;
 
-            end if;
         end if;
 	end process;
 
@@ -412,7 +414,6 @@ begin
 	begin
 
 		if cnt_frame = NUM_FRAMES then 
-			report "cnt_frame = " & integer'image(cnt_frame);
 
 			for crop_idx in NUM_CROPS-1 downto 0 loop
             file_open(file_status, 
@@ -429,8 +430,8 @@ begin
                 severity failure;
             end if;
 
-            for row in OUT_ROWS-1 downto 0 loop
-                for col in OUT_ROWS-1 downto 0 loop
+            for row in 0 to OUT_ROWS-1 loop
+                for col in 0 to OUT_ROWS-1 loop
                     -- Write each element followed by a space
                     hwrite(out_line, out_mem(crop_idx, row*OUT_COLS + col));
                     write(out_line, ' ');
@@ -442,7 +443,7 @@ begin
             file_close(out_file);
         end loop;
 
-        report "All layers written successfully";
+        report "All crop-norm outputs written successfully";
         -- wait;
 
 		end if;
