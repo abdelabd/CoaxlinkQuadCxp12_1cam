@@ -204,6 +204,9 @@ architecture behav of CustomLogic is
 	--------- For testbenching ---------
 	-- synthesis translate_off
 
+	constant NUM_FRAMES : integer := 5;
+	signal cnt_frame : integer := 0;
+
 	-- For random-bit generator (drives downstream tready)
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
@@ -237,8 +240,6 @@ architecture behav of CustomLogic is
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(4)) &"_X1_" & integer'image(CROP_X0_N_CONST(4)) 
 											& "/img_postnorm_INDEX.txt";
-
-	signal out_diff : diff_array; -- to compare output and benchmark output
 
 	-- synthesis translate_on
 
@@ -299,6 +300,12 @@ begin
 	--------- For testbenching ---------
 
 	-- synthesis translate_off
+	count_frames: process(s_axis_tuser)
+	begin
+		if falling_edge(s_axis_tuser(3)) then
+			cnt_frame <= cnt_frame + 1;
+		end if;
+	end process;
 
 	-- Drive downstream tready
 	-- tb_s_axis_tready <= '1';
@@ -372,25 +379,21 @@ begin
         if rising_edge(clk250) then
             if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_out <= 0;
-				for crop_idx in NUM_CROPS-1 downto 0 loop
-					out_diff(crop_idx) <= 0;
-				end loop;
             else
 				for crop_idx in NUM_CROPS-1 downto 0 loop
 					if rheed_m_axis_tvalid(crop_idx) = '1' and tb_s_axis_tready(crop_idx) = '1' then
 						-- Capture DUT output
 						out_mem(crop_idx, idx_out) <= rheed_m_axis_tdata(crop_idx);
-						out_diff(crop_idx) <= to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) );
 						
 						-- Verify against benchmark
-						assert (out_diff(crop_idx) = 1)
-						-- assert (out_diff(crop_idx) < 4) and (out_diff(crop_idx) > -4)
+						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
+						-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 4) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -4)
 							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out) 
 								& " (Row=" & integer'image(idx_out/OUT_COLS) 
 								& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
 								& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))))
 								& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(crop_idx)))) 
-								& " Diff = " & integer'image(out_diff(crop_idx))
+								& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ))
 							severity error;
 
 						-- Increment index
@@ -400,6 +403,51 @@ begin
 
             end if;
         end if;
+	end process;
+
+	save_output: process(cnt_frame)
+		file out_file : text;
+        variable out_line : line;
+        variable file_status : file_open_status;
+	begin
+
+		if cnt_frame = NUM_FRAMES then 
+			report "cnt_frame = " & integer'image(cnt_frame);
+
+			for crop_idx in NUM_CROPS-1 downto 0 loop
+            file_open(file_status, 
+						out_file, 
+						"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+						& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+						& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+						& "/Y1_" & integer'image(CROP_Y0_N_CONST(crop_idx)) &"_X1_" & integer'image(CROP_X0_N_CONST(crop_idx)) 
+						& "/HDL_cropnorm_out.txt", 
+						write_mode);
+            
+            if file_status /= open_ok then
+                report "Failed to open file for layer " & integer'image(crop_idx)
+                severity failure;
+            end if;
+
+            for row in OUT_ROWS-1 downto 0 loop
+                for col in OUT_ROWS-1 downto 0 loop
+                    -- Write each element followed by a space
+                    hwrite(out_line, out_mem(crop_idx, row*OUT_COLS + col));
+                    write(out_line, ' ');
+                end loop;
+                -- Write completed line to file
+                writeline(out_file, out_line);
+            end loop;
+            
+            file_close(out_file);
+        end loop;
+
+        report "All layers written successfully";
+        -- wait;
+
+		end if;
+
+		
 	end process;
 
 	-- synthesis translate_on
