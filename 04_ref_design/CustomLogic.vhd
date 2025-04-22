@@ -176,8 +176,6 @@ architecture behav of CustomLogic is
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-	signal crop_y0_n : crop_coords_y_wire;
-	signal crop_x0_n : crop_coords_x_wire;
 
 	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
@@ -199,9 +197,9 @@ architecture behav of CustomLogic is
 	-- Custom downstream tready signal for randomized testbenching
 	signal tb_s_axis_tready : std_logic_vector(NUM_CROPS-1 downto 0);
 
-	-- Crop-coordinates 
-  	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
-	signal crop_y0   : std_logic_vector(clog2(IN_ROWS)-1 downto 0);
+	-- Crop-coordinates
+	signal crop_y0_n : crop_coords_y_wire;
+	signal crop_x0_n : crop_coords_x_wire;
 
 	--------- For testbenching ---------
 	-- synthesis translate_off
@@ -313,8 +311,6 @@ begin
 	tb_s_axis_tready <= lfsr_16bit_out(4 downto 0);
 
 	-- Drive crop-coordiantes
-	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));
-	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
 	gen_assign : for i in 0 to NUM_CROPS-1 generate
 		crop_y0_n(i) <= std_logic_vector(to_unsigned(CROP_Y0_N_CONST(i), clog2(IN_ROWS)));
 		crop_x0_n(i) <= std_logic_vector(to_unsigned(CROP_X0_N_CONST(i), clog2(IN_COLS)));
@@ -401,6 +397,7 @@ begin
 						idx_out <= idx_out + 1;
 					end if;
 				end loop;
+
             end if;
         end if;
 	end process;
