@@ -181,6 +181,7 @@ architecture behav of CustomLogic is
 
 	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
 	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	type diff_array is array (NUM_CROPS-1 downto 0) of integer;
 	----------------------------------------------------------------------------
 	-- Signals
 	----------------------------------------------------------------------------
@@ -239,7 +240,7 @@ architecture behav of CustomLogic is
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(4)) &"_X1_" & integer'image(CROP_X0_N_CONST(4)) 
 											& "/img_postnorm_INDEX.txt";
 
-	signal out_diff : integer; -- to compare output and benchmark output
+	signal out_diff : diff_array; -- to compare output and benchmark output
 
 	-- synthesis translate_on
 
@@ -375,27 +376,31 @@ begin
         if rising_edge(clk250) then
             if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_out <= 0;
-				out_diff <= 0;
+				for crop_idx in NUM_CROPS-1 downto 0 loop
+					out_diff(crop_idx) <= 0;
+				end loop;
             else
-                if rheed_m_axis_tvalid(0) = '1' and tb_s_axis_tready(0) = '1' then
-                    -- Capture DUT output
-                    out_mem(0, idx_out) <= rheed_m_axis_tdata(0);
-					out_diff <= to_integer(unsigned(out_benchmark_mem(0, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(0) ) );
-                    
-                    -- Verify against benchmark
-					assert (out_diff = 1)
-                    -- assert (out_diff < 4) and (out_diff > -4)
-                        report "CropNorm mismatch at index " & integer'image(idx_out) 
-                               & " (Row=" & integer'image(idx_out/OUT_COLS) 
-                               & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-                               & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(0, idx_out))))
-							   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(0)))) 
-							   & " Diff = " & integer'image(out_diff)
-                        severity error;
+				for crop_idx in NUM_CROPS-1 downto 0 loop
+					if rheed_m_axis_tvalid(crop_idx) = '1' and tb_s_axis_tready(crop_idx) = '1' then
+						-- Capture DUT output
+						out_mem(crop_idx, idx_out) <= rheed_m_axis_tdata(crop_idx);
+						out_diff(crop_idx) <= to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) );
+						
+						-- Verify against benchmark
+						assert (out_diff(crop_idx) = 1)
+						-- assert (out_diff(crop_idx) < 4) and (out_diff(crop_idx) > -4)
+							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out) 
+								& " (Row=" & integer'image(idx_out/OUT_COLS) 
+								& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
+								& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out))))
+								& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(crop_idx)))) 
+								& " Diff = " & integer'image(out_diff(crop_idx))
+							severity error;
 
-                    -- Increment index
-                    idx_out <= idx_out + 1;
-                end if;
+						-- Increment index
+						idx_out <= idx_out + 1;
+					end if;
+				end loop;
             end if;
         end if;
 	end process;
