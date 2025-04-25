@@ -14,6 +14,7 @@ module norm_reader #(
     // ap control signals
     input logic seq_ap_idle,
     input logic cf_ap_done,
+    input logic all_crop_norm_ap_ready,
 
     input logic ap_start, 
     output logic ap_done,
@@ -97,7 +98,7 @@ module norm_reader #(
         case(ps)
             IDLE: begin
                 ap_ready = 1'b1;
-                if (ap_start && seq_ap_idle) ns = NORMALIZING;
+                if (ap_start && seq_ap_idle && all_crop_norm_ap_ready) ns = NORMALIZING;
                 else ns = IDLE;
             end
             NORMALIZING: begin

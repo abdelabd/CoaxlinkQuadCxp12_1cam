@@ -19,7 +19,7 @@ module crop_norm #(
 
     // ap control signals
     input logic seq_ap_idle,
-
+    input logic all_crop_norm_ap_ready,
     input logic ap_start,  
     output logic ap_done,
     output logic ap_ready,
@@ -91,7 +91,7 @@ module crop_norm #(
     norm_reader #(.OUT_ROWS(OUT_ROWS), .OUT_COLS(OUT_COLS)) 
     iNormReader (.clk(clk), .reset(reset),
             
-            .seq_ap_idle(seq_ap_idle), .cf_ap_done(cf_ap_done),
+            .seq_ap_idle(seq_ap_idle), .cf_ap_done(cf_ap_done), .all_crop_norm_ap_ready(all_crop_norm_ap_ready),
             
             .ap_start(ap_start_nr), .ap_done(nr_ap_done), .ap_ready(nr_ap_ready),
 
