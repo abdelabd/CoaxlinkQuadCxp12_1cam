@@ -39,8 +39,11 @@ module RHEED_inference #(
     logic seq_ap_idle;
 
     // Crop-Norm output wires
+    logic [NUM_CROPS-1:0] cn_ap_done_all;
     logic cn_ap_done;
-	logic cn_ap_ready;
+	logic [NUM_CROPS-1:0] cn_ap_ready_all;
+    logic cn_ap_ready;
+
 
 	logic [NUM_CROPS-1:0] cn_s_axis_tready_all;
     logic cn_s_axis_tready;
@@ -50,6 +53,8 @@ module RHEED_inference #(
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
     // Sequentializer
+    assign cn_ap_done = cn_ap_done_all[0] && cn_ap_done_all[1] && cn_ap_done_all[2] && cn_ap_done_all[3] && cn_ap_done_all[4];
+    assign cn_ap_ready = cn_ap_ready_all[0] && cn_ap_ready_all[1] && cn_ap_ready_all[2] && cn_ap_ready_all[3] && cn_ap_ready_all[4];
     assign cn_s_axis_tready = cn_s_axis_tready_all[0] && cn_s_axis_tready_all[1] && cn_s_axis_tready_all[2] && cn_s_axis_tready_all[3] && cn_s_axis_tready_all[4];
     sequentializer_Mono8 #(
       .IN_ROWS(IN_ROWS),
@@ -93,10 +98,11 @@ module RHEED_inference #(
                 .reset(reset),
 
                 .seq_ap_idle(seq_ap_idle),
+                .all_crop_norm_ap_ready(cn_ap_ready),
 
                 .ap_start(ap_start),
-                .ap_done(cn_ap_done),
-                .ap_ready(cn_ap_ready),
+                .ap_done(cn_ap_done_all[crop_idx]),
+                .ap_ready(cn_ap_ready_all[crop_idx]),
                 
                 .s_axis_tvalid(seq_m_axis_tvalid),
                 .s_axis_tready(cn_s_axis_tready_all[crop_idx]),
