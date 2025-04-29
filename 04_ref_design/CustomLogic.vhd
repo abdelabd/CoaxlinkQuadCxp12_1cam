@@ -395,7 +395,7 @@ begin
 						
 						-- Verify against benchmark
 						-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
-						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 4) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -4)
+						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -3)
 							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out(crop_idx)) 
 								& " (Row=" & integer'image(idx_out(crop_idx)/OUT_COLS) 
 								& ", Col=" & integer'image(idx_out(crop_idx) mod OUT_COLS) & ")" 
