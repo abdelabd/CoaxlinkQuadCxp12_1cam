@@ -8,7 +8,6 @@
 // The cropping is done by the crop_filter module and the normalization is done by the norm_reader module
 
 module crop_norm #(
-    parameter PIXEL_BIT_WIDTH   = 10,
     parameter IN_ROWS           = 20, // Must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 10,
@@ -27,7 +26,7 @@ module crop_norm #(
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
-    input  logic [PIXEL_BIT_WIDTH-1:0] s_axis_tdata,
+    input  logic [7:0] s_axis_tdata,
 
     // Crop-coordinates
     input logic [$clog2(IN_COLS)-1:0] crop_x0,
@@ -38,7 +37,7 @@ module crop_norm #(
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata
+    output logic [7:0] m_axis_tdata
 
 );
 
@@ -49,7 +48,7 @@ module crop_norm #(
 
     // crop_filter outputs
     logic cf_ap_done, cf_ap_ready;
-    logic [PIXEL_BIT_WIDTH-1:0] cf_max_value, cf_m_axis_tdata;
+    logic [7:0] cf_max_value, cf_m_axis_tdata;
     logic cf_max_value_tvalid, cf_m_axis_tvalid;
     
     // norm_reader outputs
@@ -64,8 +63,7 @@ module crop_norm #(
     assign ap_start_cf = ap_start && cf_ap_ready;
     assign ap_done = cf_ap_done;
     assign ap_ready = cf_ap_ready;
-    crop_filter #(.PIXEL_BIT_WIDTH(PIXEL_BIT_WIDTH),
-                  .IN_ROWS(IN_ROWS),
+    crop_filter #(.IN_ROWS(IN_ROWS),
                   .IN_COLS(IN_COLS),
                   .OUT_ROWS(OUT_ROWS),
                   .OUT_COLS(OUT_COLS))

@@ -1,5 +1,4 @@
 module RHEED_inference #(
-    parameter PIXEL_BIT_WIDTH   = 10,
     parameter IN_ROWS           = 20, // Must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 20,
@@ -23,7 +22,7 @@ module RHEED_inference #(
     // AXI Stream Master Interface outgoing, post-crop pixels
     output logic [NUM_CROPS-1:0]            m_axis_tvalid,
     input  logic [NUM_CROPS-1:0]            m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0]      m_axis_tdata [NUM_CROPS-1:0]
+    output logic [7:0]      m_axis_tdata [NUM_CROPS-1:0]
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -48,7 +47,7 @@ module RHEED_inference #(
 	logic [NUM_CROPS-1:0] cn_s_axis_tready_all;
     logic cn_s_axis_tready;
 	logic cn_m_axis_tvalid;
-	logic [PIXEL_BIT_WIDTH-1:0] cn_m_axis_tdata;
+	logic [7:0] cn_m_axis_tdata;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -87,7 +86,6 @@ module RHEED_inference #(
     generate 
         for (crop_idx=0; crop_idx < NUM_CROPS; crop_idx ++) begin
             crop_norm #(
-                .PIXEL_BIT_WIDTH(PIXEL_BIT_WIDTH),
                 .IN_ROWS(IN_ROWS),
                 .IN_COLS(IN_COLS), 
                 .OUT_ROWS(OUT_ROWS),

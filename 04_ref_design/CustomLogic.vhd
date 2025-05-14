@@ -155,7 +155,6 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant PIXEL_BIT_WIDTH : integer := 8;
 	constant IN_ROWS : integer := 300;
 	constant IN_COLS : integer := 512;
 	constant OUT_ROWS : integer := 48;
@@ -183,8 +182,8 @@ architecture behav of CustomLogic is
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
 
-	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
-	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(7 downto 0);
+	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(7 downto 0);
 	type diff_array is array (NUM_CROPS-1 downto 0) of integer;
 	----------------------------------------------------------------------------
 	-- Signals
@@ -277,7 +276,6 @@ begin
 	s_axis_tready <= rheed_s_axis_tready; -- For clarity's sake
 	iRHEED : entity work.RHEED_inference
 	generic map (
-		PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
     	IN_ROWS 		=> IN_ROWS, 
     	IN_COLS         => IN_COLS,
     	OUT_ROWS        => OUT_ROWS,
@@ -333,7 +331,7 @@ begin
 	load_cn_benchmark: process
         file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
         variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
-        variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(7 downto 0);
         variable row_0, col_0, row_1, col_1, row_2, col_2, row_3, col_3, row_4, col_4      : integer;
     begin
         file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
