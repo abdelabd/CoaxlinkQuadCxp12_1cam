@@ -196,11 +196,14 @@ architecture behav of CustomLogic is
 	signal rheed_s_axis_tready : std_logic; 
 
 	-- Master-side handshake
-	signal rheed_m_axis_tvalid : std_logic_vector(NUM_CROPS-1 downto 0);
-	signal rheed_m_axis_tdata : cropped_output_array;
+	signal rheed_m_axis_tvalid : std_logic;
+	signal rheed_m_axis_tdata : std_logic_vector(7 downto 0);
+
+	-- crop_idx being currently read out
+	signal crop_idx_read : std_logic_vector(clog2(NUM_CROPS)-1 downto 0);
 
 	-- Custom downstream tready signal for randomized testbenching
-	signal tb_s_axis_tready : std_logic_vector(NUM_CROPS-1 downto 0);
+	signal tb_s_axis_tready : std_logic;
 
 	-- Crop-coordinates
 	signal crop_y0_n : crop_coords_y_wire;
@@ -216,7 +219,7 @@ architecture behav of CustomLogic is
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
 	-- Memory for output and benchmark-output
-	signal idx_out : diff_array;
+	signal idx_out : integer := 0;
 	signal out_mem          : output_mem_array;
     signal out_benchmark_mem: output_mem_array;
 	--VHDL makes this so goddamn difficult to do in a loop
@@ -297,7 +300,9 @@ begin
 
 	  m_axis_tvalid => rheed_m_axis_tvalid,
 	  m_axis_tready => tb_s_axis_tready,
-	  m_axis_tdata => rheed_m_axis_tdata
+	  m_axis_tdata => rheed_m_axis_tdata,
+
+	  crop_idx_read => crop_idx_read
     );
 
 
@@ -319,7 +324,7 @@ begin
 		reset => reset_rheed,
 		Q => lfsr_16bit_out
 	);
-	tb_s_axis_tready <= lfsr_16bit_out(4 downto 0);
+	tb_s_axis_tready <= lfsr_16bit_out(0);
 
 	-- Drive crop-coordiantes
 	gen_assign : for i in NUM_CROPS-1 downto 0 generate
@@ -382,31 +387,30 @@ begin
     begin
         if rising_edge(clk250) then
 			-- for crop_idx in 1 downto 0 loop
-			for crop_idx in NUM_CROPS-1 downto 0 loop
-				if reset_rheed = '1' or idx_out(crop_idx) = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-					idx_out(crop_idx) <= 0;
-				else
-				
-					if rheed_m_axis_tvalid(crop_idx) = '1' and tb_s_axis_tready(crop_idx) = '1' then
-						-- Capture DUT output
-						out_mem(crop_idx, idx_out(crop_idx)) <= rheed_m_axis_tdata(crop_idx);
-						
-						-- Verify against benchmark
-						-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
-						assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) > -3)
-							report "CropNorm mismatch at crop_idx " & integer'image(crop_idx) & ", out_idx " & integer'image(idx_out(crop_idx)) 
-								& " (Row=" & integer'image(idx_out(crop_idx)/OUT_COLS) 
-								& ", Col=" & integer'image(idx_out(crop_idx) mod OUT_COLS) & ")" 
-								& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))))
-								& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata(crop_idx)))) 
-								& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ))
-							severity error;
+			if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+				idx_out <= 0;
+			else
+			
+				if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+					-- Capture DUT output
+					out_mem(to_integer(unsigned(crop_idx_read)), idx_out) <= rheed_m_axis_tdata;
+					
+					-- Verify against benchmark
+					-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
+					assert (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) > -3)
+						report "CropNorm mismatch at crop_idx " & integer'image(to_integer(unsigned(crop_idx_read))) & ", out_idx " & integer'image(idx_out) 
+							& " (Row=" & integer'image(idx_out/OUT_COLS) 
+							& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
+							& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))))
+							& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
+							& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ))
+						severity error;
 
-						-- Increment index
-						idx_out(crop_idx) <= idx_out(crop_idx) + 1;
-					end if;
+					-- Increment index
+					idx_out <= idx_out + 1;
 				end if;
-			end loop;
+			end if;
+
 
         end if;
 	end process;
