@@ -20,9 +20,12 @@ module RHEED_inference #(
     input  logic [255:0]             s_axis_tdata, 
 
     // AXI Stream Master Interface outgoing, post-crop pixels
-    output logic [NUM_CROPS-1:0]            m_axis_tvalid,
-    input  logic [NUM_CROPS-1:0]            m_axis_tready,
-    output logic [7:0]      m_axis_tdata [NUM_CROPS-1:0]
+    output logic            m_axis_tvalid,
+    input  logic            m_axis_tready,
+    output logic [7:0]      m_axis_tdata,
+
+    // crop-index 
+    output logic [$clog2(NUM_CROPS)-1:0] crop_idx_read
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -48,6 +51,9 @@ module RHEED_inference #(
     logic cn_s_axis_tready;
 	logic cn_m_axis_tvalid;
 	logic [7:0] cn_m_axis_tdata;
+
+    logic [NUM_CROPS-1:0] m_axis_tvalid_all, m_axis_tready_all;
+    logic [7:0] m_axis_tdata_all [NUM_CROPS-1:0];
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -90,7 +96,7 @@ module RHEED_inference #(
                 .IN_COLS(IN_COLS), 
                 .OUT_ROWS(OUT_ROWS),
                 .OUT_COLS(OUT_COLS)
-                ) 
+            ) 
             CropNorm_i (
                 .clk(clk), 
                 .reset(reset),
@@ -111,14 +117,36 @@ module RHEED_inference #(
                 .cnt_col(seq_cnt_col),
                 .cnt_row(seq_cnt_row),
 
-                .m_axis_tvalid(m_axis_tvalid[crop_idx]),
-                .m_axis_tready(m_axis_tready[crop_idx]),
-                .m_axis_tdata(m_axis_tdata[crop_idx])
-                );
+                .m_axis_tvalid(m_axis_tvalid_all[crop_idx]),
+                .m_axis_tready(m_axis_tready_all[crop_idx]),
+                .m_axis_tdata(m_axis_tdata_all[crop_idx])
+            );
         end
     endgenerate
-    
 
+    // Crop-Sequentializer
+    crop_sequentializer#(
+            .IN_ROWS(IN_ROWS),
+            .IN_COLS(IN_COLS), 
+            .OUT_ROWS(OUT_ROWS),
+            .OUT_COLS(OUT_COLS),
+            .NUM_CROPS(NUM_CROPS)
+    ) 
+    iCropSeq (
+        .clk(clk),
+        .reset(reset),
+
+        .s_axis_tvalid(m_axis_tvalid_all),
+        .s_axis_tready(m_axis_tready_all),
+        .s_axis_tdata(m_axis_tdata_all),
+
+        .m_axis_tvalid(m_axis_tvalid),
+        .m_axis_tready(m_axis_tready),
+        .m_axis_tdata(m_axis_tdata),
+
+        .crop_idx(crop_idx_read)
+    );
+    
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     
     // synthesis translate_off

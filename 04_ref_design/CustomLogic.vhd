@@ -387,7 +387,7 @@ begin
     begin
         if rising_edge(clk250) then
 			-- for crop_idx in 1 downto 0 loop
-			if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+			if reset_rheed = '1' then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
 				idx_out <= 0;
 			else
 			
@@ -407,7 +407,9 @@ begin
 						severity error;
 
 					-- Increment index
-					idx_out <= idx_out + 1;
+					if idx_out = OUT_ROWS*OUT_COLS-1 then idx_out <= 0;
+					else idx_out <= idx_out + 1;
+					end if;
 				end if;
 			end if;
 
