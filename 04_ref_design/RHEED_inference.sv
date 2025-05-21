@@ -40,14 +40,12 @@ module RHEED_inference #(
     // Crop-Norm output wires
     logic [NUM_CROPS-1:0] cn_ap_done_all;
     logic cn_ap_done;
+    
 	logic [NUM_CROPS-1:0] cn_ap_ready_all;
     logic cn_ap_ready;
 
-
 	logic [NUM_CROPS-1:0] cn_s_axis_tready_all;
     logic cn_s_axis_tready;
-	logic cn_m_axis_tvalid;
-	logic [7:0] cn_m_axis_tdata;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
