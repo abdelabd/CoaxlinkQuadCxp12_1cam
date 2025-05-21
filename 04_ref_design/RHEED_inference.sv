@@ -19,10 +19,10 @@ module RHEED_inference #(
     output logic                     s_axis_tready,
     input  logic [255:0]             s_axis_tdata, 
 
-    // AXI Stream Master Interface outgoing, post-crop pixels
+    // AXI Stream Master Interface outgoing, CNN output
     output logic [NUM_CROPS-1:0]            m_axis_tvalid,
     input  logic [NUM_CROPS-1:0]            m_axis_tready,
-    output logic [7:0]      m_axis_tdata [NUM_CROPS-1:0]
+    output logic [39:0]  m_axis_tdata [NUM_CROPS-1:0] // 5 parameters * 8 bits = 40 bits
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -40,12 +40,21 @@ module RHEED_inference #(
     // Crop-Norm output wires
     logic [NUM_CROPS-1:0] cn_ap_done_all;
     logic cn_ap_done;
-    
+
 	logic [NUM_CROPS-1:0] cn_ap_ready_all;
     logic cn_ap_ready;
 
 	logic [NUM_CROPS-1:0] cn_s_axis_tready_all;
     logic cn_s_axis_tready;
+
+    logic [NUM_CROPS-1:0] cn_m_axis_tvalid_all;
+    logic [7:0] cn_m_axis_tdata_all [NUM_CROPS-1:0] ;
+
+    // CNN output wires
+    logic [NUM_CROPS-1:0] CNN_s_axis_tready_all;
+    logic [NUM_CROPS-1:0] CNN_ap_done_all;
+    logic [NUM_CROPS-1:0] CNN_ap_ready_all;
+    logic [NUM_CROPS-1:0] CNN_ap_idle_all;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -109,10 +118,30 @@ module RHEED_inference #(
                 .cnt_col(seq_cnt_col),
                 .cnt_row(seq_cnt_row),
 
-                .m_axis_tvalid(m_axis_tvalid[crop_idx]),
-                .m_axis_tready(m_axis_tready[crop_idx]),
-                .m_axis_tdata(m_axis_tdata[crop_idx])
-                );
+                .m_axis_tvalid(cn_m_axis_tvalid_all[crop_idx]),
+                .m_axis_tready(CNN_s_axis_tready_all[crop_idx]),
+                .m_axis_tdata(cn_m_axis_tdata_all[crop_idx])
+            );
+        end
+    endgenerate
+
+    // CNN
+    generate 
+        for (crop_idx=0; crop_idx < NUM_CROPS; crop_idx ++) begin
+            myproject CNN_i (
+                .q_conv2d_batchnorm_5_input_TDATA(cn_m_axis_tdata_all[crop_idx]),
+                .layer18_out_TDATA(m_axis_tdata[crop_idx]),
+                .ap_clk(clk),
+                .ap_rst_n(~reset),
+                .q_conv2d_batchnorm_5_input_TVALID(cn_m_axis_tvalid_all[crop_idx]),
+                .q_conv2d_batchnorm_5_input_TREADY(CNN_s_axis_tready_all[crop_idx]),
+                .ap_start(ap_start),
+                .layer18_out_TVALID(m_axis_tvalid[crop_idx]),
+                .layer18_out_TREADY(m_axis_tready[crop_idx]),
+                .ap_done(CNN_ap_done_all[crop_idx]),
+                .ap_ready(CNN_ap_ready_all[crop_idx]),
+                .ap_idle(CNN_ap_idle_all[crop_idx])
+            );
         end
     endgenerate
     
