@@ -42,8 +42,8 @@ architecture behav of SimulationCtrl_tb is
 
 	constant NUM_FRAMES : integer := 2;
 
-	constant IN_ROWS : integer := 300; -- MUST BE MULTIPLE OF 16 AND : If Mono8 then *AT LEAST* 32, if Mono16 then *AT LEAST* 16
-	constant IN_COLS : integer := 512;
+	constant IN_ROWS : integer := 100; -- MUST BE MULTIPLE OF 16 AND : If Mono8 then *AT LEAST* 32, if Mono16 then *AT LEAST* 16
+	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
 	constant NUM_CROPS : integer := 5;

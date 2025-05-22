@@ -155,8 +155,8 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant IN_ROWS : integer := 300;
-	constant IN_COLS : integer := 512;
+	constant IN_ROWS : integer := 100;
+	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
 	constant NUM_CROPS : integer := 5;
@@ -171,12 +171,12 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	type crop_coords_const is array (NUM_CROPS-1 downto 0) of integer;
 	-- constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 2, 4, 27); -- 32x32_to_5x5x5
-	-- constant CROP_Y0_N_CONST : crop_coords_const := (10, 10, 23, 43, 52); -- 100x160_to_48x48x5
-	constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 20, 40, 252); -- 300x512_to_48x48x5
+	constant CROP_Y0_N_CONST : crop_coords_const := (10, 10, 23, 43, 52); -- 100x160_to_48x48x5
+	-- constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 20, 40, 252); -- 300x512_to_48x48x5
 	
 	-- constant CROP_X0_N_CONST : crop_coords_const := (0, 3, 0, 4, 27); -- 32x32_to_5x5x5
-	-- constant CROP_X0_N_CONST : crop_coords_const := (10, 37, 10, 53, 99); -- 100x160_to_48x48x5
-	constant CROP_X0_N_CONST : crop_coords_const := (0, 30, 0, 40, 464); -- 300x512_to_48x48x5
+	constant CROP_X0_N_CONST : crop_coords_const := (10, 37, 10, 53, 99); -- 100x160_to_48x48x5
+	-- constant CROP_X0_N_CONST : crop_coords_const := (0, 30, 0, 40, 464); -- 300x512_to_48x48x5
 
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);

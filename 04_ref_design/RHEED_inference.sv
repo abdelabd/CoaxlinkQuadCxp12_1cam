@@ -129,12 +129,12 @@ module RHEED_inference #(
     generate 
         for (crop_idx=0; crop_idx < NUM_CROPS; crop_idx ++) begin
             myproject CNN_i (
-                .q_conv2d_batchnorm_5_input_TDATA(cn_m_axis_tdata_all[crop_idx]),
+                .input_1_TDATA(cn_m_axis_tdata_all[crop_idx]),
                 .layer18_out_TDATA(m_axis_tdata[crop_idx]),
                 .ap_clk(clk),
                 .ap_rst_n(~reset),
-                .q_conv2d_batchnorm_5_input_TVALID(cn_m_axis_tvalid_all[crop_idx]),
-                .q_conv2d_batchnorm_5_input_TREADY(CNN_s_axis_tready_all[crop_idx]),
+                .input_1_TVALID(cn_m_axis_tvalid_all[crop_idx]),
+                .input_1_TREADY(CNN_s_axis_tready_all[crop_idx]),
                 .ap_start(ap_start),
                 .layer18_out_TVALID(m_axis_tvalid[crop_idx]),
                 .layer18_out_TREADY(m_axis_tready[crop_idx]),
