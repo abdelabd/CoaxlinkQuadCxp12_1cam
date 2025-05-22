@@ -209,7 +209,7 @@ architecture behav of CustomLogic is
 	--------- For testbenching ---------
 	-- synthesis translate_off
 
-	constant NUM_FRAMES : integer := 5;
+	constant NUM_FRAMES : integer := 2;
 	signal cnt_frame : integer := 0;
 
 	-- For random-bit generator (drives downstream tready)
