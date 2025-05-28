@@ -139,7 +139,6 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant PIXEL_BIT_WIDTH : integer := 8;
 	constant IN_ROWS : integer := 100;
 	constant IN_COLS : integer := 160;
 	constant OUT_ROWS : integer := 48;
@@ -152,7 +151,7 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Types
 	----------------------------------------------------------------------------
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(7 downto 0);
 
 
 	----------------------------------------------------------------------------
@@ -187,7 +186,7 @@ architecture behav of CustomLogic is
 
 	-- Master-side handshake
 	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+	signal rheed_m_axis_tdata : std_logic_vector(7 downto 0);
 
 	-- Custom downstream tready signal for randomized testbenching
 	signal tb_s_axis_tready : std_logic;
@@ -253,7 +252,6 @@ begin
 	s_axis_tready <= rheed_s_axis_tready; -- For clarity's sake
 	iRHEED : entity work.RHEED_inference
 	generic map (
-		PIXEL_BIT_WIDTH => PIXEL_BIT_WIDTH,
     	IN_ROWS 		=> IN_ROWS, 
     	IN_COLS         => IN_COLS,
     	OUT_ROWS        => OUT_ROWS,
@@ -300,7 +298,7 @@ begin
 	load_cn_benchmark: process
         file file_handle       : text;
         variable line_content  : line;
-        variable temp_vector   : std_logic_vector(PIXEL_BIT_WIDTH-1 downto 0);
+        variable temp_vector   : std_logic_vector(7 downto 0);
         variable row, col      : integer;
     begin
         file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);

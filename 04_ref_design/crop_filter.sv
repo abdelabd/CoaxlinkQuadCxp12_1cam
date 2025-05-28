@@ -6,7 +6,6 @@
 // This module also outputs the maximum pixel value of the outgoing post-cropped image - this is helpful/necessary for the downstream norm_reader module
 
 module crop_filter #(
-    parameter PIXEL_BIT_WIDTH   = 10,
     parameter IN_ROWS           = 20, // must be multiple of PIXELS_PER_BURST. Purposely wrong here to ensure instantiation is correct in CustomLogic.vhd
     parameter IN_COLS           = 20,
     parameter OUT_ROWS          = 10,
@@ -25,20 +24,20 @@ module crop_filter #(
     // AXI Stream Slave Interface
     input  logic                     s_axis_tvalid,
     output logic                     s_axis_tready,
-    input  logic [PIXEL_BIT_WIDTH-1:0] s_axis_tdata,
+    input  logic [7:0] s_axis_tdata,
 
     // Crop-coordinates
     input logic [$clog2(IN_COLS)-1:0] crop_x0,
     input logic [$clog2(IN_ROWS)-1:0] crop_y0,
 
     // Max-value for normalization 
-    output logic [PIXEL_BIT_WIDTH-1:0] max_value,
+    output logic [7:0] max_value,
     output logic max_value_tvalid,
 
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [PIXEL_BIT_WIDTH-1:0] m_axis_tdata,
+    output logic [7:0] m_axis_tdata,
     input logic [$clog2(IN_COLS)-1:0] cnt_col,
     input logic [$clog2(IN_ROWS)-1:0] cnt_row  
 
@@ -47,7 +46,7 @@ module crop_filter #(
 
     // FIFO handshake wires
     logic wren_to_fifo, fifo_s_axis_tready;
-    logic [PIXEL_BIT_WIDTH-1:0] data_to_fifo;  
+    logic [7:0] data_to_fifo;  
 
     logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_fifo_writes; // Allows us to determine when we're done cropping
  
