@@ -21,7 +21,7 @@ module RHEED_inference #(
     // AXI Stream Master Interface outgoing, post-crop pixels
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [7:0] m_axis_tdata
+    output logic [39:0]            m_axis_tdata
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -39,15 +39,33 @@ module RHEED_inference #(
 
     // Crop-Norm output wires
     logic cn_ap_done;
-	logic cn_ap_ready;
+    logic cn_ap_ready;
 
-	logic cn_s_axis_tready;
-	logic cn_m_axis_tvalid;
-	logic [7:0] cn_m_axis_tdata;
+    logic cn_s_axis_tready;
+    logic cn_m_axis_tvalid;
+    logic [7:0] cn_m_axis_tdata;
 
+    // CNN output wires
+    logic [39:0] CNN_m_axis_tdata;
+    logic CNN_s_axis_tready;
+    logic CNN_m_axis_tvalid;
+    logic CNN_ap_done, CNN_ap_ready, CNN_ap_idle;
+
+    // Reset synchronization
+    logic [15:0] reset_sync; // Extended to 16 cycles for robust initialization
+    logic ap_rst_n_sync;
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
-    // Sequentializer
+    // Hold reset for a while
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset)
+            reset_sync <= 16'hFFFF; 
+        else
+            reset_sync <= {reset_sync[14:0], 1'b0};
+    end
+    assign ap_rst_n_sync = ~reset_sync[15]; 
+
+    // Sequentialize
     assign s_axis_tready = seq_s_axis_tready;
     sequentializer_Mono8 #(
       .IN_ROWS(IN_ROWS),
@@ -76,8 +94,6 @@ module RHEED_inference #(
     );
 
     // Crop-Norm
-    assign m_axis_tvalid = cn_m_axis_tvalid;
-    assign m_axis_tdata = cn_m_axis_tdata;
     crop_norm #(
       .IN_ROWS(IN_ROWS),
       .IN_COLS(IN_COLS), 
@@ -104,9 +120,28 @@ module RHEED_inference #(
 	  .cnt_row(seq_cnt_row),
 
 	  .m_axis_tvalid(cn_m_axis_tvalid),
-	  .m_axis_tready(m_axis_tready),
+	  .m_axis_tready(CNN_s_axis_tready),
 	  .m_axis_tdata(cn_m_axis_tdata)
 	);
+
+  // CNN
+  myproject iCNN (
+    .input_1_TDATA(cn_m_axis_tdata),
+    .layer5_out_TDATA(CNN_m_axis_tdata),
+    .ap_clk(clk),
+    .ap_rst_n(ap_rst_n_sync),
+    .input_1_TVALID(cn_m_axis_tvalid),
+    .input_1_TREADY(CNN_s_axis_tready),
+    .ap_start(ap_start),
+    .layer5_out_TVALID(CNN_m_axis_tvalid),
+    .layer5_out_TREADY(m_axis_tready),
+    .ap_done(CNN_ap_done),
+    .ap_ready(CNN_ap_ready),
+    .ap_idle(CNN_ap_idle)
+  );
+
+  assign m_axis_tvalid = CNN_m_axis_tvalid;
+  assign m_axis_tdata = CNN_m_axis_tdata;
 
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     
