@@ -18,6 +18,8 @@ module crop_norm #(
 
     // ap control signals
     input logic seq_ap_idle,
+    input logic CNN_ap_done,
+    output logic ap_start_for_CNN,
 
     input logic ap_start,  
     output logic ap_done,
@@ -37,7 +39,7 @@ module crop_norm #(
     // AXI Stream Master Interface
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [7:0] m_axis_tdata
+    output logic [7:0]             m_axis_tdata
 
 );
 
@@ -56,6 +58,8 @@ module crop_norm #(
 
     // norm_reader inputs
     logic ap_start_nr;
+
+    logic CNN_done;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -100,6 +104,15 @@ module crop_norm #(
             .m_axis_tvalid(m_axis_tvalid), .m_axis_tready(m_axis_tready), .m_axis_tdata(m_axis_tdata)
     ); 
 
+    always_ff @(posedge clk) begin
+        if (reset || CNN_ap_done) CNN_done <= 1'b1;
+        else if (ap_start_for_CNN) CNN_done <= 1'b0;
+    end
+
+    always_ff @(posedge clk) begin
+        if (reset || ap_start_for_CNN) ap_start_for_CNN <= 1'b0;
+        else if (cf_max_value_tvalid && CNN_done) ap_start_for_CNN <= 1'b1;
+    end
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
 

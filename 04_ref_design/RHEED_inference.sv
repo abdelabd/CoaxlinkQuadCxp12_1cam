@@ -40,6 +40,7 @@ module RHEED_inference #(
     // Crop-Norm output wires
     logic cn_ap_done;
     logic cn_ap_ready;
+    logic cn_ap_start_for_CNN;
 
     logic cn_s_axis_tready;
     logic cn_m_axis_tvalid;
@@ -105,6 +106,8 @@ module RHEED_inference #(
 	  .reset(reset),
 
 	  .seq_ap_idle(seq_ap_idle),
+    .CNN_ap_done(CNN_ap_done),
+    .ap_start_for_CNN(cn_ap_start_for_CNN),
 
 	  .ap_start(ap_start),
 	  .ap_done(cn_ap_done),
@@ -136,7 +139,7 @@ module RHEED_inference #(
     .ap_rst_n(ap_rst_n_sync),
     .q_conv2d_batchnorm_5_input_V_data_0_V_TVALID(cn_m_axis_tvalid),
     .q_conv2d_batchnorm_5_input_V_data_0_V_TREADY(CNN_s_axis_tready),
-    .ap_start(ap_start),
+    .ap_start(cn_ap_start_for_CNN),
     .layer18_out_V_data_0_V_TVALID(CNN_m_axis_tvalid[0]),
     .layer18_out_V_data_0_V_TREADY(m_axis_tready[0]),
     .layer18_out_V_data_1_V_TVALID(CNN_m_axis_tvalid[1]),
