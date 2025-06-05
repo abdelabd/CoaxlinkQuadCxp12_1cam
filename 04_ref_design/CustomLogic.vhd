@@ -152,7 +152,6 @@ architecture behav of CustomLogic is
 	-- Types
 	----------------------------------------------------------------------------
 	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(7 downto 0);
-	type cnn_output_array is array(4 downto 0) of std_logic_vector(7 downto 0);
 
 	----------------------------------------------------------------------------
 	-- Functions
@@ -185,11 +184,11 @@ architecture behav of CustomLogic is
 	signal rheed_s_axis_tready : std_logic; 
 
 	-- Master-side handshake
-	signal rheed_m_axis_tvalid : std_logic_vector(4 downto 0);
-	signal rheed_m_axis_tdata : cnn_output_array;
+	signal rheed_m_axis_tvalid : std_logic;
+	signal rheed_m_axis_tdata : std_logic_vector(39 downto 0);
 
 	-- Custom downstream tready signal for randomized testbenching
-	signal tb_s_axis_tready : std_logic_vector(4 downto 0);
+	signal tb_s_axis_tready : std_logic;
 
 	-- Crop-coordinates 
   	signal crop_x0   : std_logic_vector(clog2(IN_COLS)-1 downto 0);
@@ -288,7 +287,7 @@ begin
 		reset => reset_rheed,
 		Q => lfsr_16bit_out
 	);
-	tb_s_axis_tready <= lfsr_16bit_out(4 downto 0);
+	tb_s_axis_tready <= lfsr_16bit_out(0);
 
 	-- Drive crop-coordiantes
 	crop_y0 <= std_logic_vector(to_unsigned(CROP_Y0_CONST, clog2(IN_ROWS)));

@@ -19,9 +19,9 @@ module RHEED_inference #(
     input  logic [255:0]             s_axis_tdata, 
 
     // AXI Stream Master Interface outgoing, post-crop pixels
-    output logic [4:0]             m_axis_tvalid,
-    input  logic [4:0]             m_axis_tready,
-    output logic [7:0]             m_axis_tdata  [4:0]
+    output logic                   m_axis_tvalid,
+    input  logic                   m_axis_tready,
+    output logic [39:0]            m_axis_tdata 
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -47,9 +47,9 @@ module RHEED_inference #(
     logic [7:0] cn_m_axis_tdata;
 
     // CNN output wires
-    logic [7:0] CNN_m_axis_tdata [4:0];
+    logic [39:0] CNN_m_axis_tdata;
     logic CNN_s_axis_tready;
-    logic [4:0] CNN_m_axis_tvalid;
+    logic CNN_m_axis_tvalid;
     logic CNN_ap_done, CNN_ap_ready, CNN_ap_idle;
 
     // Reset synchronization
@@ -129,27 +129,15 @@ module RHEED_inference #(
 
   // CNN
   myproject iCNN (
-    .q_conv2d_batchnorm_5_input_V_data_0_V_TDATA(cn_m_axis_tdata),
-    .layer18_out_V_data_0_V_TDATA(CNN_m_axis_tdata[0]),
-    .layer18_out_V_data_1_V_TDATA(CNN_m_axis_tdata[1]),
-    .layer18_out_V_data_2_V_TDATA(CNN_m_axis_tdata[2]),
-    .layer18_out_V_data_3_V_TDATA(CNN_m_axis_tdata[3]),
-    .layer18_out_V_data_4_V_TDATA(CNN_m_axis_tdata[4]),
+    .q_conv2d_batchnorm_5_input_TDATA(cn_m_axis_tdata),
+    .layer18_out_TDATA(CNN_m_axis_tdata),
     .ap_clk(clk),
     .ap_rst_n(ap_rst_n_sync),
-    .q_conv2d_batchnorm_5_input_V_data_0_V_TVALID(cn_m_axis_tvalid),
-    .q_conv2d_batchnorm_5_input_V_data_0_V_TREADY(CNN_s_axis_tready),
+    .q_conv2d_batchnorm_5_input_TVALID(cn_m_axis_tvalid),
+    .q_conv2d_batchnorm_5_input_TREADY(CNN_s_axis_tready),
     .ap_start(cn_ap_start_for_CNN),
-    .layer18_out_V_data_0_V_TVALID(CNN_m_axis_tvalid[0]),
-    .layer18_out_V_data_0_V_TREADY(m_axis_tready[0]),
-    .layer18_out_V_data_1_V_TVALID(CNN_m_axis_tvalid[1]),
-    .layer18_out_V_data_1_V_TREADY(m_axis_tready[1]),
-    .layer18_out_V_data_2_V_TVALID(CNN_m_axis_tvalid[2]),
-    .layer18_out_V_data_2_V_TREADY(m_axis_tready[2]),
-    .layer18_out_V_data_3_V_TVALID(CNN_m_axis_tvalid[3]),
-    .layer18_out_V_data_3_V_TREADY(m_axis_tready[3]),
-    .layer18_out_V_data_4_V_TVALID(CNN_m_axis_tvalid[4]),
-    .layer18_out_V_data_4_V_TREADY(m_axis_tready[4]),
+    .layer18_out_TVALID(CNN_m_axis_tvalid),
+    .layer18_out_TREADY(m_axis_tready),
     .ap_done(CNN_ap_done),
     .ap_ready(CNN_ap_ready),
     .ap_idle(CNN_ap_idle)
