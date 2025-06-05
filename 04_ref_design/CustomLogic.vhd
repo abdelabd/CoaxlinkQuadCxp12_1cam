@@ -151,7 +151,7 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Types
 	----------------------------------------------------------------------------
-	type mem_array is array (0 to OUT_ROWS*OUT_COLS-1) of std_logic_vector(7 downto 0);
+	type output_array is array (4 downto 0) of std_logic_vector(7 downto 0);
 
 	----------------------------------------------------------------------------
 	-- Functions
@@ -202,14 +202,13 @@ architecture behav of CustomLogic is
 
 	-- Memory for output and benchmark-output
 	signal idx_out : integer := 0;
-	signal out_mem          : mem_array;
-    signal out_benchmark_mem: mem_array;
+	signal out_mem          : output_array;
+    signal out_benchmark_mem: output_array;
 	constant OUT_BENCHMARK_FILE    : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											-- & "/img_postcrop_INDEX.txt";	
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_pred.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
 
@@ -218,6 +217,7 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Debug
 	----------------------------------------------------------------------------
+	-- TODO: Clean this up
 	-- attribute mark_debug : string;
 	-- attribute mark_debug of s_axis_resetn	: signal is "true";
 	-- attribute mark_debug of s_axis_tvalid	: signal is "true";
@@ -294,59 +294,58 @@ begin
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
 
 	-- Read benchmark file into memory
-	-- load_cn_benchmark: process
-    --     file file_handle       : text;
-    --     variable line_content  : line;
-    --     variable temp_vector   : std_logic_vector(7 downto 0);
-    --     variable row, col      : integer;
-    -- begin
-    --     file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
+	load_cn_benchmark: process
+        file file_handle       : text;
+        variable line_content  : line;
+        variable temp_vector   : std_logic_vector(7 downto 0);
+        variable row, col      : integer;
+    begin
+        file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
+        readline(file_handle, line_content);
+        for row in 4 downto 0 loop
+            hread(line_content, temp_vector);
+            out_benchmark_mem(row) <= temp_vector;
+        end loop;
         
-    --     for row in 0 to OUT_ROWS-1 loop
-    --         readline(file_handle, line_content);
-    --         for col in 0 to OUT_COLS-1 loop
-    --             -- Read hexadecimal value from line
-    --             hread(line_content, temp_vector);
-    --             -- Calculate 1D index from 2D coordinates
-    --             out_benchmark_mem(row * OUT_COLS + col) <= temp_vector;
-    --         end loop;
-    --     end loop;
-        
-    --     file_close(file_handle);
-    --     wait;
-    -- end process;
+        file_close(file_handle);
+        wait;
+    end process;
 
 	-- Data capture and verification process
+    inference_data_capture: process(clk250)
+    begin
+        if rising_edge(clk250) then
+            if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+                idx_out <= 0;
+				out_diff <= 0;
+            else
+                if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+                    -- Capture DUT output
+					out_mem(4) <= rheed_m_axis_tdata(39 downto 32);
+					out_mem(3) <= rheed_m_axis_tdata(31 downto 24);
+					out_mem(2) <= rheed_m_axis_tdata(23 downto 16);
+					out_mem(1) <= rheed_m_axis_tdata(15 downto 8);
+					out_mem(0) <= rheed_m_axis_tdata(7 downto 0);
 
-    -- cn_data_capture: process(clk250)
-    -- begin
-    --     if rising_edge(clk250) then
-    --         if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-    --             idx_out <= 0;
-	-- 			out_diff <= 0;
-    --         else
-    --             if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
-    --                 -- Capture DUT output
-    --                 out_mem(idx_out) <= rheed_m_axis_tdata;
-	-- 				out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
+					-- out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     
-    --                 -- Verify against benchmark
-	-- 				assert (out_diff = 0)
-    --                 -- assert (nr_diff < 3) and (nr_diff > -3)
-    --                     report "CropNorm mismatch at index " & integer'image(idx_out) 
-    --                            & " (Row=" & integer'image(idx_out/OUT_COLS) 
-    --                            & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-    --                            & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(idx_out))))
-	-- 						   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
-	-- 						   & " Diff = " & integer'image(out_diff)
-    --                     severity error;
+                    -- Verify against benchmark
+					-- assert (out_diff = 0)
+                    -- -- assert (nr_diff < 3) and (nr_diff > -3)
+                    --     report "CropNorm mismatch at index " & integer'image(idx_out) 
+                    --            & " (Row=" & integer'image(idx_out/OUT_COLS) 
+                    --            & ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
+                    --            & " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(idx_out))))
+					-- 		   & " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
+					-- 		   & " Diff = " & integer'image(out_diff)
+                    --     severity error;
 
-    --                 -- Increment index
-    --                 idx_out <= idx_out + 1;
-    --             end if;
-    --         end if;
-    --     end if;
-	-- end process;
+                    -- Increment index
+                    idx_out <= idx_out + 1;
+                end if;
+            end if;
+        end if;
+	end process;
 
 	-- synthesis translate_on
 	
