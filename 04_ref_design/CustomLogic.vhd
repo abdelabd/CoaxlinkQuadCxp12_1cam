@@ -198,6 +198,10 @@ architecture behav of CustomLogic is
 	--------- For testbenching ---------
 	-- synthesis translate_off
 
+	constant NUM_CROPS : integer := 1;
+	constant NUM_FRAMES : integer := 5;
+	signal cnt_frame : integer := 0;
+
 	-- For random-bit generator (drives downstream tready)
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
@@ -279,6 +283,12 @@ begin
 	--------- For testbenching ---------
 
 	-- synthesis translate_off
+	count_frames: process(s_axis_tuser)
+	begin
+		if falling_edge(s_axis_tuser(3)) then
+			cnt_frame <= cnt_frame + 1;
+		end if;
+	end process;
 
 	-- Drive downstream tready
 	-- tb_s_axis_tready <= '1';
@@ -348,6 +358,46 @@ begin
             end if;
         end if;
 	end process;
+
+	save_output: process(cnt_frame)
+		file out_file : text;
+        variable out_line : line;
+        variable file_status : file_open_status;
+	begin
+
+		if cnt_frame = NUM_FRAMES then 
+            file_open(file_status, 
+						out_file, 
+						"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+						& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+						& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+						& "/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
+						& "/HDL_cropnorm_out.txt", 
+						write_mode);
+            
+            if file_status /= open_ok then
+                report "Failed to open output file"
+                severity failure;
+            end if;
+
+            for row in 0 to OUT_ROWS-1 loop
+                for col in 0 to OUT_ROWS-1 loop
+                    -- Write each element followed by a space
+                    hwrite(out_line, out_mem(row*OUT_COLS + col));
+                    write(out_line, ' ');
+                end loop;
+                -- Write completed line to file
+                writeline(out_file, out_line);
+            end loop;
+            
+            file_close(out_file);
+
+            report "All crop-norm outputs written successfully";
+        -- wait;
+
+	    end if;
+	end process;
+
 
 	-- synthesis translate_on
 	
