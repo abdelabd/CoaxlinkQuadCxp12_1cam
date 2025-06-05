@@ -106,7 +106,7 @@ module RHEED_inference #(
 	  .reset(reset),
 
 	  .seq_ap_idle(seq_ap_idle),
-    .CNN_ap_done(CNN_ap_done),
+    .CNN_ap_ready(CNN_ap_ready),
     .ap_start_for_CNN(cn_ap_start_for_CNN),
 
 	  .ap_start(ap_start),

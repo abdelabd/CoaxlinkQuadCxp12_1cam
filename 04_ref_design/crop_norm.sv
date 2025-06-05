@@ -18,7 +18,7 @@ module crop_norm #(
 
     // ap control signals
     input logic seq_ap_idle,
-    input logic CNN_ap_done,
+    input logic CNN_ap_ready,
     output logic ap_start_for_CNN,
 
     input logic ap_start,  
@@ -59,7 +59,7 @@ module crop_norm #(
     // norm_reader inputs
     logic ap_start_nr;
 
-    logic CNN_done;
+    logic CNN_ready_state;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -105,13 +105,13 @@ module crop_norm #(
     ); 
 
     always_ff @(posedge clk) begin
-        if (reset || CNN_ap_done) CNN_done <= 1'b1;
-        else if (ap_start_for_CNN) CNN_done <= 1'b0;
+        if (reset || CNN_ap_ready) CNN_ready_state <= 1'b1;
+        else if (ap_start_for_CNN) CNN_ready_state <= 1'b0;
     end
 
     always_ff @(posedge clk) begin
         if (reset || ap_start_for_CNN) ap_start_for_CNN <= 1'b0;
-        else if (cf_max_value_tvalid && CNN_done) ap_start_for_CNN <= 1'b1;
+        else if (cf_max_value_tvalid && CNN_ready_state) ap_start_for_CNN <= 1'b1;
     end
     //////////////////////// For testbenching ////////////////////////
     // synthesis translate_off
