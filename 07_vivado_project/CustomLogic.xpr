@@ -61,7 +61,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="136"/>
+    <Option Name="WTXSimLaunchSim" Val="143"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -1280,42 +1280,32 @@
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
       <Filter Type="Constrs"/>
-      <File Path="$PSRCDIR/constrs_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/constr/Bitstream_settings.xdc">
+      <File Path="$PPRDIR/../02_coaxlink/constr/Bitstream_settings.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/constr/Bitstream_settings.xdc"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/constrs_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/constr/CxlCxp12_loc_common.xdc">
+      <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_loc_common.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/constr/CxlCxp12_loc_common.xdc"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/constrs_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/constr/CxlCxp12_timing_common.xdc">
+      <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_timing_common.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/constr/CxlCxp12_timing_common.xdc"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/constrs_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
+      <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/constrs_1/imports/CoaxlinkQuadCxp12_1cam/04_ref_design/CustomLogic.xdc">
+      <File Path="$PPRDIR/../04_ref_design/CustomLogic.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../04_ref_design/CustomLogic.xdc"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
@@ -1372,12 +1362,6 @@
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/tb_top_behav.wcfg">
         <FileInfo>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/sim/CustomLogicSimPkt.vhdp">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
