@@ -61,7 +61,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="2"/>
+    <Option Name="WTXSimLaunchSim" Val="4"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -526,49 +526,13 @@
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/frame_to_line.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/mem_traffic_gen.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/control_registers.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/pix_lut8b.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../04_ref_design/pix_threshold_pix_threshold_proc.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/pix_threshold_regslice_both.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../04_ref_design/pix_threshold.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/pix_threshold_wrp.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -657,6 +621,27 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../04_ref_design/lfsr_16bit.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_global_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config14_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_config9_s_void_pUhA.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_fifo_w128_d16_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -671,21 +656,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_8u_config5_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_relu_config4_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_2_5_3_0_16u_config10_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_2_5_3_0_config2_mult_s_w2_ROM_AUeOg.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_global_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config14_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -699,7 +677,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_array_ap_fixed_8_2_5_3_0_32u_config13_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_16u_config6_U0.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_32u_config10cfu.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -713,34 +705,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_2_5_3_0_config2_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_16u_relu_config8_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_relu_config12_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_5u_config18_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_fifo_w64_d2116_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -748,14 +712,42 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_global_pooling2d_cl_array_array_ap_fixed_8_2_5_3_0_32u_config14_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_16u_relu_config8_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config17_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_1u_array_ap_fixed_8_0_5_3_0_8u_config2_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_s_void_pooling2d_cl_bHp.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_8u_config6_s_p_ZZN4nnet26conv_2d_bDeQ.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -769,35 +761,56 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_mul_8s_8s_16_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_s_w15_ROM_AUTOcdu.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_relu_config17_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_s_w18_ROM_AUTO_1R.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_5u_config18_s_w18_ROM_AUTO_1R.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config6_mult_s_w6_ROM_AUThq.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_2_5_3_0_config2_mult_s_outidx_ROdEe.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_config15_s_w15_ROM_AUTOcdu.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config17_U0.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config6_mult_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_32u_config10_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_8u_config2_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -811,7 +824,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_16u_config9_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_32u_config10_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -825,14 +852,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_2_5_3_0_16u_config10_s_p_ZZN4nnet26conv_2dbak.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_16u_config6_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_relu_config17_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_configceu.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -846,28 +873,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_config15_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_config15_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_global_pooling2d_cl_array_array_ap_fixed_8_2_5_3_0_32u_config14_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_5u_config18_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_16u_config10_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -881,6 +887,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_16u_config6_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_flow_control_loop_pipe.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -888,28 +901,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_16u_config6_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_2_5_3_0_32u_relu_config12_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config6_mult_s_w6_ROM_AUThq.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_8u_config5_s_p_ZZN4nnfYi.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_16u_config10_s_p_ZZN4nnet26conv_2dbak.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -923,7 +915,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_2_5_3_0_8u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_s_p_ZZN4nnfYi.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -937,6 +929,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_U0.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_mux_42_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -944,7 +943,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_8u_relu_config4_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_8u_config6_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -958,28 +957,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_2_5_3_0_8u_config6_s_p_ZZN4nnet26conv_2d_bDeQ.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_config9_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_16u_configceu.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_shift_line_buffer_array_ap_fixed_8_2_5_3_0_1u_config2_s_void_conv_2d_buffer_rbkb.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_16u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config12_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -993,21 +985,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_8u_relu_config4_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_relu_config4_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config2_mult_s_w2_ROM_AUeOg.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_32u_config10_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s_outidx_ROdEe.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -1021,49 +1006,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config10_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config2_mult_s_outidx_ROdEe.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_2_5_3_0_8u_config2_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_16u_config9_s_void_pUhA.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config6_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_2_5_3_0_32u_config10cfu.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_2_5_3_0_16u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_relu_config8_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -1077,14 +1020,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_conv_2d_cl_array_ap_fixed_1u_array_ap_fixed_8_2_5_3_0_8u_config2_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config10_mult_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_2_5_3_0_32u_config13_s_void_pooling2d_cl_bHp.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s_w2_ROM_AUeOg.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -1098,27 +1048,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_2_5_3_0_8u_config5_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_2_5_3_0_ap_fixed_8_2_5_3_0_config10_mult_s_w10_ROM_bGp.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_2_5_3_0_32u_config13_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_mux_325_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -1126,14 +1055,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_2_5_3_0_32u_config10_s.v">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config10_mult_s_w10_ROM_bGp.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/lfsr_16bit.sv">
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config12_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/myproject_syn_verilog/myproject_start_for_relu_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_relu_config8_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>

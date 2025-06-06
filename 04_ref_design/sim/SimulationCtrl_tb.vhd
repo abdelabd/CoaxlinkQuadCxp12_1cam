@@ -40,7 +40,7 @@ end entity SimulationCtrl_tb;
 
 architecture behav of SimulationCtrl_tb is
 
-	constant NUM_FRAMES : integer := 2;
+	constant NUM_FRAMES : integer := 5;
 
 	constant IN_ROWS : integer := 100; -- MUST BE MULTIPLE OF 16 AND : If Mono8 then *AT LEAST* 32, if Mono16 then *AT LEAST* 16
 	constant IN_COLS : integer := 160;
