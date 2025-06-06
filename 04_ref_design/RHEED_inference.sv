@@ -146,12 +146,18 @@ module RHEED_inference #(
   assign m_axis_tvalid = CNN_m_axis_tvalid;
   assign m_axis_tdata = CNN_m_axis_tdata;
 
-    /////////////////////////////////// TESTBENCHING ///////////////////////////////////
-    
-    // synthesis translate_off
+  /////////////////////////////////// TESTBENCHING ///////////////////////////////////
+  
+  // synthesis translate_off
 
+  logic [$clog2(OUT_ROWS*OUT_COLS)-1:0] cnt_CNN_handshake;
+  always_ff @(posedge clk) begin
+    if ( reset || (ap_start && CNN_ap_ready) ) cnt_CNN_handshake <= 'd0;
+    else if (cn_m_axis_tvalid && CNN_s_axis_tready) cnt_CNN_handshake <= cnt_CNN_handshake + 1;
+    else if (CNN_ap_done) assert(cnt_CNN_handshake == OUT_ROWS*OUT_COLS-1);
+  end
 
-    // synthesis translate_on
+  // synthesis translate_on
 
 
 endmodule
