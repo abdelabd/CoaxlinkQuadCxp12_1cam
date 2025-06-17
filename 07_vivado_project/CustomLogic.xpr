@@ -6,7 +6,7 @@
 <Project Version="7" Minor="61" Path="/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/07_vivado_project/CustomLogic.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="3955b62e14864968b8ab85986cdfa98e"/>
+    <Option Name="Id" Val="c17e46cb786c407dbdb19b6bb79c7d10"/>
     <Option Name="Part" Val="xcku035-fbva676-2-e"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -61,20 +61,20 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="172"/>
+    <Option Name="WTXSimLaunchSim" Val="61"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="2"/>
-    <Option Name="WTModelSimExportSim" Val="2"/>
-    <Option Name="WTQuestaExportSim" Val="2"/>
+    <Option Name="WTXSimExportSim" Val="1"/>
+    <Option Name="WTModelSimExportSim" Val="1"/>
+    <Option Name="WTQuestaExportSim" Val="1"/>
     <Option Name="WTIesExportSim" Val="0"/>
-    <Option Name="WTVcsExportSim" Val="2"/>
-    <Option Name="WTRivieraExportSim" Val="2"/>
-    <Option Name="WTActivehdlExportSim" Val="2"/>
+    <Option Name="WTVcsExportSim" Val="1"/>
+    <Option Name="WTRivieraExportSim" Val="1"/>
+    <Option Name="WTActivehdlExportSim" Val="1"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -92,1082 +92,534 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/hdl_enc/CustomLogicPkt.vp">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vp"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
+      <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vp">
+        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicPkt.vp">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/hdl_enc/CustomLogicPkt.vhdp">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vhdp"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
+      <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vhdp">
+        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicPkt.vhdp">
           <Attr Name="UsedIn" Val="synthesis"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
+      <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp">
+        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/dcp/CoaxlinkDcp.dcp">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/dcp/CoaxlinkDcp.dcp"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
+      <File Path="$PPRDIR/../02_coaxlink/dcp/CoaxlinkDcp.dcp">
+        <FileInfo RelPath="02_coaxlink/dcp/CoaxlinkDcp.dcp">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S128_M512.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512.xcix"/>
-          <Attr Name="ImportTime" Val="1747932117"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S128_M512/axi_dwidth_clk_converter_S128_M512.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512/axi_dwidth_clk_converter_S128_M512.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512/axi_dwidth_clk_converter_S128_M512.xci"/>
-          <Attr Name="ImportTime" Val="1712023498"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S256_M512.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512.xcix"/>
-          <Attr Name="ImportTime" Val="1747932119"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S256_M512/axi_dwidth_clk_converter_S256_M512.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512/axi_dwidth_clk_converter_S256_M512.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512/axi_dwidth_clk_converter_S256_M512.xci"/>
-          <Attr Name="ImportTime" Val="1712023514"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S128_M512_wr.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512_wr.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512_wr.xcix"/>
-          <Attr Name="ImportTime" Val="1747932118"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S128_M512_wr/axi_dwidth_clk_converter_S128_M512_wr.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512_wr/axi_dwidth_clk_converter_S128_M512_wr.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S128_M512_wr/axi_dwidth_clk_converter_S128_M512_wr.xci"/>
-          <Attr Name="ImportTime" Val="1712023504"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S256_M512_rd.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512_rd.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512_rd.xcix"/>
-          <Attr Name="ImportTime" Val="1747932120"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_dwidth_clk_converter_S256_M512_rd/axi_dwidth_clk_converter_S256_M512_rd.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512_rd/axi_dwidth_clk_converter_S256_M512_rd.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_dwidth_clk_converter_S256_M512_rd/axi_dwidth_clk_converter_S256_M512_rd.xci"/>
-          <Attr Name="ImportTime" Val="1712023520"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_interconnect_3xS512_M512.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_interconnect_3xS512_M512.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_interconnect_3xS512_M512.xcix"/>
-          <Attr Name="ImportTime" Val="1747932120"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_interconnect_3xS512_M512/axi_interconnect_3xS512_M512.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_interconnect_3xS512_M512/axi_interconnect_3xS512_M512.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_interconnect_3xS512_M512/axi_interconnect_3xS512_M512.xci"/>
-          <Attr Name="ImportTime" Val="1712023524"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_lite_clock_converter.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_lite_clock_converter.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_lite_clock_converter.xcix"/>
-          <Attr Name="ImportTime" Val="1747932121"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axi_lite_clock_converter/axi_lite_clock_converter.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axi_lite_clock_converter/axi_lite_clock_converter.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axi_lite_clock_converter/axi_lite_clock_converter.xci"/>
-          <Attr Name="ImportTime" Val="1712023528"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axis_data_fifo_256b.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axis_data_fifo_256b.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axis_data_fifo_256b.xcix"/>
-          <Attr Name="ImportTime" Val="1747932121"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/axis_data_fifo_256b/axis_data_fifo_256b.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/axis_data_fifo_256b/axis_data_fifo_256b.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/axis_data_fifo_256b/axis_data_fifo_256b.xci"/>
-          <Attr Name="ImportTime" Val="1712023530"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/clk_wiz_cxp12.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/clk_wiz_cxp12.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/clk_wiz_cxp12.xcix"/>
-          <Attr Name="ImportTime" Val="1747932122"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/clk_wiz_cxp12/clk_wiz_cxp12.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/clk_wiz_cxp12/clk_wiz_cxp12.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/clk_wiz_cxp12/clk_wiz_cxp12.xci"/>
-          <Attr Name="ImportTime" Val="1712023530"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/CounterDsp.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/CounterDsp.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/CounterDsp.xcix"/>
-          <Attr Name="ImportTime" Val="1747932106"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/CounterDsp/CounterDsp.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/CounterDsp/CounterDsp.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/CounterDsp/CounterDsp.xci"/>
-          <Attr Name="ImportTime" Val="1712023422"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/EventSignalingBram.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/EventSignalingBram.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/EventSignalingBram.xcix"/>
-          <Attr Name="ImportTime" Val="1747932107"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/EventSignalingBram/EventSignalingBram.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/EventSignalingBram/EventSignalingBram.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/EventSignalingBram/EventSignalingBram.xci"/>
-          <Attr Name="ImportTime" Val="1712023424"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/EventSignalingFifo_ku.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/EventSignalingFifo_ku.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/EventSignalingFifo_ku.xcix"/>
-          <Attr Name="ImportTime" Val="1747932108"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/EventSignalingFifo_ku/EventSignalingFifo_ku.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/EventSignalingFifo_ku/EventSignalingFifo_ku.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/EventSignalingFifo_ku/EventSignalingFifo_ku.xci"/>
-          <Attr Name="ImportTime" Val="1712023428"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/evt_CDC_fifo.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/evt_CDC_fifo.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/evt_CDC_fifo.xcix"/>
-          <Attr Name="ImportTime" Val="1747932122"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/evt_CDC_fifo/evt_CDC_fifo.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/evt_CDC_fifo/evt_CDC_fifo.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/evt_CDC_fifo/evt_CDC_fifo.xci"/>
-          <Attr Name="ImportTime" Val="1712023534"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/ExtIOConfigBram.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/ExtIOConfigBram.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/ExtIOConfigBram.xcix"/>
-          <Attr Name="ImportTime" Val="1747932108"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/ExtIOConfigBram/ExtIOConfigBram.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/ExtIOConfigBram/ExtIOConfigBram.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/ExtIOConfigBram/ExtIOConfigBram.xci"/>
-          <Attr Name="ImportTime" Val="1712023430"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/fifo_memento.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/fifo_memento.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/fifo_memento.xcix"/>
-          <Attr Name="ImportTime" Val="1747932123"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/fifo_memento/fifo_memento.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/fifo_memento/fifo_memento.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/fifo_memento/fifo_memento.xci"/>
-          <Attr Name="ImportTime" Val="1712023538"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/FrameSizeDwDsp.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/FrameSizeDwDsp.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/FrameSizeDwDsp.xcix"/>
-          <Attr Name="ImportTime" Val="1747932108"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/FrameSizeDwDsp/FrameSizeDwDsp.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/FrameSizeDwDsp/FrameSizeDwDsp.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/FrameSizeDwDsp/FrameSizeDwDsp.xci"/>
-          <Attr Name="ImportTime" Val="1712023432"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/gth_cxp_low_cxp12.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/gth_cxp_low_cxp12.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/gth_cxp_low_cxp12.xcix"/>
-          <Attr Name="ImportTime" Val="1747932127"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/gth_cxp_low_cxp12/gth_cxp_low_cxp12.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/gth_cxp_low_cxp12/gth_cxp_low_cxp12.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/gth_cxp_low_cxp12/gth_cxp_low_cxp12.xci"/>
-          <Attr Name="ImportTime" Val="1712023540"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/LUT12x8.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/LUT12x8.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/LUT12x8.xcix"/>
-          <Attr Name="ImportTime" Val="1747932109"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/LUT12x8/LUT12x8.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/LUT12x8/LUT12x8.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/LUT12x8/LUT12x8.xci"/>
-          <Attr Name="ImportTime" Val="1712023436"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/mem_if.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/mem_if.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/mem_if.xcix"/>
-          <Attr Name="ImportTime" Val="1747932137"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/mem_if/mem_if.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/mem_if/mem_if.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/mem_if/mem_if.xci"/>
-          <Attr Name="ImportTime" Val="1712023718"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/MultiplierDsp.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/MultiplierDsp.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/MultiplierDsp.xcix"/>
-          <Attr Name="ImportTime" Val="1747932109"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/MultiplierDsp/MultiplierDsp.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/MultiplierDsp/MultiplierDsp.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/MultiplierDsp/MultiplierDsp.xci"/>
-          <Attr Name="ImportTime" Val="1712023436"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PEGBram.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PEGBram.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PEGBram.xcix"/>
-          <Attr Name="ImportTime" Val="1747932110"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PEGBram/PEGBram.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PEGBram/PEGBram.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PEGBram/PEGBram.xci"/>
-          <Attr Name="ImportTime" Val="1712023440"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PEGFifo_ku.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PEGFifo_ku.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PEGFifo_ku.xcix"/>
-          <Attr Name="ImportTime" Val="1747932110"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PEGFifo_ku/PEGFifo_ku.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PEGFifo_ku/PEGFifo_ku.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PEGFifo_ku/PEGFifo_ku.xci"/>
-          <Attr Name="ImportTime" Val="1712023444"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PIXO_FIFO_259x1024.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PIXO_FIFO_259x1024.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PIXO_FIFO_259x1024.xcix"/>
-          <Attr Name="ImportTime" Val="1747932111"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PIXO_FIFO_259x1024/PIXO_FIFO_259x1024.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PIXO_FIFO_259x1024/PIXO_FIFO_259x1024.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PIXO_FIFO_259x1024/PIXO_FIFO_259x1024.xci"/>
-          <Attr Name="ImportTime" Val="1712023448"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/CoaxlinkQuadCxp12_1cam/02_coaxlink/ips/PoCXP_uBlaze.elf">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze.elf"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
+      <File Path="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze.elf">
+        <FileInfo RelPath="02_coaxlink/ips/PoCXP_uBlaze.elf">
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="ScopedToRef" Val="PoCXP_uBlaze"/>
           <Attr Name="ScopedToCell" Val="inst/microblaze_I"/>
           <Attr Name="IsVisible" Val="1"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/PoCXP_uBlaze.xcix">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze.xcix"/>
-          <Attr Name="ImportTime" Val="1747932115"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/PoCXP_uBlaze/PoCXP_uBlaze.xci">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze/PoCXP_uBlaze.xci"/>
-          <Attr Name="ImportTime" Val="1712023482"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_rddwc.xcix">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_rddwc.xcix"/>
-          <Attr Name="ImportTime" Val="1747932138"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_rddwc/reg2mem_rddwc.xci">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_rddwc/reg2mem_rddwc.xci"/>
-          <Attr Name="ImportTime" Val="1712023724"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_rdfifo.xcix">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_rdfifo.xcix"/>
-          <Attr Name="ImportTime" Val="1747932139"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_rdfifo/reg2mem_rdfifo.xci">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_rdfifo/reg2mem_rdfifo.xci"/>
-          <Attr Name="ImportTime" Val="1712023728"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze.xcix">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc/reg2mem_wrdwc.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze/PoCXP_uBlaze.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo.xcix">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo/reg2mem_wrfifo.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_rddwc.xcix">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k/sin_fifo_134bx4k.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_rddwc/reg2mem_rddwc.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256.xcix">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_rdfifo.xcix">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_rdfifo/reg2mem_rdfifo.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo.xcix">
+      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrdwc.xcix">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo/WrAxiAddrFifo.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/CustomLogic.vhd">
-        <FileInfo RelPath="04_ref_design/CustomLogic.vhd">
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/lut_bram_8x256.xcix">
-        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/lut_bram_8x256/lut_bram_8x256.xci">
+      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrdwc/reg2mem_wrdwc.xci">
         <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc/reg2mem_wrdwc.xci"/>
+          <Attr Name="ImportTime" Val="1712056132"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrfifo.xcix">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrfifo/reg2mem_wrfifo.xci">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo/reg2mem_wrfifo.xci"/>
+          <Attr Name="ImportTime" Val="1712056136"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/sin_fifo_134bx4k.xcix">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/sin_fifo_134bx4k/sin_fifo_134bx4k.xci">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k/sin_fifo_134bx4k.xci"/>
+          <Attr Name="ImportTime" Val="1712056140"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/sout_fifo_wr256_rd256.xcix">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci"/>
+          <Attr Name="ImportTime" Val="1712056144"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/TimingMachineProg_BRAM_72x512.xcix">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci"/>
+          <Attr Name="ImportTime" Val="1712055884"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/WrAxiAddrFifo.xcix">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo.xcix"/>
+          <Attr Name="ImportTime" Val="1749202805"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/WrAxiAddrFifo/WrAxiAddrFifo.xci">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo/WrAxiAddrFifo.xci"/>
+          <Attr Name="ImportTime" Val="1712055888"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/norm_reader.sv">
-        <FileInfo RelPath="04_ref_design/norm_reader.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/CustomLogic.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/shift_register.sv">
-        <FileInfo RelPath="04_ref_design/shift_register.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/umult_int_frac.sv">
-        <FileInfo RelPath="04_ref_design/umult_int_frac.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/lfsr_16bit.sv">
-        <FileInfo RelPath="04_ref_design/lfsr_16bit.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/RHEED_inference.sv">
-        <FileInfo RelPath="04_ref_design/RHEED_inference.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sequentializer_Mono8.sv">
-        <FileInfo RelPath="04_ref_design/sequentializer_Mono8.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/udivision_LUT_8bit_int_to_24bit_frac.sv">
-        <FileInfo RelPath="04_ref_design/udivision_LUT_8bit_int_to_24bit_frac.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/my_DFF.sv">
-        <FileInfo RelPath="04_ref_design/my_DFF.sv">
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/crop_filter.sv">
-        <FileInfo RelPath="04_ref_design/crop_filter.sv">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/crop_norm.sv">
-        <FileInfo RelPath="04_ref_design/crop_norm.sv">
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s_w2_ROM_AUeOg.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config17_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_1u_config2_s_void_conv_2d_buffer_rbkb.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mux_325_8_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s_outidx_ROdEe.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mux_94_8_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mux_366_8_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config17_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_8s_4s_12_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w128_d16_A.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_32u_config10_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe_no_ap_cont.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_8s_6s_13_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_s_void_pooling2d_cl_bHp.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_fixed_1u_array_ap_fixed_8_0_5_3_0_8u_config2_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_8u_config2_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_config15_s_w15_ROM_AUTOcdu.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_config9_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mux_42_8_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_regslice_both.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config6_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_16u_config10_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_16u_config10_s_p_ZZN4nnet26conv_2dbak.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w256_d4_S.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_32u_config10_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_relu_config8_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_global_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config14_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w128_d81_A.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_8u_config6_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_relu_config4_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w256_d1_S.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config12_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_32u_config10cfu.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config2_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d2116_A.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_config9_s_void_pUhA.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config10_mult_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_relu_config8_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_8s_8s_13_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config10_mult_s_w10_ROM_bGp.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d121_A.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_ap_fixed_8_0_5_3_0_ap_fixed_8_0_5_3_0_config6_mult_s_w6_ROM_AUThq.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config13_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_5u_config18_s_w18_ROM_AUTO_1R.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_1u_config2_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_8_0_5_3_0_8u_config6_s_p_ZZN4nnet26conv_2d_bDeQ.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_config5_s_p_ZZN4nnfYi.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_16u_config6_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_8s_8s_15_1_1.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_8u_relu_config4_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_8_0_5_3_0_16u_config6_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_global_pooling2d_cl_array_array_ap_fixed_8_0_5_3_0_32u_config14_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_fixed_8u_array_ap_fixed_8_0_5_3_0_16u_config6_s.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_fixed_8_0_5_3_0_32u_relu_config12_U0.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../rtl_models/vivado_2022.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_ap_fixed_16u_array_ap_fixed_8_0_5_3_0_16u_configceu.v">
+      <File Path="$PPRDIR/../04_ref_design/crop_filter.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -1182,94 +634,81 @@
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
       <Filter Type="Constrs"/>
-      <File Path="$PPRDIR/../02_coaxlink/constr/Bitstream_settings.xdc">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_loc_common.xdc">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_timing_common.xdc">
-        <FileInfo>
+        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_loc_common.xdc">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
-        <FileInfo>
+        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_timing_common.xdc">
+        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_timing_common.xdc">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../02_coaxlink/constr/Bitstream_settings.xdc">
+        <FileInfo RelPath="02_coaxlink/constr/Bitstream_settings.xdc">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/CustomLogic.xdc">
-        <FileInfo>
+        <FileInfo RelPath="04_ref_design/CustomLogic.xdc">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <Config>
+        <Option Name="TargetConstrsFile" Val="$PPRDIR/../04_ref_design/CustomLogic.xdc"/>
         <Option Name="ConstrsType" Val="XDC"/>
       </Config>
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sim_1/ip/onboardmem.xcix">
+      <File Path="$PPRDIR/../04_ref_design/sim/Simulation_FileIO_pkg.vhd">
+        <FileInfo RelPath="Simulation_FileIO_pkg.vhd">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/sim/CustomLogicSimPkt.vhdp">
+        <FileInfo RelPath="CustomLogicSimPkt.vhdp">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/sim/onboardmem.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../04_ref_design/sim/onboardmem.xcix"/>
-          <Attr Name="ImportTime" Val="1747932531"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sim_1/ip/onboardmem/onboardmem.xci">
+      <File Path="$PPRDIR/../04_ref_design/sim/onboardmem/onboardmem.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../04_ref_design/sim/onboardmem/onboardmem.xci"/>
-          <Attr Name="ImportTime" Val="1712023718"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sim_1/imports/sim/CustomLogicSimPkt.vhdp">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../04_ref_design/sim/CustomLogicSimPkt.vhdp"/>
-          <Attr Name="ImportTime" Val="1747932056"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sim_1/imports/sim/Simulation_FileIO_pkg.vhd">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../04_ref_design/sim/Simulation_FileIO_pkg.vhd"/>
-          <Attr Name="ImportTime" Val="1748435629"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/SimulationCtrl_tb.vhd">
-        <FileInfo>
+        <FileInfo RelPath="SimulationCtrl_tb.vhd">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/tb_top.vhd">
-        <FileInfo>
+        <FileInfo RelPath="tb_top.vhd">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/tb_top_behav.wcfg">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/sim/Simulation_FileIO_pkg.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
+        <FileInfo RelPath="tb_top_behav.wcfg">
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -1284,19 +723,11 @@
         <Option Name="PamSignalDriverFile" Val="xil_bypass_driver"/>
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
-        <Option Name="xsim.simulate.runtime" Val="10000us"/>
+        <Option Name="xsim.simulate.runtime" Val="20000us"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
       <Filter Type="Utils"/>
-      <File Path="$PSRCDIR/utils_1/imports/synth_1/CustomLogicTop.dcp">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedInSteps" Val="synth_1"/>
-          <Attr Name="AutoDcp" Val="1"/>
-        </FileInfo>
-      </File>
       <Config>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
@@ -1337,12 +768,11 @@
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="19">
-    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/CustomLogicTop.dcp" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" WriteIncrSynthDcp="false" State="current" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022"/>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2022"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
