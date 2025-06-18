@@ -129,15 +129,15 @@ module RHEED_inference #(
 
   // CNN
   myproject iCNN (
-    .q_conv2d_batchnorm_5_input_TDATA(cn_m_axis_tdata),
-    .layer18_out_TDATA(CNN_m_axis_tdata),
+    .input_1_TDATA(cn_m_axis_tdata),
+    .layer5_out_TDATA(CNN_m_axis_tdata),
     .ap_clk(clk),
     .ap_rst_n(ap_rst_n_sync),
-    .q_conv2d_batchnorm_5_input_TVALID(cn_m_axis_tvalid),
-    .q_conv2d_batchnorm_5_input_TREADY(CNN_s_axis_tready),
+    .input_1_TVALID(cn_m_axis_tvalid),
+    .input_1_TREADY(CNN_s_axis_tready),
     .ap_start(cn_ap_start_for_CNN),
-    .layer18_out_TVALID(CNN_m_axis_tvalid),
-    .layer18_out_TREADY(m_axis_tready),
+    .layer5_out_TVALID(CNN_m_axis_tvalid),
+    .layer5_out_TREADY(m_axis_tready),
     .ap_done(CNN_ap_done),
     .ap_ready(CNN_ap_ready),
     .ap_idle(CNN_ap_idle)

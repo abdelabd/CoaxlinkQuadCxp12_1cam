@@ -139,13 +139,13 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant IN_ROWS : integer := 100;
-	constant IN_COLS : integer := 160;
-	constant OUT_ROWS : integer := 48;
-	constant OUT_COLS : integer := 48;
+	constant IN_ROWS : integer := 8;
+	constant IN_COLS : integer := 32;
+	constant OUT_ROWS : integer := 5;
+	constant OUT_COLS : integer := 5;
 	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
+	constant CROP_Y0_CONST : integer := 3;
+	constant CROP_X0_CONST : integer := 27;
 
 
 	----------------------------------------------------------------------------
@@ -294,22 +294,22 @@ begin
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
 
 	-- Read benchmark file into memory
-	load_inference_benchmark: process
-        file file_handle       : text;
-        variable line_content  : line;
-        variable temp_vector   : std_logic_vector(7 downto 0);
-        variable row, col      : integer;
-    begin
-        file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
-        readline(file_handle, line_content);
-        for row in 0 to 4 loop
-            hread(line_content, temp_vector);
-            out_benchmark_mem(row) <= temp_vector;
-        end loop;
+	-- load_inference_benchmark: process
+    --     file file_handle       : text;
+    --     variable line_content  : line;
+    --     variable temp_vector   : std_logic_vector(7 downto 0);
+    --     variable row, col      : integer;
+    -- begin
+    --     file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
+    --     readline(file_handle, line_content);
+    --     for row in 0 to 4 loop
+    --         hread(line_content, temp_vector);
+    --         out_benchmark_mem(row) <= temp_vector;
+    --     end loop;
         
-        file_close(file_handle);
-        wait;
-    end process;
+    --     file_close(file_handle);
+    --     wait;
+    -- end process;
 
 	-- Data capture and verification process
     inference_data_capture: process(clk250)
