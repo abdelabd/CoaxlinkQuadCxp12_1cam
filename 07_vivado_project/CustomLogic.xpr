@@ -6,7 +6,7 @@
 <Project Version="7" Minor="61" Path="/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/07_vivado_project/CustomLogic.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="c17e46cb786c407dbdb19b6bb79c7d10"/>
+    <Option Name="Id" Val="eb011990fb5649b9a02e64b5816fb01c"/>
     <Option Name="Part" Val="xcku035-fbva676-2-e"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -61,7 +61,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="63"/>
+    <Option Name="WTXSimLaunchSim" Val="2"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -93,24 +93,24 @@
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
       <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vp">
-        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicPkt.vp">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicPkt.vhdp">
-        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicPkt.vhdp">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp">
-        <FileInfo RelPath="02_coaxlink/hdl_enc/CustomLogicTopPkt.vhdp">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/dcp/CoaxlinkDcp.dcp">
-        <FileInfo RelPath="02_coaxlink/dcp/CoaxlinkDcp.dcp">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
@@ -402,7 +402,7 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/ips/PoCXP_uBlaze.elf">
-        <FileInfo RelPath="02_coaxlink/ips/PoCXP_uBlaze.elf">
+        <FileInfo>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="ScopedToRef" Val="PoCXP_uBlaze"/>
           <Attr Name="ScopedToCell" Val="inst/microblaze_I"/>
@@ -448,118 +448,94 @@
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrdwc.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrdwc/reg2mem_wrdwc.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc/reg2mem_wrdwc.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrdwc/reg2mem_wrdwc.xci"/>
-          <Attr Name="ImportTime" Val="1712056132"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrfifo.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/reg2mem_wrfifo/reg2mem_wrfifo.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo/reg2mem_wrfifo.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/reg2mem_wrfifo/reg2mem_wrfifo.xci"/>
-          <Attr Name="ImportTime" Val="1712056136"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/sin_fifo_134bx4k.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/sin_fifo_134bx4k/sin_fifo_134bx4k.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k/sin_fifo_134bx4k.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sin_fifo_134bx4k/sin_fifo_134bx4k.xci"/>
-          <Attr Name="ImportTime" Val="1712056140"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/sout_fifo_wr256_rd256.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/sout_fifo_wr256_rd256/sout_fifo_wr256_rd256.xci"/>
-          <Attr Name="ImportTime" Val="1712056144"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/TimingMachineProg_BRAM_72x512.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/TimingMachineProg_BRAM_72x512/TimingMachineProg_BRAM_72x512.xci"/>
-          <Attr Name="ImportTime" Val="1712055884"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/WrAxiAddrFifo.xcix">
+      <File Path="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo.xcix">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo.xcix"/>
-          <Attr Name="ImportTime" Val="1749202805"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/ip/WrAxiAddrFifo/WrAxiAddrFifo.xci">
+      <File Path="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo/WrAxiAddrFifo.xci">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../02_coaxlink/ips/WrAxiAddrFifo/WrAxiAddrFifo.xci"/>
-          <Attr Name="ImportTime" Val="1712055888"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/CustomLogic.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/norm_reader.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../04_ref_design/CustomLogic.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -635,31 +611,31 @@
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
       <Filter Type="Constrs"/>
       <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_loc_common.xdc">
-        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_loc_common.xdc">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
-        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_xil_x8_gen3.xdc">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/constr/CxlCxp12_timing_common.xdc">
-        <FileInfo RelPath="02_coaxlink/constr/CxlCxp12_timing_common.xdc">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../02_coaxlink/constr/Bitstream_settings.xdc">
-        <FileInfo RelPath="02_coaxlink/constr/Bitstream_settings.xdc">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/CustomLogic.xdc">
-        <FileInfo RelPath="04_ref_design/CustomLogic.xdc">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
@@ -670,15 +646,14 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
-      <Filter Type="Srcs"/>
       <File Path="$PPRDIR/../04_ref_design/sim/Simulation_FileIO_pkg.vhd">
-        <FileInfo RelPath="Simulation_FileIO_pkg.vhd">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/CustomLogicSimPkt.vhdp">
-        <FileInfo RelPath="CustomLogicSimPkt.vhdp">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -696,19 +671,19 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/SimulationCtrl_tb.vhd">
-        <FileInfo RelPath="SimulationCtrl_tb.vhd">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/tb_top.vhd">
-        <FileInfo RelPath="tb_top.vhd">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../04_ref_design/sim/tb_top_behav.wcfg">
-        <FileInfo RelPath="tb_top_behav.wcfg">
+        <FileInfo>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -728,14 +703,6 @@
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
       <Filter Type="Utils"/>
-      <File Path="$PSRCDIR/utils_1/imports/synth_1/CustomLogicTop.dcp">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedInSteps" Val="synth_1"/>
-          <Attr Name="AutoDcp" Val="1"/>
-        </FileInfo>
-      </File>
       <Config>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
@@ -776,19 +743,22 @@
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="19">
-    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/CustomLogicTop.dcp" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" WriteIncrSynthDcp="false" State="current" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022"/>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022">
+          <Desc>Vivado Synthesis Defaults</Desc>
+        </StratHandle>
         <Step Id="synth_design"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2022"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
     <Run Id="axis_fifo_synth_1" Type="Ft3:Synth" SrcSet="axis_fifo" Part="xcku035-fbva676-2-e" ConstrsSet="axis_fifo" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/axis_fifo_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/axis_fifo_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/axis_fifo_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022"/>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022">
+          <Desc>Vivado Synthesis Defaults</Desc>
+        </StratHandle>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -796,9 +766,11 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Similar to Performance_ExplorePostRoutePhysOpt, but enables logic optimization step (opt_design) with the ExploreWithRemap directive." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1">
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xcku035-fbva676-2-e" ConstrsSet="constrs_1" Description="Similar to Performance_ExplorePostRoutePhysOpt, but enables logic optimization step (opt_design) with the ExploreWithRemap directive." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Performance_ExploreWithRemap" Flow="Vivado Implementation 2022"/>
+        <StratHandle Name="Performance_ExploreWithRemap" Flow="Vivado Implementation 2022">
+          <Desc>Similar to Performance_ExplorePostRoutePhysOpt, but enables logic optimization step (opt_design) with the ExploreWithRemap directive.</Desc>
+        </StratHandle>
         <Step Id="init_design"/>
         <Step Id="opt_design">
           <Option Id="Directive">6</Option>
@@ -820,14 +792,15 @@
         </Step>
         <Step Id="write_bitstream"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2022"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
     <Run Id="axis_fifo_impl_1" Type="Ft2:EntireDesign" Part="xcku035-fbva676-2-e" ConstrsSet="axis_fifo" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="axis_fifo_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/axis_fifo_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/axis_fifo_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2022"/>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2022">
+          <Desc>Default settings for Implementation.</Desc>
+        </StratHandle>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
