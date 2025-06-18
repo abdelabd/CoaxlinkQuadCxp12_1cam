@@ -139,13 +139,13 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant IN_ROWS : integer := 100;
-	constant IN_COLS : integer := 160;
-	constant OUT_ROWS : integer := 48;
-	constant OUT_COLS : integer := 48;
+	constant IN_ROWS : integer := 8;
+	constant IN_COLS : integer := 32;
+	constant OUT_ROWS : integer := 5;
+	constant OUT_COLS : integer := 5;
 	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 52;
-	constant CROP_X0_CONST : integer := 112;
+	constant CROP_Y0_CONST : integer := 3;
+	constant CROP_X0_CONST : integer := 27;
 
 
 	----------------------------------------------------------------------------
