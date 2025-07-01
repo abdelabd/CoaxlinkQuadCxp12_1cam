@@ -86,8 +86,7 @@ module generate_cnn_benchmark_predictions();
 
 	// I/O memory
 	reg [7:0] input_mem [OUT_ROWS*OUT_COLS-1:0];
-    reg [7:0] output_mem [4:0];
-    reg [31:0] output_mem_full [4:0]; // 32-bit output memory
+    reg [21:0] output_mem [4:0];
 
 	// Indices to track read/write progress
 	integer ii;
@@ -117,19 +116,15 @@ module generate_cnn_benchmark_predictions();
 	always_ff @(posedge ap_clk) begin
 
         if (layer18_out_TVALID & layer18_out_TREADY) begin
-            output_mem_full[4] <= layer18_out_TDATA[159:128];
-            output_mem_full[3] <= layer18_out_TDATA[127:96];
-            output_mem_full[2] <= layer18_out_TDATA[95:64];
-            output_mem_full[1] <= layer18_out_TDATA[63:32];
-            output_mem_full[0] <= layer18_out_TDATA[31:0];
+            output_mem[4] <= layer18_out_TDATA[159-10:128];
+            output_mem[3] <= layer18_out_TDATA[127-10:96];
+            output_mem[2] <= layer18_out_TDATA[95-10:64];
+            output_mem[1] <= layer18_out_TDATA[63-10:32];
+            output_mem[0] <= layer18_out_TDATA[31-10:0];
         end
 
 	end
-    assign output_mem[4] = output_mem_full[4][32-10-11:32-10-11-7];
-    assign output_mem[3] = output_mem_full[3][32-10-11:32-10-11-7];
-    assign output_mem[2] = output_mem_full[2][32-10-11:32-10-11-7];
-    assign output_mem[1] = output_mem_full[1][32-10-11:32-10-11-7];
-    assign output_mem[0] = output_mem_full[0][32-10-11:32-10-11-7];
+
 	
 	// Run through signal protocol to run module
 	initial begin
@@ -158,7 +153,7 @@ module generate_cnn_benchmark_predictions();
                     $display("\n\n[INFO] (Y1, X1) = (%0d, %0d) complete", Y1_range[i], X1_range[j]);
 
                     // Output
-                    output_file = $fopen($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/CNN_out_benchmark.txt",
+                    output_file = $fopen($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/CNN_out_benchmark_ap_fixed_22_11.txt",
 										IN_ROWS, IN_COLS,
             							OUT_ROWS, OUT_COLS, NUM_CROPS,
 										Y1_range[i], X1_range[j]), "wb");
