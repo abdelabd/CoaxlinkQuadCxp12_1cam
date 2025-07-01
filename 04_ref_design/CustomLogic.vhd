@@ -208,7 +208,7 @@ architecture behav of CustomLogic is
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/QKeras_pred_ap_fixed_22_11.txt";
+											& "/CNN_out_benchmark_ap_fixed_22_11.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
 
@@ -301,9 +301,9 @@ begin
         variable row, col      : integer;
     begin
         file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
-        readline(file_handle, line_content);
         for row in 0 to 4 loop
-            hread(line_content, temp_vector);
+			readline(file_handle, line_content);
+            read(line_content, temp_vector);
             out_benchmark_mem(row) <= temp_vector;
         end loop;
         
