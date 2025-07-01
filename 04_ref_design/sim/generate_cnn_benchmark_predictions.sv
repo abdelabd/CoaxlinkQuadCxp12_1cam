@@ -5,13 +5,13 @@ module generate_cnn_benchmark_predictions();
     localparam FP_TOTAL         = 8;
     localparam FP_INT 			= 0;
 
-    localparam IN_ROWS         	= 8;
-    localparam IN_COLS         	= 32;
-    localparam OUT_ROWS        	= 5;
-    localparam OUT_COLS        	= 5;
+    localparam IN_ROWS         	= 100;
+    localparam IN_COLS         	= 160;
+    localparam OUT_ROWS        	= 48;
+    localparam OUT_COLS        	= 48;
     localparam NUM_CROPS       	= 1;
-	int Y1_range[3] 			= '{0, 1, 3};
-	int X1_range[3] 			= '{0, 13, 27};
+	int Y1_range[3] 			= '{0, 1, 52};
+	int X1_range[3] 			= '{0, 13, 112};
 
 
 	//////////////////////// DUT signals ////////////////////////
@@ -23,28 +23,28 @@ module generate_cnn_benchmark_predictions();
 	wire ap_ready; //output
 
 	// Image data input to the HLS module
-	logic [FP_TOTAL-1:0] input_1_TDATA; //input
-	logic input_1_TVALID; //input: data valid to be sent
-    wire input_1_TREADY; //output: myproject ready to receive data
+	logic [7:0] q_conv2d_batchnorm_5_input_TDATA; //input
+	logic q_conv2d_batchnorm_5_input_TVALID; //input: data valid to be sent
+    wire q_conv2d_batchnorm_5_input_TREADY; //output: myproject ready to receive data
 		  
 	// output
-	wire [5*FP_TOTAL-1:0] layer5_out_TDATA; //output
-	wire layer5_out_TVALID; // output: myproject output valid to be sent
-    reg layer5_out_TREADY; //input: receiver ready to receive myproject output
+	wire [159:0] layer18_out_TDATA; //output
+	wire layer18_out_TVALID; // output: myproject output valid to be sent
+    reg layer18_out_TREADY; //input: receiver ready to receive myproject output
 
 	//////////////////////// DUT module ////////////////////////
 	myproject dut (
-        .input_1_TDATA(input_1_TDATA),
-        .layer5_out_TDATA(layer5_out_TDATA),
+        .q_conv2d_batchnorm_5_input_TDATA(q_conv2d_batchnorm_5_input_TDATA),
+        .layer18_out_TDATA(layer18_out_TDATA),
 
         .ap_clk(ap_clk),
         .ap_rst_n(ap_rst_n),
 
-        .input_1_TVALID(input_1_TVALID),
-        .input_1_TREADY(input_1_TREADY),
+        .q_conv2d_batchnorm_5_input_TVALID(q_conv2d_batchnorm_5_input_TVALID),
+        .q_conv2d_batchnorm_5_input_TREADY(q_conv2d_batchnorm_5_input_TREADY),
             
-        .layer5_out_TVALID(layer5_out_TVALID),
-        .layer5_out_TREADY(layer5_out_TREADY),
+        .layer18_out_TVALID(layer18_out_TVALID),
+        .layer18_out_TREADY(layer18_out_TREADY),
 		  
         .ap_start(ap_start),
         .ap_done(ap_done),
@@ -74,19 +74,20 @@ module generate_cnn_benchmark_predictions();
 
     // input-valid
 	always_ff @(posedge ap_clk) begin
-        input_1_TVALID <= 1'b1;
+        q_conv2d_batchnorm_5_input_TVALID <= 1'b1;
 	end
 
 	// output-ready
 	always_ff @(posedge ap_clk) begin
-        layer5_out_TREADY <= 1'b1;
+        layer18_out_TREADY <= 1'b1;
 	end
 	
 	//////////////////////// I/O data ////////////////////////
 
 	// I/O memory
-	reg [FP_TOTAL-1:0] input_mem [OUT_ROWS*OUT_COLS-1:0];
-    reg [FP_TOTAL-1:0] output_mem [4:0];
+	reg [7:0] input_mem [OUT_ROWS*OUT_COLS-1:0];
+    reg [7:0] output_mem [4:0];
+    reg [31:0] output_mem_full [4:0]; // 32-bit output memory
 
 	// Indices to track read/write progress
 	integer ii;
@@ -94,30 +95,41 @@ module generate_cnn_benchmark_predictions();
 	
 	// File pointers
 	integer output_file;
+    integer cnt_CNN_handshake;
 
 	// Sequentially read in input data
 	always_ff @(posedge ap_clk) begin
 		if ((~ap_rst_n)||ap_start) begin
 			pixel_idx <= 0;
+            cnt_CNN_handshake <= 0;
 		end	
-		else if (input_1_TVALID & input_1_TREADY) begin
-			pixel_idx <= pixel_idx + 1;
-			input_1_TDATA <= input_mem[pixel_idx][7:0];
+		else begin
+            q_conv2d_batchnorm_5_input_TDATA <= input_mem[pixel_idx][7:0];
+            if (q_conv2d_batchnorm_5_input_TVALID & q_conv2d_batchnorm_5_input_TREADY) begin
+			    pixel_idx <= pixel_idx + 1;
+                cnt_CNN_handshake <= cnt_CNN_handshake + 1;
+            end
 		end	
 	end
 	
 	// Sequentially read out output data
+    // TODO: clean up following output_mem logic
 	always_ff @(posedge ap_clk) begin
 
-        if (layer5_out_TVALID & layer5_out_TREADY) begin
-            output_mem[4] <= layer5_out_TDATA[39:32];
-            output_mem[3] <= layer5_out_TDATA[31:24];
-            output_mem[2] <= layer5_out_TDATA[23:16];
-            output_mem[1] <= layer5_out_TDATA[15:8];
-            output_mem[0] <= layer5_out_TDATA[7:0];
+        if (layer18_out_TVALID & layer18_out_TREADY) begin
+            output_mem_full[4] <= layer18_out_TDATA[159:128];
+            output_mem_full[3] <= layer18_out_TDATA[127:96];
+            output_mem_full[2] <= layer18_out_TDATA[95:64];
+            output_mem_full[1] <= layer18_out_TDATA[63:32];
+            output_mem_full[0] <= layer18_out_TDATA[31:0];
         end
 
 	end
+    assign output_mem[4] = output_mem_full[4][32-10-11:32-10-11-7];
+    assign output_mem[3] = output_mem_full[3][32-10-11:32-10-11-7];
+    assign output_mem[2] = output_mem_full[2][32-10-11:32-10-11-7];
+    assign output_mem[1] = output_mem_full[1][32-10-11:32-10-11-7];
+    assign output_mem[0] = output_mem_full[0][32-10-11:32-10-11-7];
 	
 	// Run through signal protocol to run module
 	initial begin

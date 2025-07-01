@@ -139,19 +139,19 @@ architecture behav of CustomLogic is
 	----------------------------------------------------------------------------
 	-- Constants
 	----------------------------------------------------------------------------
-	constant IN_ROWS : integer := 8;
-	constant IN_COLS : integer := 32;
-	constant OUT_ROWS : integer := 5;
-	constant OUT_COLS : integer := 5;
+	constant IN_ROWS : integer := 100;
+	constant IN_COLS : integer := 160;
+	constant OUT_ROWS : integer := 48;
+	constant OUT_COLS : integer := 48;
 	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 3;
-	constant CROP_X0_CONST : integer := 27;
+	constant CROP_Y0_CONST : integer := 0;
+	constant CROP_X0_CONST : integer := 0;
 
 
 	----------------------------------------------------------------------------
 	-- Types
 	----------------------------------------------------------------------------
-	type output_array is array (4 downto 0) of std_logic_vector(7 downto 0);
+	type output_array is array (4 downto 0) of std_logic_vector(21 downto 0);
 
 	----------------------------------------------------------------------------
 	-- Functions
@@ -185,7 +185,7 @@ architecture behav of CustomLogic is
 
 	-- Master-side handshake
 	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : std_logic_vector(39 downto 0);
+	signal rheed_m_axis_tdata : output_array;
 
 	-- Custom downstream tready signal for randomized testbenching
 	signal tb_s_axis_tready : std_logic;
@@ -208,7 +208,7 @@ architecture behav of CustomLogic is
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/QKeras_pred.txt";
+											& "/QKeras_pred_ap_fixed_22_11.txt";
 
 	signal out_diff : integer; -- to compare output and benchmark output
 
@@ -294,22 +294,22 @@ begin
 	crop_x0 <= std_logic_vector(to_unsigned(CROP_X0_CONST, clog2(IN_COLS)));
 
 	-- Read benchmark file into memory
-	-- load_inference_benchmark: process
-    --     file file_handle       : text;
-    --     variable line_content  : line;
-    --     variable temp_vector   : std_logic_vector(7 downto 0);
-    --     variable row, col      : integer;
-    -- begin
-    --     file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
-    --     readline(file_handle, line_content);
-    --     for row in 0 to 4 loop
-    --         hread(line_content, temp_vector);
-    --         out_benchmark_mem(row) <= temp_vector;
-    --     end loop;
+	load_inference_benchmark: process
+        file file_handle       : text;
+        variable line_content  : line;
+        variable temp_vector   : std_logic_vector(21 downto 0);
+        variable row, col      : integer;
+    begin
+        file_open(file_handle, OUT_BENCHMARK_FILE, read_mode);
+        readline(file_handle, line_content);
+        for row in 0 to 4 loop
+            hread(line_content, temp_vector);
+            out_benchmark_mem(row) <= temp_vector;
+        end loop;
         
-    --     file_close(file_handle);
-    --     wait;
-    -- end process;
+        file_close(file_handle);
+        wait;
+    end process;
 
 	-- Data capture and verification process
     inference_data_capture: process(clk250)
@@ -321,11 +321,11 @@ begin
             else
                 if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
                     -- Capture DUT output
-					out_mem(4) <= rheed_m_axis_tdata(39 downto 32);
-					out_mem(3) <= rheed_m_axis_tdata(31 downto 24);
-					out_mem(2) <= rheed_m_axis_tdata(23 downto 16);
-					out_mem(1) <= rheed_m_axis_tdata(15 downto 8);
-					out_mem(0) <= rheed_m_axis_tdata(7 downto 0);
+					out_mem(4) <= rheed_m_axis_tdata(4);
+					out_mem(3) <= rheed_m_axis_tdata(3);
+					out_mem(2) <= rheed_m_axis_tdata(2);
+					out_mem(1) <= rheed_m_axis_tdata(1);
+					out_mem(0) <= rheed_m_axis_tdata(0);
 
 					-- out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     

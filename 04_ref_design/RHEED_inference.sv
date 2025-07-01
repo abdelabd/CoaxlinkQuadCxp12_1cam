@@ -21,7 +21,7 @@ module RHEED_inference #(
     // AXI Stream Master Interface outgoing, post-crop pixels
     output logic                   m_axis_tvalid,
     input  logic                   m_axis_tready,
-    output logic [39:0]            m_axis_tdata 
+    output [21:0]                  m_axis_tdata  [4:0]
 );
 
     /////////////////////////////////// WIRE DECLARATIONS ///////////////////////////////////
@@ -47,7 +47,8 @@ module RHEED_inference #(
     logic [7:0] cn_m_axis_tdata;
 
     // CNN output wires
-    logic [39:0] CNN_m_axis_tdata;
+    logic [159:0] CNN_m_axis_tdata_32b;
+    logic [21:0] CNN_m_axis_tdata [4:0];
     logic CNN_s_axis_tready;
     logic CNN_m_axis_tvalid;
     logic CNN_ap_done, CNN_ap_ready, CNN_ap_idle;
@@ -130,7 +131,7 @@ module RHEED_inference #(
   // CNN
   myproject iCNN (
     .q_conv2d_batchnorm_5_input_TDATA(cn_m_axis_tdata),
-    .layer18_out_TDATA(CNN_m_axis_tdata),
+    .layer18_out_TDATA(CNN_m_axis_tdata_32b),
     .ap_clk(clk),
     .ap_rst_n(ap_rst_n_sync),
     .q_conv2d_batchnorm_5_input_TVALID(cn_m_axis_tvalid),
@@ -142,9 +143,16 @@ module RHEED_inference #(
     .ap_ready(CNN_ap_ready),
     .ap_idle(CNN_ap_idle)
   );
-
   assign m_axis_tvalid = CNN_m_axis_tvalid;
   assign m_axis_tdata = CNN_m_axis_tdata;
+
+  // 32bit --> 22bit
+  assign CNN_m_axis_tdata[4] = CNN_m_axis_tdata_32b[159-10:159-10-21];
+  assign CNN_m_axis_tdata[3] = CNN_m_axis_tdata_32b[127-10:127-10-21];
+  assign CNN_m_axis_tdata[2] = CNN_m_axis_tdata_32b[95-10:95-10-21];
+  assign CNN_m_axis_tdata[1] = CNN_m_axis_tdata_32b[63-10:63-10-21];
+  assign CNN_m_axis_tdata[0] = CNN_m_axis_tdata_32b[31-10:31-10-21];  
+
 
   /////////////////////////////////// TESTBENCHING ///////////////////////////////////
   
