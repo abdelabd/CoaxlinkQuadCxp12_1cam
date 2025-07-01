@@ -144,8 +144,8 @@ architecture behav of CustomLogic is
 	constant OUT_ROWS : integer := 48;
 	constant OUT_COLS : integer := 48;
 	-- Crop-coordinates constant for now
-	constant CROP_Y0_CONST : integer := 0;
-	constant CROP_X0_CONST : integer := 0;
+	constant CROP_Y0_CONST : integer := 52;
+	constant CROP_X0_CONST : integer := 112;
 
 
 	----------------------------------------------------------------------------
@@ -197,6 +197,8 @@ architecture behav of CustomLogic is
 	--------- For testbenching ---------
 	-- synthesis translate_off
 
+	signal inference_done : std_logic;
+
 	-- For random-bit generator (drives downstream tready)
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
@@ -209,6 +211,11 @@ architecture behav of CustomLogic is
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
 											& "/CNN_out_benchmark_ap_fixed_22_11.txt";
+	constant OUT_FILE 			   : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
+											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
+											& "/full_pipeline_out_ap_fixed_22_11.txt";				
 
 	signal out_diff : integer; -- to compare output and benchmark output
 
@@ -318,6 +325,7 @@ begin
             if reset_rheed = '1' or idx_out = OUT_ROWS*OUT_COLS then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
                 idx_out <= 0;
 				out_diff <= 0;
+				inference_done <= '0';
             else
                 if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
                     -- Capture DUT output
@@ -327,9 +335,11 @@ begin
 					out_mem(1) <= rheed_m_axis_tdata(1);
 					out_mem(0) <= rheed_m_axis_tdata(0);
 
+					inference_done <= '1';
+
 					-- out_diff <= to_integer(unsigned(out_benchmark_mem(idx_out))) - to_integer(unsigned(rheed_m_axis_tdata));
                     
-                    -- Verify against benchmark
+                    -- -- Verify against benchmark
 					-- assert (out_diff = 0)
                     -- -- assert (nr_diff < 3) and (nr_diff > -3)
                     --     report "CropNorm mismatch at index " & integer'image(idx_out) 
@@ -346,6 +356,26 @@ begin
             end if;
         end if;
 	end process;
+
+	write_benchmark_output: process
+		file file_handle     : text;
+		variable line_out    : line;
+		variable row         : integer;
+	begin
+
+		wait until inference_done = '1';
+
+		file_open(file_handle, OUT_FILE, write_mode);
+		
+		for row in 0 to 4 loop
+			write(line_out, out_mem(row)); -- writes std_logic_vector
+			writeline(file_handle, line_out);
+		end loop;
+		
+		file_close(file_handle);
+		wait;
+	end process;
+
 
 	-- synthesis translate_on
 	

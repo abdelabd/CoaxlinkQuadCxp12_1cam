@@ -85,8 +85,16 @@ module generate_cnn_benchmark_predictions();
 	//////////////////////// I/O data ////////////////////////
 
 	// I/O memory
-	reg [7:0] input_mem [OUT_ROWS*OUT_COLS-1:0];
-    reg [21:0] output_mem [4:0];
+	reg [7:0] in_mem [OUT_ROWS*OUT_COLS-1:0];
+    reg [21:0] out_mem [4:0];
+    reg [21:0] out_benchmark_mem [4:0];
+    reg [22:0] diff [4:0];
+    genvar jj;
+    generate
+        for (jj = 0; jj < 5; jj = jj + 1) begin : gen_out_diff
+            assign diff[jj] = out_benchmark_mem[jj] - out_mem[jj];
+        end
+    endgenerate
 
 	// Indices to track read/write progress
 	integer ii;
@@ -95,15 +103,17 @@ module generate_cnn_benchmark_predictions();
 	// File pointers
 	integer output_file;
     integer cnt_CNN_handshake;
+    integer cnt_frame = -1;
 
 	// Sequentially read in input data
 	always_ff @(posedge ap_clk) begin
 		if ((~ap_rst_n)||ap_start) begin
 			pixel_idx <= 0;
             cnt_CNN_handshake <= 0;
+            cnt_frame <= cnt_frame + 1;
 		end	
 		else begin
-            q_conv2d_batchnorm_5_input_TDATA <= input_mem[pixel_idx][7:0];
+            q_conv2d_batchnorm_5_input_TDATA <= in_mem[pixel_idx][7:0];
             if (q_conv2d_batchnorm_5_input_TVALID & q_conv2d_batchnorm_5_input_TREADY) begin
 			    pixel_idx <= pixel_idx + 1;
                 cnt_CNN_handshake <= cnt_CNN_handshake + 1;
@@ -112,17 +122,31 @@ module generate_cnn_benchmark_predictions();
 	end
 	
 	// Sequentially read out output data
-    // TODO: clean up following output_mem logic
 	always_ff @(posedge ap_clk) begin
 
         if (layer18_out_TVALID & layer18_out_TREADY) begin
-            output_mem[4] <= layer18_out_TDATA[159-10:128];
-            output_mem[3] <= layer18_out_TDATA[127-10:96];
-            output_mem[2] <= layer18_out_TDATA[95-10:64];
-            output_mem[1] <= layer18_out_TDATA[63-10:32];
-            output_mem[0] <= layer18_out_TDATA[31-10:0];
-        end
 
+            out_mem[4] <= layer18_out_TDATA[159-10:128];
+            assert((out_benchmark_mem[4] - layer18_out_TDATA[159-10:128] > -3) && (out_benchmark_mem[4]- layer18_out_TDATA[159-10:128] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 4). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[4], layer18_out_TDATA[159-10:128], out_benchmark_mem[4] - layer18_out_TDATA[159-10:128]);
+
+            out_mem[3] <= layer18_out_TDATA[127-10:96];
+            assert((out_benchmark_mem[3] - layer18_out_TDATA[127-10:96] > -3) && (out_benchmark_mem[3]- layer18_out_TDATA[127-10:96] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 3). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[3], layer18_out_TDATA[127-10:96], out_benchmark_mem[3] - layer18_out_TDATA[127-10:96]);
+
+            out_mem[2] <= layer18_out_TDATA[95-10:64];
+            assert((out_benchmark_mem[2] - layer18_out_TDATA[95-10:64] > -3) && (out_benchmark_mem[2]- layer18_out_TDATA[95-10:64] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 2). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[2], layer18_out_TDATA[95-10:64], out_benchmark_mem[2] - layer18_out_TDATA[95-10:64]);
+
+            out_mem[1] <= layer18_out_TDATA[63-10:32];
+            assert((out_benchmark_mem[1] - layer18_out_TDATA[63-10:32] > -3) && (out_benchmark_mem[1]- layer18_out_TDATA[63-10:32] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 1). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[1], layer18_out_TDATA[63-10:32], out_benchmark_mem[1] - layer18_out_TDATA[63-10:32]);
+
+            out_mem[0] <= layer18_out_TDATA[31-10:0];
+            assert((out_benchmark_mem[0] - layer18_out_TDATA[31-10:0] > -3) && (out_benchmark_mem[0]- layer18_out_TDATA[31-10:0] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 0). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[0], layer18_out_TDATA[31-10:0], out_benchmark_mem[0] - layer18_out_TDATA[31-10:0]);
+        end
+        
 	end
 
 	
@@ -138,19 +162,24 @@ module generate_cnn_benchmark_predictions();
 		        $readmemh($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/HDL_cropnorm_out_1D.txt",
 										IN_ROWS, IN_COLS,
             							OUT_ROWS, OUT_COLS, NUM_CROPS,
-										Y1_range[i], X1_range[j]), input_mem);
+										Y1_range[i], X1_range[j]), in_mem);
 
-                //////////////////////// 2. Wait for computation to complete ////////////////////////
+                //////////////////////// 2. Load output benchmark data ////////////////////////
+
+                $readmemb($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/QKeras_pred_ap_fixed_22_11.txt",
+										IN_ROWS, IN_COLS,
+            							OUT_ROWS, OUT_COLS, NUM_CROPS,
+										Y1_range[i], X1_range[j]), out_benchmark_mem);
+
+                //////////////////////// 3. Wait for computation to complete ////////////////////////
 
                 // Toggle start
                 @(posedge ap_clk) ap_start <= 1; @(posedge ap_clk) ap_start <= 0; 
                 
-                //////////////////////// 3. Save output, close files ////////////////////////
+                //////////////////////// 4. Save output, close files ////////////////////////
 
                 // wait(ap_done)
-                // $display("\n\n[INFO] (Y1, X1) = (%0d, %0d) complete", Y1_range[i], X1_range[j]);
                 @(negedge ap_ready) begin
-                    $display("\n\n[INFO] (Y1, X1) = (%0d, %0d) complete", Y1_range[i], X1_range[j]);
 
                     // Output
                     output_file = $fopen($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/CNN_out_benchmark_ap_fixed_22_11.txt",
@@ -162,10 +191,11 @@ module generate_cnn_benchmark_predictions();
                         $stop;
                     end
                     for (ii=0; ii<5; ii=ii+1) begin
-                        $fwrite(output_file, "%b\n", output_mem[ii]);
+                        $fwrite(output_file, "%b\n", out_mem[ii]);
                     end
 
                     $fclose(output_file);
+                    $display("\n\n[INFO] (Y1, X1) = (%0d, %0d) complete", Y1_range[i], X1_range[j]);
 
 
                 end
@@ -175,7 +205,7 @@ module generate_cnn_benchmark_predictions();
 
         end
         
-		//////////////////////// 4. End sim ////////////////////////
+		//////////////////////// 5. End sim ////////////////////////
         
         $display("\n\n[TB] Simulation complete; CNN benchmark predictions generated");
 		$stop;
