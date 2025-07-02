@@ -210,12 +210,12 @@ architecture behav of CustomLogic is
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/CNN_out_benchmark_ap_fixed_22_11.txt";
+											& "/CNN_mg1_out_benchmark_ap_fixed_22_11.txt";
 	constant OUT_FILE 			   : string  := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) 
 											& "x1/Y1_" & integer'image(CROP_Y0_CONST) &"/X1_" & integer'image(CROP_X0_CONST) 
-											& "/full_pipeline_out_ap_fixed_22_11.txt";				
+											& "/full_pipeline_mg1_out_ap_fixed_22_11.txt";				
 
 	signal out_diff : integer; -- to compare output and benchmark output
 

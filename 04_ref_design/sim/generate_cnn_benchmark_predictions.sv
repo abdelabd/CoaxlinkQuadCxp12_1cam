@@ -23,28 +23,28 @@ module generate_cnn_benchmark_predictions();
 	wire ap_ready; //output
 
 	// Image data input to the HLS module
-	logic [7:0] q_conv2d_batchnorm_5_input_TDATA; //input
-	logic q_conv2d_batchnorm_5_input_TVALID; //input: data valid to be sent
-    wire q_conv2d_batchnorm_5_input_TREADY; //output: myproject ready to receive data
+	logic [7:0] q_conv2d_batchnorm_input_TDATA; //input
+	logic q_conv2d_batchnorm_input_TVALID; //input: data valid to be sent
+    wire q_conv2d_batchnorm_input_TREADY; //output: myproject ready to receive data
 		  
 	// output
-	wire [159:0] layer18_out_TDATA; //output
-	wire layer18_out_TVALID; // output: myproject output valid to be sent
-    reg layer18_out_TREADY; //input: receiver ready to receive myproject output
+	wire [159:0] layer21_out_TDATA; //output
+	wire layer21_out_TVALID; // output: myproject output valid to be sent
+    reg layer21_out_TREADY; //input: receiver ready to receive myproject output
 
 	//////////////////////// DUT module ////////////////////////
 	myproject dut (
-        .q_conv2d_batchnorm_5_input_TDATA(q_conv2d_batchnorm_5_input_TDATA),
-        .layer18_out_TDATA(layer18_out_TDATA),
+        .q_conv2d_batchnorm_input_TDATA({24'b0, q_conv2d_batchnorm_input_TDATA}),
+        .layer21_out_TDATA(layer21_out_TDATA),
 
         .ap_clk(ap_clk),
         .ap_rst_n(ap_rst_n),
 
-        .q_conv2d_batchnorm_5_input_TVALID(q_conv2d_batchnorm_5_input_TVALID),
-        .q_conv2d_batchnorm_5_input_TREADY(q_conv2d_batchnorm_5_input_TREADY),
+        .q_conv2d_batchnorm_input_TVALID(q_conv2d_batchnorm_input_TVALID),
+        .q_conv2d_batchnorm_input_TREADY(q_conv2d_batchnorm_input_TREADY),
             
-        .layer18_out_TVALID(layer18_out_TVALID),
-        .layer18_out_TREADY(layer18_out_TREADY),
+        .layer21_out_TVALID(layer21_out_TVALID),
+        .layer21_out_TREADY(layer21_out_TREADY),
 		  
         .ap_start(ap_start),
         .ap_done(ap_done),
@@ -74,12 +74,12 @@ module generate_cnn_benchmark_predictions();
 
     // input-valid
 	always_ff @(posedge ap_clk) begin
-        q_conv2d_batchnorm_5_input_TVALID <= 1'b1;
+        q_conv2d_batchnorm_input_TVALID <= 1'b1;
 	end
 
 	// output-ready
 	always_ff @(posedge ap_clk) begin
-        layer18_out_TREADY <= 1'b1;
+        layer21_out_TREADY <= 1'b1;
 	end
 	
 	//////////////////////// I/O data ////////////////////////
@@ -113,8 +113,8 @@ module generate_cnn_benchmark_predictions();
             cnt_frame <= cnt_frame + 1;
 		end	
 		else begin
-            q_conv2d_batchnorm_5_input_TDATA <= in_mem[pixel_idx][7:0];
-            if (q_conv2d_batchnorm_5_input_TVALID & q_conv2d_batchnorm_5_input_TREADY) begin
+            q_conv2d_batchnorm_input_TDATA <= in_mem[pixel_idx][7:0];
+            if (q_conv2d_batchnorm_input_TVALID & q_conv2d_batchnorm_input_TREADY) begin
 			    pixel_idx <= pixel_idx + 1;
                 cnt_CNN_handshake <= cnt_CNN_handshake + 1;
             end
@@ -124,27 +124,27 @@ module generate_cnn_benchmark_predictions();
 	// Sequentially read out output data
 	always_ff @(posedge ap_clk) begin
 
-        if (layer18_out_TVALID & layer18_out_TREADY) begin
+        if (layer21_out_TVALID & layer21_out_TREADY) begin
 
-            out_mem[4] <= layer18_out_TDATA[159-10:128];
-            assert((out_benchmark_mem[4] - layer18_out_TDATA[159-10:128] > -3) && (out_benchmark_mem[4]- layer18_out_TDATA[159-10:128] < 3)) 
-                else $display("Mismatch at (frame, neuron)=(%0d, 4). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[4], layer18_out_TDATA[159-10:128], out_benchmark_mem[4] - layer18_out_TDATA[159-10:128]);
+            out_mem[4] <= layer21_out_TDATA[159-10:128];
+            assert((out_benchmark_mem[4] - layer21_out_TDATA[159-10:128] > -3) && (out_benchmark_mem[4]- layer21_out_TDATA[159-10:128] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 4). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[4], layer21_out_TDATA[159-10:128], out_benchmark_mem[4] - layer21_out_TDATA[159-10:128]);
 
-            out_mem[3] <= layer18_out_TDATA[127-10:96];
-            assert((out_benchmark_mem[3] - layer18_out_TDATA[127-10:96] > -3) && (out_benchmark_mem[3]- layer18_out_TDATA[127-10:96] < 3)) 
-                else $display("Mismatch at (frame, neuron)=(%0d, 3). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[3], layer18_out_TDATA[127-10:96], out_benchmark_mem[3] - layer18_out_TDATA[127-10:96]);
+            out_mem[3] <= layer21_out_TDATA[127-10:96];
+            assert((out_benchmark_mem[3] - layer21_out_TDATA[127-10:96] > -3) && (out_benchmark_mem[3]- layer21_out_TDATA[127-10:96] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 3). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[3], layer21_out_TDATA[127-10:96], out_benchmark_mem[3] - layer21_out_TDATA[127-10:96]);
 
-            out_mem[2] <= layer18_out_TDATA[95-10:64];
-            assert((out_benchmark_mem[2] - layer18_out_TDATA[95-10:64] > -3) && (out_benchmark_mem[2]- layer18_out_TDATA[95-10:64] < 3)) 
-                else $display("Mismatch at (frame, neuron)=(%0d, 2). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[2], layer18_out_TDATA[95-10:64], out_benchmark_mem[2] - layer18_out_TDATA[95-10:64]);
+            out_mem[2] <= layer21_out_TDATA[95-10:64];
+            assert((out_benchmark_mem[2] - layer21_out_TDATA[95-10:64] > -3) && (out_benchmark_mem[2]- layer21_out_TDATA[95-10:64] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 2). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[2], layer21_out_TDATA[95-10:64], out_benchmark_mem[2] - layer21_out_TDATA[95-10:64]);
 
-            out_mem[1] <= layer18_out_TDATA[63-10:32];
-            assert((out_benchmark_mem[1] - layer18_out_TDATA[63-10:32] > -3) && (out_benchmark_mem[1]- layer18_out_TDATA[63-10:32] < 3)) 
-                else $display("Mismatch at (frame, neuron)=(%0d, 1). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[1], layer18_out_TDATA[63-10:32], out_benchmark_mem[1] - layer18_out_TDATA[63-10:32]);
+            out_mem[1] <= layer21_out_TDATA[63-10:32];
+            assert((out_benchmark_mem[1] - layer21_out_TDATA[63-10:32] > -3) && (out_benchmark_mem[1]- layer21_out_TDATA[63-10:32] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 1). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[1], layer21_out_TDATA[63-10:32], out_benchmark_mem[1] - layer21_out_TDATA[63-10:32]);
 
-            out_mem[0] <= layer18_out_TDATA[31-10:0];
-            assert((out_benchmark_mem[0] - layer18_out_TDATA[31-10:0] > -3) && (out_benchmark_mem[0]- layer18_out_TDATA[31-10:0] < 3)) 
-                else $display("Mismatch at (frame, neuron)=(%0d, 0). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[0], layer18_out_TDATA[31-10:0], out_benchmark_mem[0] - layer18_out_TDATA[31-10:0]);
+            out_mem[0] <= layer21_out_TDATA[31-10:0];
+            assert((out_benchmark_mem[0] - layer21_out_TDATA[31-10:0] > -3) && (out_benchmark_mem[0]- layer21_out_TDATA[31-10:0] < 3)) 
+                else $display("Mismatch at (frame, neuron)=(%0d, 0). Expected %h, got %h, diff=%0d\n", cnt_frame, out_benchmark_mem[0], layer21_out_TDATA[31-10:0], out_benchmark_mem[0] - layer21_out_TDATA[31-10:0]);
         end
         
 	end
@@ -166,7 +166,7 @@ module generate_cnn_benchmark_predictions();
 
                 //////////////////////// 2. Load output benchmark data ////////////////////////
 
-                $readmemb($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/QKeras_pred_ap_fixed_22_11.txt",
+                $readmemb($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/QKeras_mg1_pred_ap_fixed_22_11.txt",
 										IN_ROWS, IN_COLS,
             							OUT_ROWS, OUT_COLS, NUM_CROPS,
 										Y1_range[i], X1_range[j]), out_benchmark_mem);
@@ -182,7 +182,7 @@ module generate_cnn_benchmark_predictions();
                 @(negedge ap_ready) begin
 
                     // Output
-                    output_file = $fopen($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/CNN_out_benchmark_ap_fixed_22_11.txt",
+                    output_file = $fopen($sformatf("/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/%0dx%0d_to_%0dx%0dx%0d/Y1_%0d/X1_%0d/CNN_mg1_out_benchmark_ap_fixed_22_11.txt",
 										IN_ROWS, IN_COLS,
             							OUT_ROWS, OUT_COLS, NUM_CROPS,
 										Y1_range[i], X1_range[j]), "wb");

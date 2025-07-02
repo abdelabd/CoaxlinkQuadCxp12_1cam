@@ -44,7 +44,7 @@
     <Option Name="SimulatorGccVersionActiveHdl" Val="9.3.0"/>
     <Option Name="BoardPart" Val=""/>
     <Option Name="SourceMgmtMode" Val="DisplayOnly"/>
-    <Option Name="ActiveSimSet" Val="sim_2"/>
+    <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
     <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
@@ -61,7 +61,7 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="104"/>
+    <Option Name="WTXSimLaunchSim" Val="148"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -602,574 +602,616 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_fixed_32u_array_ap_fixed_46_25_5_3_0_32u_config15_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w315_d1_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_24_13_5_3_0_config6_mult_s_w6_ROThq.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_10u_config13_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_25_14_5_3_0_config10_mult_s_w10_bGp.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_6u_config5_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_ap_ufixed_8u_array_ap_fixed_24_13_5_3_0_16u_configcgu.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_6u_array_ap_ufixed_8_2_4_0_0_6u_relu_config4_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_16u_array_ap_ufixed_8_2_4_0_0_16u_relu_config8_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_15u_array_ap_ufixed_8_2_4_0_0_15u_relu_config17btn.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s_outidx_ROM_AUdEe.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_ap_ufixed_6u_array_ap_ufixed_8_2_4_0_0_6u_configbpm.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w128_d81_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_11_3_21_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_8u_array_ap_ufixed_8_2_4_0_0_8u_relu_config4_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_ufixed_6u_array_ap_ufixed_8_2_4_0_0_6u_config5_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_32u_array_ap_ufixed_8_2_4_0_0_32u_relu_config12_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_24_13_5_3_0_config10_mult_s_w10_8jQ.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_array_ap_fixed_25_14_5_3_0_32u_config10_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_23_12_5_3_0_config6_mult_s_w6_ROJfO.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8ns_6s_19s_19_2_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_10u_array_ap_ufixed_8_2_4_0_0_10u_relu_config12_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_16u_config9_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config10_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_24_13_5_3_0_10u_config10_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_73_6_8_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8s_8ns_16s_17_2_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_16u_config9_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config18_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_25_14_5_3_0_32u_config10_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_55_5_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d121_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_6u_config6_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w256_d4_S.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w48_d121_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_ufixed_32u_array_ap_fixed_22_11_5_3_0_5u_config18_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_23_12_5_3_0_8u_config6_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_32s_6s_38_3_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_ufixed_10u_array_ap_fixed_21_10_5_3_0_15u_config15_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_24_13_5_3_0_config6_mult_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w120_d1_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_32u_config13_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8ns_6s_21s_22_2_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_fixed_32u_array_ap_fixed_46_25_5_3_0_32u_config15_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w80_d1_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_19_4_32_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config15_s_outidbjl.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_array_ap_fixed_25_14_5_3_0_32u_config10_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_ufixed_10u_array_ap_fixed_22_11_5_3_0_5u_config21_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_fixed_ap_fixed_45_22_5_3_0_config2_mult_s_w2eOg.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w184_d81_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_16u_config9_s_void_pooling2d_cl_sUhA.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_22_11_5_3_0_config21_s_w21_Rbom.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_9_2_45_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_fixed_ap_fixed_45_22_5_3_0_config2_mult_s_oudEe.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_21_4_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_fixed_ap_fixed_46_25_5_3_0_config15_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config18_s_w18_Rbml.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w384_d81_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mul_8s_8ns_16_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_fixed_ap_fixed_46_25_5_3_0_config15_s_w15_ROM_NPcdu.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe_no_ap_cont.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_22_11_5_3_0_config21_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_32u_config13_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config15_s_w15_Rbkl.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config6_s_p_ZZN4nnet26conv_2d_DeQ.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_regslice_both.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_32s_8s_40_3_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_ap_ufixed_6u_array_ap_fixed_23_12_5_3_0_8u_config6bqm.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8s_8ns_21s_21_2_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_ufixed_6u_array_ap_fixed_23_12_5_3_0_8u_config6_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_16u_config10_s_p_ZZN4nnet26conv_2bak.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s_outidx_1_ROM_dEe.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config5_s_p_ZZN4nnet12pooling2fYi.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_ufixed_8u_array_ap_ufixed_8_2_4_0_0_8u_config9_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_16u_array_ap_ufixed_8_2_4_0_0_16u_relu_config8_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w80_d4_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w800_d4_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_ap_ufixed_8u_array_ap_ufixed_8_2_4_0_0_8u_configbrm.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_ap_ufixed_8u_array_ap_ufixed_8_2_4_0_0_8u_configcfu.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8ns_4s_16s_17_2_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_regslice_both.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_73_6_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_22_11_5_3_0_config18_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_6u_config6_s_p_ZZN4nnet26conv_2d_xdS.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_0_5_3_0_1u_config2_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_10u_array_ap_ufixed_8_2_4_0_0_10u_relu_config20bun.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_ap_ufixed_8u_array_ap_ufixed_8_2_4_0_0_8u_config5_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w240_d4_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_ufixed_8_2_4_0_0_32u_relu_config17civ.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_ufixed_15u_array_ap_fixed_21_10_5_3_0_10u_config18_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_ufixed_32u_array_ap_fixed_22_11_5_3_0_5u_config18_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_24_13_5_3_0_config10_mult_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_fixed_32_16_5_3_0_1u_config2_s_void_conv_2d_bufferbkb.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config9_s_void_pooling2d_cl_stKfY.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_32u_config13_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w210_d1_S.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_32u_array_ap_ufixed_8_2_4_0_0_32u_relu_config12chv.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config15_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8ns_4s_16s_17_2_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_23_12_5_3_0_config6_mult_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_8u_array_ap_ufixed_8_2_4_0_0_8u_relu_config4_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_16u_config9_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_ufixed_1u_array_ap_fixed_45_22_5_3_0_6u_config2_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_global_pooling2d_cl_array_array_ap_fixed_32_16_5_3_0_32u_config14_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_15u_array_ap_ufixed_8_2_4_0_0_15u_relu_config17_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_65_5_8_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_dense_array_ap_ufixed_10u_array_ap_fixed_22_11_5_3_0_5u_config21_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mul_8s_8ns_16_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_45_22_5_3_0_6u_config2_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_24_13_5_3_0_16u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_10u_config13_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_32u_array_ap_ufixed_8_2_4_0_0_32u_relu_config17_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_conv_2d_cl_array_array_ap_fixed_24_13_5_3_0_10u_config10_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_16u_config10_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_31_4_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_22_11_5_3_0_config18_s_w18_ROM_Nceu.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_8u_array_ap_ufixed_8_2_4_0_0_8u_relu_config8_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w128_d16_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_array_ap_fixed_24_13_5_3_0_10u_config10_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_flow_control_loop_pipe_no_ap_cont.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_10u_config13_s_void_pooling2d_cl_9j0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w1024_d1_S.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_6u_config5_s_p_ZZN4nnet12pooling2fYi.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_19_4_8_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_7_2_21_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_compute_output_buffer_2d_array_array_ap_fixed_45_22_5_3_0_8u_config2_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w48_d2116_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_32u_config13_s_void_pooling2d_cl_bHp.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_19_4_8_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_ufixed_1u_array_ap_fixed_45_22_5_3_0_8u_config2_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8ns_5s_16s_17_2_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w270_d2116_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d2116_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_6u_array_ap_ufixed_8_2_4_0_0_6u_relu_config4_U0.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_start_for_global_pooling2d_cl_array_array_ap_fixed_32_16_5_3_0_32u_config14_U0.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_pooling2d_cl_array_array_ap_ufixed_8_2_4_0_0_10u_config13_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w1472_d1_S.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_22_11_5_3_0_config21_s_outidbnm.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_0_5_3_0_1u_config2_s_void_conv_2d_buffer_bkb.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w256_d1_S.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_10u_array_ap_ufixed_8_2_4_0_0_10u_relu_config20_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_relu_array_ap_fixed_8u_array_ap_ufixed_8_2_4_0_0_8u_relu_config8_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_sparsemux_65_5_32_1_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d81_A.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config5_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_sparsemux_7_2_45_1_1.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8s_8ns_16s_17_2_1.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config10_s_p_ZZN4nnet26conv_2dShg.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_fifo_w360_d2116_A.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_2_4_0_0_8u_config9_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_conv_2d_cl_array_ap_ufixed_8u_array_ap_fixed_24_13_5_3_0_16u_config6_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_start_for_relu_array_ap_fixed_10u_array_ap_ufixed_8_2_4_0_0_10u_relu_config12bsm.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s_w2_ROM_NP_BRAeOg.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_0_5_3_0_1u_config2_s_void_conv_2d_buffer_bkb.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_leq_nin_ap_ufixed_ap_fixed_25_14_5_3_0_config10_mult_s.v">
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_mac_muladd_8s_8ns_21s_22_2_1.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_ufixed_10u_array_ap_fixed_21_10_5_3_0_15u_config15_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_array_ap_ufixed_15u_array_ap_fixed_21_10_5_3_0_10u_config18_s.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_21_10_5_3_0_config18_s_outidbll.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_dense_resource_rf_gt_nin_rem0_ap_ufixed_ap_fixed_config2_mult_s_w2_ROM_NP_BRAeOg.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_fifo_w64_d16_S.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../04_ref_design/rtl_models/vivado_2023.2/yuhao_model_good1/myproject_prj/solution1/syn/verilog/myproject_shift_line_buffer_array_ap_ufixed_8_0_5_3_0_1u_config2_s.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
