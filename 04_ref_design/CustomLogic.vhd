@@ -249,9 +249,18 @@ architecture behav of CustomLogic is
 begin
 
 	-- Bypass these connections for now. 
-	m_axis_tdata <= s_axis_tdata;
+	-- m_axis_tdata <= s_axis_tdata;
+	m_axis_tdata(255 downto 234) <= rheed_m_axis_tdata(4);
+	m_axis_tdata(233 downto 212) <= rheed_m_axis_tdata(3);
+	m_axis_tdata(211 downto 190) <= rheed_m_axis_tdata(2);
+	m_axis_tdata(189 downto 168) <= rheed_m_axis_tdata(1);
+	m_axis_tdata(167 downto 146) <= rheed_m_axis_tdata(0);
+	m_axis_tdata(145 downto 0) <= (others=>'0');
+
 	m_axis_tuser <= s_axis_tuser;
-	m_axis_tvalid <= '1';
+
+	-- m_axis_tvalid <= '1';
+	m_axis_tvalid <= rheed_m_axis_tvalid;
 
 	-- Instantiate RHEED_inference module
 	reset_rheed <= (not s_axis_resetn) or srst250;
