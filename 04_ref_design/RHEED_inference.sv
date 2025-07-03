@@ -46,14 +46,18 @@ module RHEED_inference #(
 	logic [NUM_CROPS-1:0] cn_ap_ready_all;
     logic cn_ap_ready;
 
-
 	logic [NUM_CROPS-1:0] cn_s_axis_tready_all;
     logic cn_s_axis_tready;
 	logic cn_m_axis_tvalid;
 	logic [7:0] cn_m_axis_tdata;
 
-    logic [NUM_CROPS-1:0] m_axis_tvalid_all, m_axis_tready_all;
-    logic [7:0] m_axis_tdata_all [NUM_CROPS-1:0];
+    logic [NUM_CROPS-1:0] cn_m_axis_tvalid_all;
+    logic [7:0] cn_m_axis_tdata_all [NUM_CROPS-1:0];
+
+    // Crop-Sequentializer output wires
+    logic cs_m_axis_tvalid;
+    logic [NUM_CROPS-1:0] cs_s_axis_tready_all;
+    logic [7:0] cs_m_axis_tdata;
 
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
@@ -117,9 +121,9 @@ module RHEED_inference #(
                 .cnt_col(seq_cnt_col),
                 .cnt_row(seq_cnt_row),
 
-                .m_axis_tvalid(m_axis_tvalid_all[crop_idx]),
-                .m_axis_tready(m_axis_tready_all[crop_idx]),
-                .m_axis_tdata(m_axis_tdata_all[crop_idx])
+                .m_axis_tvalid(cn_m_axis_tvalid_all[crop_idx]),
+                .m_axis_tready(cs_s_axis_tready_all[crop_idx]),
+                .m_axis_tdata(cn_m_axis_tdata_all[crop_idx])
             );
         end
     endgenerate
@@ -136,16 +140,19 @@ module RHEED_inference #(
         .clk(clk),
         .reset(reset),
 
-        .s_axis_tvalid(m_axis_tvalid_all),
-        .s_axis_tready(m_axis_tready_all),
-        .s_axis_tdata(m_axis_tdata_all),
+        .s_axis_tvalid(cn_m_axis_tvalid_all),
+        .s_axis_tready(cs_s_axis_tready_all),
+        .s_axis_tdata(cn_m_axis_tdata_all),
 
-        .m_axis_tvalid(m_axis_tvalid),
+        .m_axis_tvalid(cs_m_axis_tvalid),
         .m_axis_tready(m_axis_tready),
-        .m_axis_tdata(m_axis_tdata),
+        .m_axis_tdata(cs_m_axis_tdata),
 
         .crop_idx(crop_idx_read)
     );
+
+    assign m_axis_tvalid = cs_m_axis_tvalid;
+    assign m_axis_tdata = cs_m_axis_tdata;
     
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     
