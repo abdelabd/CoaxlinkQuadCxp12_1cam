@@ -180,7 +180,7 @@ architecture behav of CustomLogic is
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-
+	type single_frame_inf_arr is array (NUM_CROPS-1 downto 0) of std_logic_vector(159 downto 0);
 	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(7 downto 0);
 	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(7 downto 0);
 	type diff_array is array (NUM_CROPS-1 downto 0) of integer;
@@ -196,7 +196,7 @@ architecture behav of CustomLogic is
 
 	-- Master-side handshake
 	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : std_logic_vector(7 downto 0);
+	signal rheed_m_axis_tdata : single_frame_inf_arr;
 
 	-- crop_idx being currently read out
 	signal crop_idx_read : std_logic_vector(clog2(NUM_CROPS)-1 downto 0);
@@ -331,133 +331,133 @@ begin
 	end generate;
 
 	-- Read benchmark file into memory
-	load_cn_benchmark: process
-        file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
-        variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
-        variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(7 downto 0);
-        variable row_0, col_0, row_1, col_1, row_2, col_2, row_3, col_3, row_4, col_4      : integer;
-    begin
-        file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
-        file_open(file_handle_1, OUT_BENCHMARK_FILE_1, read_mode);
-        file_open(file_handle_2, OUT_BENCHMARK_FILE_2, read_mode);
-        file_open(file_handle_3, OUT_BENCHMARK_FILE_3, read_mode);
-        file_open(file_handle_4, OUT_BENCHMARK_FILE_4, read_mode);
+	-- load_cn_benchmark: process
+    --     file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
+    --     variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
+    --     variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(7 downto 0);
+    --     variable row_0, col_0, row_1, col_1, row_2, col_2, row_3, col_3, row_4, col_4      : integer;
+    -- begin
+    --     file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
+    --     file_open(file_handle_1, OUT_BENCHMARK_FILE_1, read_mode);
+    --     file_open(file_handle_2, OUT_BENCHMARK_FILE_2, read_mode);
+    --     file_open(file_handle_3, OUT_BENCHMARK_FILE_3, read_mode);
+    --     file_open(file_handle_4, OUT_BENCHMARK_FILE_4, read_mode);
 
         
-        for row in 0 to OUT_ROWS-1 loop
+    --     for row in 0 to OUT_ROWS-1 loop
 
-            readline(file_handle_0, line_content_0);
-            readline(file_handle_1, line_content_1);
-            readline(file_handle_2, line_content_2);
-            readline(file_handle_3, line_content_3);
-            readline(file_handle_4, line_content_4);
+    --         readline(file_handle_0, line_content_0);
+    --         readline(file_handle_1, line_content_1);
+    --         readline(file_handle_2, line_content_2);
+    --         readline(file_handle_3, line_content_3);
+    --         readline(file_handle_4, line_content_4);
 
-            for col in 0 to OUT_COLS-1 loop
-                -- Read hexadecimal value from line
-                hread(line_content_0, temp_vector_0);
-                hread(line_content_1, temp_vector_1);
-                hread(line_content_2, temp_vector_2);
-                hread(line_content_3, temp_vector_3);
-                hread(line_content_4, temp_vector_4);
+    --         for col in 0 to OUT_COLS-1 loop
+    --             -- Read hexadecimal value from line
+    --             hread(line_content_0, temp_vector_0);
+    --             hread(line_content_1, temp_vector_1);
+    --             hread(line_content_2, temp_vector_2);
+    --             hread(line_content_3, temp_vector_3);
+    --             hread(line_content_4, temp_vector_4);
 
-                -- Calculate 1D index from 2D coordinates
-                out_benchmark_mem(0, row * OUT_COLS + col) <= temp_vector_0;
-                out_benchmark_mem(1, row * OUT_COLS + col) <= temp_vector_1;
-                out_benchmark_mem(2, row * OUT_COLS + col) <= temp_vector_2;
-                out_benchmark_mem(3, row * OUT_COLS + col) <= temp_vector_3;
-                out_benchmark_mem(4, row * OUT_COLS + col) <= temp_vector_4;
+    --             -- Calculate 1D index from 2D coordinates
+    --             out_benchmark_mem(0, row * OUT_COLS + col) <= temp_vector_0;
+    --             out_benchmark_mem(1, row * OUT_COLS + col) <= temp_vector_1;
+    --             out_benchmark_mem(2, row * OUT_COLS + col) <= temp_vector_2;
+    --             out_benchmark_mem(3, row * OUT_COLS + col) <= temp_vector_3;
+    --             out_benchmark_mem(4, row * OUT_COLS + col) <= temp_vector_4;
 
-            end loop;
-        end loop;
+    --         end loop;
+    --     end loop;
         
-        file_close(file_handle_0);
-        file_close(file_handle_1);
-        file_close(file_handle_2);
-        file_close(file_handle_3);
-        file_close(file_handle_4);
+    --     file_close(file_handle_0);
+    --     file_close(file_handle_1);
+    --     file_close(file_handle_2);
+    --     file_close(file_handle_3);
+    --     file_close(file_handle_4);
 
-        wait;
-    end process;
+    --     wait;
+    -- end process;
 
 	-- Data capture and verification process
 
-    cn_data_capture: process(clk250)
-    begin
-        if rising_edge(clk250) then
-			-- for crop_idx in 1 downto 0 loop
-			if reset_rheed = '1' then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-				idx_out <= 0;
-			else
+    -- cn_data_capture: process(clk250)
+    -- begin
+    --     if rising_edge(clk250) then
+	-- 		-- for crop_idx in 1 downto 0 loop
+	-- 		if reset_rheed = '1' then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
+	-- 			idx_out <= 0;
+	-- 		else
 			
-				if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
-					-- Capture DUT output
-					out_mem(to_integer(unsigned(crop_idx_read)), idx_out) <= rheed_m_axis_tdata;
+	-- 			if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+	-- 				-- Capture DUT output
+	-- 				out_mem(to_integer(unsigned(crop_idx_read)), idx_out) <= rheed_m_axis_tdata;
 					
-					-- Verify against benchmark
-					-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
-					assert (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) > -3)
-						report "CropNorm mismatch at crop_idx " & integer'image(to_integer(unsigned(crop_idx_read))) & ", out_idx " & integer'image(idx_out) 
-							& " (Row=" & integer'image(idx_out/OUT_COLS) 
-							& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-							& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))))
-							& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
-							& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ))
-						severity error;
+	-- 				-- Verify against benchmark
+	-- 				-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
+	-- 				assert (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) > -3)
+	-- 					report "CropNorm mismatch at crop_idx " & integer'image(to_integer(unsigned(crop_idx_read))) & ", out_idx " & integer'image(idx_out) 
+	-- 						& " (Row=" & integer'image(idx_out/OUT_COLS) 
+	-- 						& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
+	-- 						& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))))
+	-- 						& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
+	-- 						& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ))
+	-- 					severity error;
 
-					-- Increment index
-					if idx_out = OUT_ROWS*OUT_COLS-1 then idx_out <= 0;
-					else idx_out <= idx_out + 1;
-					end if;
-				end if;
-			end if;
+	-- 				-- Increment index
+	-- 				if idx_out = OUT_ROWS*OUT_COLS-1 then idx_out <= 0;
+	-- 				else idx_out <= idx_out + 1;
+	-- 				end if;
+	-- 			end if;
+	-- 		end if;
 
 
-        end if;
-	end process;
+    --     end if;
+	-- end process;
 
-	save_output: process(cnt_frame)
-		file out_file : text;
-        variable out_line : line;
-        variable file_status : file_open_status;
-	begin
+	-- save_output: process(cnt_frame)
+	-- 	file out_file : text;
+    --     variable out_line : line;
+    --     variable file_status : file_open_status;
+	-- begin
 
-		if cnt_frame = NUM_FRAMES then 
+	-- 	if cnt_frame = NUM_FRAMES then 
 
-			for crop_idx in NUM_CROPS-1 downto 0 loop
-            file_open(file_status, 
-						out_file, 
-						"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
-						& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
-						& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
-						& "/Y1_" & integer'image(CROP_Y0_N_CONST(crop_idx)) &"_X1_" & integer'image(CROP_X0_N_CONST(crop_idx)) 
-						& "/HDL_cropnorm_out.txt", 
-						write_mode);
+	-- 		for crop_idx in NUM_CROPS-1 downto 0 loop
+    --         file_open(file_status, 
+	-- 					out_file, 
+	-- 					"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+	-- 					& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+	-- 					& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+	-- 					& "/Y1_" & integer'image(CROP_Y0_N_CONST(crop_idx)) &"_X1_" & integer'image(CROP_X0_N_CONST(crop_idx)) 
+	-- 					& "/HDL_cropnorm_out.txt", 
+	-- 					write_mode);
             
-            if file_status /= open_ok then
-                report "Failed to open file for layer " & integer'image(crop_idx)
-                severity failure;
-            end if;
+    --         if file_status /= open_ok then
+    --             report "Failed to open file for layer " & integer'image(crop_idx)
+    --             severity failure;
+    --         end if;
 
-            for row in 0 to OUT_ROWS-1 loop
-                for col in 0 to OUT_ROWS-1 loop
-                    -- Write each element followed by a space
-                    hwrite(out_line, out_mem(crop_idx, row*OUT_COLS + col));
-                    write(out_line, ' ');
-                end loop;
-                -- Write completed line to file
-                writeline(out_file, out_line);
-            end loop;
+    --         for row in 0 to OUT_ROWS-1 loop
+    --             for col in 0 to OUT_ROWS-1 loop
+    --                 -- Write each element followed by a space
+    --                 hwrite(out_line, out_mem(crop_idx, row*OUT_COLS + col));
+    --                 write(out_line, ' ');
+    --             end loop;
+    --             -- Write completed line to file
+    --             writeline(out_file, out_line);
+    --         end loop;
             
-            file_close(out_file);
-        end loop;
+    --         file_close(out_file);
+    --     end loop;
 
-        report "All crop-norm outputs written successfully";
-        -- wait;
+    --     report "All crop-norm outputs written successfully";
+    --     -- wait;
 
-		end if;
+	-- 	end if;
 
 		
-	end process;
+	-- end process;
 
 	-- synthesis translate_on
 	

@@ -22,7 +22,7 @@ module RHEED_inference #(
     // AXI Stream Master Interface outgoing, post-crop pixels
     output logic            m_axis_tvalid,
     input  logic            m_axis_tready,
-    output logic [7:0]      m_axis_tdata,
+    output logic [159:0]    m_axis_tdata [NUM_CROPS-1:0],
 
     // crop-index 
     output logic [$clog2(NUM_CROPS)-1:0] crop_idx_read
@@ -54,11 +54,24 @@ module RHEED_inference #(
     logic [NUM_CROPS-1:0] cn_m_axis_tvalid_all;
     logic [7:0] cn_m_axis_tdata_all [NUM_CROPS-1:0];
 
+    logic [NUM_CROPS-1:0] cn_max_value_tvalid_all;
+
     // Crop-Sequentializer output wires
     logic cs_m_axis_tvalid;
     logic [NUM_CROPS-1:0] cs_s_axis_tready_all;
     logic [7:0] cs_m_axis_tdata;
 
+    // CNN output wires
+    logic [159:0] CNN_m_axis_tdata;
+    logic CNN_s_axis_tready, CNN_m_axis_tvalid;
+    logic CNN_ap_ready, CNN_ap_done, CNN_ap_idle;
+
+    // CNN input wires
+    logic [15:0] reset_sync; // Long reset for CNN
+    logic ap_rst_for_CNN;
+    logic ap_start_for_CNN;
+    logic m_axis_tready_for_CNN;
+    
     /////////////////////////////////// LOGIC ///////////////////////////////////
 
     // Sequentializer
@@ -123,7 +136,9 @@ module RHEED_inference #(
 
                 .m_axis_tvalid(cn_m_axis_tvalid_all[crop_idx]),
                 .m_axis_tready(cs_s_axis_tready_all[crop_idx]),
-                .m_axis_tdata(cn_m_axis_tdata_all[crop_idx])
+                .m_axis_tdata(cn_m_axis_tdata_all[crop_idx]),
+
+                .max_value_tvalid(cn_max_value_tvalid_all[crop_idx])
             );
         end
     endgenerate
@@ -145,15 +160,68 @@ module RHEED_inference #(
         .s_axis_tdata(cn_m_axis_tdata_all),
 
         .m_axis_tvalid(cs_m_axis_tvalid),
-        .m_axis_tready(m_axis_tready),
+        .m_axis_tready(CNN_s_axis_tready),
         .m_axis_tdata(cs_m_axis_tdata),
 
         .crop_idx(crop_idx_read)
     );
 
-    assign m_axis_tvalid = cs_m_axis_tvalid;
-    assign m_axis_tdata = cs_m_axis_tdata;
-    
+    // CNN
+    myproject iCNN (
+        .q_conv2d_batchnorm_input_TDATA(cs_m_axis_tdata),
+        .layer21_out_TDATA(CNN_m_axis_tdata_32b),
+
+        .ap_clk(clk),
+        .ap_rst_n(ap_rst_n_sync),
+
+        .q_conv2d_batchnorm_input_TVALID(cs_m_axis_tvalid),
+        .q_conv2d_batchnorm_input_TREADY(CNN_s_axis_tready),
+
+        .ap_start(ap_start_for_CNN),
+
+        .layer21_out_TVALID(CNN_m_axis_tvalid),
+        .layer21_out_TREADY(m_axis_tready_for_CNN),
+
+        .ap_done(CNN_ap_done),
+        .ap_ready(CNN_ap_ready),
+        .ap_idle(CNN_ap_idle)
+    );
+    assign m_axis_tready_for_CNN = 1'b1;
+
+    // Drive long reset for CNN
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset)
+            reset_sync <= 16'hFFFF; 
+        else
+            reset_sync <= {reset_sync[14:0], 1'b0};
+    end
+    assign ap_rst_n_sync = ~reset_sync[15]; 
+
+    // Drive ap_start for CNN
+    logic CNN_ready_state;
+    always_ff @(posedge clk) begin
+        if (reset || CNN_ap_ready) CNN_ready_state <= 1'b1;
+        else if (ap_start_for_CNN) CNN_ready_state <= 1'b0;
+    end
+
+    always_ff @(posedge clk) begin
+        if (reset || ap_start_for_CNN) ap_start_for_CNN <= 1'b0;
+        else if (cn_max_value_tvalid_all[crop_idx_read] && CNN_ready_state) ap_start_for_CNN <= 1'b1;
+    end
+
+    // Output
+    // m_axis_tdata
+    always_ff @(posedge clk) begin
+        if (CNN_m_axis_tvalid && m_axis_tready_for_CNN) m_axis_tdata[crop_idx_read] <= CNN_m_axis_tdata;
+    end
+
+    // m_axis_tvalid
+    always_ff @(posedge clk) begin
+        if (reset) m_axis_tvalid <= 1'b0;
+        else if (crop_idx_read == NUM_CROPS-1) begin
+            if (CNN_m_axis_tvalid && m_axis_tready_for_CNN) m_axis_tvalid <= 1'b1;
+        end
+    end
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     
     // synthesis translate_off
