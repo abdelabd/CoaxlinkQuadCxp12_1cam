@@ -169,7 +169,7 @@ module RHEED_inference #(
     // CNN
     myproject iCNN (
         .q_conv2d_batchnorm_input_TDATA(cs_m_axis_tdata),
-        .layer21_out_TDATA(CNN_m_axis_tdata_32b),
+        .layer21_out_TDATA(CNN_m_axis_tdata),
 
         .ap_clk(clk),
         .ap_rst_n(ap_rst_n_sync),
