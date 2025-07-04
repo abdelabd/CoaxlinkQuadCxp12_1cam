@@ -180,10 +180,8 @@ architecture behav of CustomLogic is
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-	type single_frame_inf_arr is array (NUM_CROPS-1 downto 0) of std_logic_vector(159 downto 0);
-	type output_mem_array is array (NUM_CROPS-1 downto 0, OUT_ROWS*OUT_COLS-1 downto 0) of std_logic_vector(7 downto 0);
-	type cropped_output_array is array (NUM_CROPS-1 downto 0) of std_logic_vector(7 downto 0);
-	type diff_array is array (NUM_CROPS-1 downto 0) of integer;
+	type out_mem_arr is array (NUM_CROPS-1 downto 0) of std_logic_vector(159 downto 0);
+	type diff_arr is array (NUM_CROPS-1 downto 0) of integer;
 	----------------------------------------------------------------------------
 	-- Signals
 	----------------------------------------------------------------------------
@@ -196,7 +194,7 @@ architecture behav of CustomLogic is
 
 	-- Master-side handshake
 	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : single_frame_inf_arr;
+	signal rheed_m_axis_tdata : out_mem_arr;
 
 	-- crop_idx being currently read out
 	signal crop_idx_read : std_logic_vector(clog2(NUM_CROPS)-1 downto 0);
@@ -218,8 +216,8 @@ architecture behav of CustomLogic is
 
 	-- Memory for output and benchmark-output
 	signal idx_out : integer := 0;
-	signal out_mem          : output_mem_array;
-    signal out_benchmark_mem: output_mem_array;
+	signal out_mem          : out_mem_arr;
+    signal out_benchmark_mem: out_mem_arr;
 	--VHDL makes this so goddamn difficult to do in a loop
 	constant OUT_BENCHMARK_FILE_0    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
