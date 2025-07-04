@@ -167,20 +167,21 @@ architecture behav of CustomLogic is
 	-- Types
 	----------------------------------------------------------------------------
 	type crop_coords_const is array (NUM_CROPS-1 downto 0) of integer;
-	-- constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 2, 4, 27); -- 32x32_to_5x5x5
-	-- constant CROP_Y0_N_CONST : crop_coords_const := (10, 10, 23, 43, 52); -- 100x160_to_48x48x5
-	constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 20, 40, 252); -- 300x320_to_48x48x5
-	-- constant CROP_Y0_N_CONST : crop_coords_const := (0, 0, 20, 40, 252); -- 300x512_to_48x48x5
+	-- constant CROP_Y0_N_CONST : crop_coords_const := (27, 4, 2, 0, 0); -- 32x32_to_5x5x5
+	-- constant CROP_Y0_N_CONST : crop_coords_const := (52, 43, 23, 10, 10); -- 100x160_to_48x48x5
+	constant CROP_Y0_N_CONST : crop_coords_const := (252, 40, 20, 0, 0); -- 300x320_to_48x48x5
+	-- constant CROP_Y0_N_CONST : crop_coords_const := (252, 40, 20, 0, 0); -- 300x512_to_48x48x5
 	
-	-- constant CROP_X0_N_CONST : crop_coords_const := (0, 3, 0, 4, 27); -- 32x32_to_5x5x5
-	-- constant CROP_X0_N_CONST : crop_coords_const := (10, 37, 10, 53, 99); -- 100x160_to_48x48x5
-	constant CROP_X0_N_CONST : crop_coords_const := (0, 30, 0, 40, 272); -- 300x320_to_48x48x5
-	-- constant CROP_X0_N_CONST : crop_coords_const := (0, 30, 0, 40, 464); -- 300x512_to_48x48x5
+	-- constant CROP_X0_N_CONST : crop_coords_const := (27, 4, 0, 3, 0); -- 32x32_to_5x5x5
+	-- constant CROP_X0_N_CONST : crop_coords_const := (99, 53, 10, 37, 10); -- 100x160_to_48x48x5
+	constant CROP_X0_N_CONST : crop_coords_const := (272, 40, 0, 30, 0);  -- 300x320_to_48x48x5
+	-- constant CROP_X0_N_CONST : crop_coords_const := (464, 40, 0, 30, 0); -- 300x512_to_48x48x5
 
 
 	type crop_coords_x_wire is array (NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_COLS)-1 downto 0);
 	type crop_coords_y_wire is array(NUM_CROPS-1 downto 0) of std_logic_vector(clog2(IN_ROWS)-1 downto 0);
-	type out_mem_arr is array (NUM_CROPS-1 downto 0) of std_logic_vector(159 downto 0);
+	type out_arr is array (NUM_CROPS-1 downto 0) of std_logic_vector(159 downto 0);
+	type out_mem_arr is array (NUM_CROPS-1 downto 0, 4 downto 0) of std_logic_vector(21 downto 0);
 	type diff_arr is array (NUM_CROPS-1 downto 0) of integer;
 	----------------------------------------------------------------------------
 	-- Signals
@@ -194,7 +195,7 @@ architecture behav of CustomLogic is
 
 	-- Master-side handshake
 	signal rheed_m_axis_tvalid : std_logic;
-	signal rheed_m_axis_tdata : out_mem_arr;
+	signal rheed_m_axis_tdata : out_arr;
 
 	-- crop_idx being currently read out
 	signal crop_idx_read : std_logic_vector(clog2(NUM_CROPS)-1 downto 0);
@@ -223,27 +224,27 @@ architecture behav of CustomLogic is
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(0)) &"_X1_" & integer'image(CROP_X0_N_CONST(0)) 
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_mg1_pred_ap_fixed_22_11.txt";
 	constant OUT_BENCHMARK_FILE_1    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(1)) &"_X1_" & integer'image(CROP_X0_N_CONST(1)) 
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_mg1_pred_ap_fixed_22_11.txt";
 	constant OUT_BENCHMARK_FILE_2    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(2)) &"_X1_" & integer'image(CROP_X0_N_CONST(2)) 
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_mg1_pred_ap_fixed_22_11.txt";
 	constant OUT_BENCHMARK_FILE_3    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(3)) &"_X1_" & integer'image(CROP_X0_N_CONST(3)) 
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_mg1_pred_ap_fixed_22_11.txt";
 	constant OUT_BENCHMARK_FILE_4    : string := "/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
 											& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
 											& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
 											& "/Y1_" & integer'image(CROP_Y0_N_CONST(4)) &"_X1_" & integer'image(CROP_X0_N_CONST(4)) 
-											& "/img_postnorm_INDEX.txt";
+											& "/QKeras_mg1_pred_ap_fixed_22_11.txt";
 
 	-- synthesis translate_on
 
@@ -329,53 +330,49 @@ begin
 	end generate;
 
 	-- Read benchmark file into memory
-	-- load_cn_benchmark: process
-    --     file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
-    --     variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
-    --     variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(7 downto 0);
-    --     variable row_0, col_0, row_1, col_1, row_2, col_2, row_3, col_3, row_4, col_4      : integer;
-    -- begin
-    --     file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
-    --     file_open(file_handle_1, OUT_BENCHMARK_FILE_1, read_mode);
-    --     file_open(file_handle_2, OUT_BENCHMARK_FILE_2, read_mode);
-    --     file_open(file_handle_3, OUT_BENCHMARK_FILE_3, read_mode);
-    --     file_open(file_handle_4, OUT_BENCHMARK_FILE_4, read_mode);
+	load_cn_benchmark: process
+        file file_handle_0, file_handle_1, file_handle_2, file_handle_3, file_handle_4       : text;
+        variable line_content_0, line_content_1, line_content_2, line_content_3, line_content_4  : line;
+        variable temp_vector_0, temp_vector_1, temp_vector_2, temp_vector_3, temp_vector_4   : std_logic_vector(21 downto 0);
+        variable row      : integer;
+    begin
+        file_open(file_handle_0, OUT_BENCHMARK_FILE_0, read_mode);
+        file_open(file_handle_1, OUT_BENCHMARK_FILE_1, read_mode);
+        file_open(file_handle_2, OUT_BENCHMARK_FILE_2, read_mode);
+        file_open(file_handle_3, OUT_BENCHMARK_FILE_3, read_mode);
+        file_open(file_handle_4, OUT_BENCHMARK_FILE_4, read_mode);
 
         
-    --     for row in 0 to OUT_ROWS-1 loop
+        for row in 4 downto 0 loop
 
-    --         readline(file_handle_0, line_content_0);
-    --         readline(file_handle_1, line_content_1);
-    --         readline(file_handle_2, line_content_2);
-    --         readline(file_handle_3, line_content_3);
-    --         readline(file_handle_4, line_content_4);
+            readline(file_handle_0, line_content_0);
+            readline(file_handle_1, line_content_1);
+            readline(file_handle_2, line_content_2);
+            readline(file_handle_3, line_content_3);
+            readline(file_handle_4, line_content_4);
 
-    --         for col in 0 to OUT_COLS-1 loop
-    --             -- Read hexadecimal value from line
-    --             hread(line_content_0, temp_vector_0);
-    --             hread(line_content_1, temp_vector_1);
-    --             hread(line_content_2, temp_vector_2);
-    --             hread(line_content_3, temp_vector_3);
-    --             hread(line_content_4, temp_vector_4);
+			read(line_content_0, temp_vector_0);
+			read(line_content_1, temp_vector_1);
+			read(line_content_2, temp_vector_2);
+			read(line_content_3, temp_vector_3);
+			read(line_content_4, temp_vector_4);
 
-    --             -- Calculate 1D index from 2D coordinates
-    --             out_benchmark_mem(0, row * OUT_COLS + col) <= temp_vector_0;
-    --             out_benchmark_mem(1, row * OUT_COLS + col) <= temp_vector_1;
-    --             out_benchmark_mem(2, row * OUT_COLS + col) <= temp_vector_2;
-    --             out_benchmark_mem(3, row * OUT_COLS + col) <= temp_vector_3;
-    --             out_benchmark_mem(4, row * OUT_COLS + col) <= temp_vector_4;
+            out_benchmark_mem(0, row) <= temp_vector_0;
+            out_benchmark_mem(1, row) <= temp_vector_1;
+            out_benchmark_mem(2, row) <= temp_vector_2;
+            out_benchmark_mem(3, row) <= temp_vector_3;
+            out_benchmark_mem(4, row) <= temp_vector_4;
 
-    --         end loop;
-    --     end loop;
+        end loop;
         
-    --     file_close(file_handle_0);
-    --     file_close(file_handle_1);
-    --     file_close(file_handle_2);
-    --     file_close(file_handle_3);
-    --     file_close(file_handle_4);
+        file_close(file_handle_0);
+        file_close(file_handle_1);
+        file_close(file_handle_2);
+        file_close(file_handle_3);
+        file_close(file_handle_4);
 
-    --     wait;
-    -- end process;
+        wait;
+    end process;
 
 	-- Data capture and verification process
 
