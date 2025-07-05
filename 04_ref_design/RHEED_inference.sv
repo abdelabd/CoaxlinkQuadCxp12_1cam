@@ -221,6 +221,7 @@ module RHEED_inference #(
         else if (crop_idx_read == NUM_CROPS-1) begin
             if (CNN_m_axis_tvalid && m_axis_tready_for_CNN) m_axis_tvalid <= 1'b1;
         end
+        else if (m_axis_tvalid && m_axis_tready) m_axis_tvalid <= 1'b0;
     end
     /////////////////////////////////// TESTBENCHING ///////////////////////////////////
     

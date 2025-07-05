@@ -314,7 +314,7 @@ begin
 	end process;
 
 	-- Drive downstream tready
-	-- tb_s_axis_tready <= "11111";
+	-- tb_s_axis_tready <= '1';
 	iRBG: entity work.lfsr_16bit
 	port map (
 		clk => clk250,
@@ -408,49 +408,43 @@ begin
 
         
 
-	-- save_output: process(cnt_frame)
-	-- 	file out_file : text;
-    --     variable out_line : line;
-    --     variable file_status : file_open_status;
-	-- begin
+	save_output: process(cnt_frame)
+		file out_file : text;
+        variable out_line : line;
+        variable file_status : file_open_status;
+	begin
 
-	-- 	if cnt_frame = NUM_FRAMES then 
+		if cnt_frame = NUM_FRAMES then 
 
-	-- 		for crop_idx in NUM_CROPS-1 downto 0 loop
-    --         file_open(file_status, 
-	-- 					out_file, 
-	-- 					"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
-	-- 					& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
-	-- 					& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
-	-- 					& "/Y1_" & integer'image(CROP_Y0_N_CONST(crop_idx)) &"_X1_" & integer'image(CROP_X0_N_CONST(crop_idx)) 
-	-- 					& "/HDL_cropnorm_out.txt", 
-	-- 					write_mode);
+			for crop_idx in NUM_CROPS-1 downto 0 loop
+            file_open(file_status, 
+						out_file, 
+						"/home/aelabd/RHEED/CoaxlinkQuadCxp12_1cam/tb_data_Mono8/" 
+						& integer'image(IN_ROWS) & "x" & integer'image(IN_COLS) 
+						& "_to_" & integer'image(OUT_ROWS) & "x" & integer'image(OUT_COLS) & "x" & integer'image(NUM_CROPS)
+						& "/Y1_" & integer'image(CROP_Y0_N_CONST(crop_idx)) &"_X1_" & integer'image(CROP_X0_N_CONST(crop_idx)) 
+						& "/full_RTL_out.txt", 
+						write_mode);
             
-    --         if file_status /= open_ok then
-    --             report "Failed to open file for layer " & integer'image(crop_idx)
-    --             severity failure;
-    --         end if;
+            if file_status /= open_ok then
+                report "Failed to open file for layer " & integer'image(crop_idx)
+                severity failure;
+            end if;
 
-    --         for row in 0 to OUT_ROWS-1 loop
-    --             for col in 0 to OUT_ROWS-1 loop
-    --                 -- Write each element followed by a space
-    --                 hwrite(out_line, out_mem(crop_idx, row*OUT_COLS + col));
-    --                 write(out_line, ' ');
-    --             end loop;
-    --             -- Write completed line to file
-    --             writeline(out_file, out_line);
-    --         end loop;
+            for row in 4 downto 0 loop
+                write(out_line, out_mem(crop_idx, row));
+                writeline(out_file, out_line);
+            end loop;
             
-    --         file_close(out_file);
-    --     end loop;
+            file_close(out_file);
+        end loop;
 
-    --     report "All crop-norm outputs written successfully";
-    --     -- wait;
+        report "All outputs written successfully";
 
-	-- 	end if;
+		end if;
 
 		
-	-- end process;
+	end process;
 
 	-- synthesis translate_on
 	
