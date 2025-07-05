@@ -16,7 +16,7 @@
   "../../../ipstatic/hdl/fifo_generator_v13_2_rfs.v" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
-  "../../../../CustomLogic.gen/sources_1/ip/axis_fifo_2/sim/axis_fifo.v" \
+  "../../../../CustomLogic.gen/sources_1/ip/axis_fifo/sim/axis_fifo.v" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
   glbl.v

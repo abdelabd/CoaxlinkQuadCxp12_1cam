@@ -4,7 +4,7 @@
     "xci_name": "axis_fifo",
     "component_reference": "xilinx.com:ip:fifo_generator:13.2",
     "ip_revision": "7",
-    "gen_directory": "../../../../CustomLogic.gen/sources_1/ip/axis_fifo_2",
+    "gen_directory": "../../../../CustomLogic.gen/sources_1/ip/axis_fifo",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "axis_fifo", "resolve_type": "user", "usage": "all" } ],
@@ -399,7 +399,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "7" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../CustomLogic.gen/sources_1/ip/axis_fifo_2" } ],
+        "OUTPUTDIR": [ { "value": "../../../../CustomLogic.gen/sources_1/ip/axis_fifo" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2022.2" } ],

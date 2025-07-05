@@ -1,2 +1,2 @@
-axis_fifo.v,verilog,xil_defaultlib,../../../../CustomLogic.gen/sources_1/ip/axis_fifo_2/sim/axis_fifo.v,
+axis_fifo.v,verilog,xil_defaultlib,../../../../CustomLogic.gen/sources_1/ip/axis_fifo/sim/axis_fifo.v,
 glbl.v,Verilog,xil_defaultlib,glbl.v
