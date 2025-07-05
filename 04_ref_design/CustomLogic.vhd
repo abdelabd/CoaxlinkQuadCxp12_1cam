@@ -216,7 +216,7 @@ architecture behav of CustomLogic is
 	signal lfsr_16bit_out : std_logic_vector(15 downto 0);
 
 	-- Memory for output and benchmark-output
-	signal idx_out : integer := 0;
+	signal offset           : integer;
 	signal out_mem          : out_mem_arr;
     signal out_benchmark_mem: out_mem_arr;
 	--VHDL makes this so goddamn difficult to do in a loop
@@ -376,39 +376,37 @@ begin
 
 	-- Data capture and verification process
 
-    -- cn_data_capture: process(clk250)
-    -- begin
-    --     if rising_edge(clk250) then
-	-- 		-- for crop_idx in 1 downto 0 loop
-	-- 		if reset_rheed = '1' then -- TODO: why not OUT_ROWS*OUT_COLS-1 ?
-	-- 			idx_out <= 0;
-	-- 		else
+    cn_data_capture: process(clk250)
+    begin
+        if rising_edge(clk250) then
+
+			-- Reset output memory
+			if reset_rheed = '1' then 
+				for crop_idx in NUM_CROPS-1 downto 0 loop 
+					for row in 4 downto 0 loop
+						out_mem(crop_idx, row) <= (others => '0');
+					end loop;
+				end loop; 
 			
-	-- 			if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
-	-- 				-- Capture DUT output
-	-- 				out_mem(to_integer(unsigned(crop_idx_read)), idx_out) <= rheed_m_axis_tdata;
+			end if;
+
+			-- Capture DUT output
+			if rheed_m_axis_tvalid = '1' and tb_s_axis_tready = '1' then
+				for crop_idx in NUM_CROPS-1 downto 0 loop 
+					for row in 4 downto 0 loop
+						out_mem(crop_idx, row) <= rheed_m_axis_tdata(crop_idx)(159-10-row*32 downto 159-31-row*32);
+					end loop;
+				end loop;
+			end if;
+
+		end if;
+	end process;
+
 					
-	-- 				-- Verify against benchmark
-	-- 				-- assert (to_integer(unsigned(out_benchmark_mem(crop_idx, idx_out(crop_idx)))) - to_integer(unsigned(rheed_m_axis_tdata(crop_idx) ) ) = 1)
-	-- 				assert (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) < 3) and (to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ) > -3)
-	-- 					report "CropNorm mismatch at crop_idx " & integer'image(to_integer(unsigned(crop_idx_read))) & ", out_idx " & integer'image(idx_out) 
-	-- 						& " (Row=" & integer'image(idx_out/OUT_COLS) 
-	-- 						& ", Col=" & integer'image(idx_out mod OUT_COLS) & ")" 
-	-- 						& " Expected: " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))))
-	-- 						& " Received: " & integer'image(to_integer(unsigned(rheed_m_axis_tdata))) 
-	-- 						& " Diff = " & integer'image(to_integer(unsigned(out_benchmark_mem(to_integer(unsigned(crop_idx_read)), idx_out))) - to_integer(unsigned(rheed_m_axis_tdata ) ))
-	-- 					severity error;
-
-	-- 				-- Increment index
-	-- 				if idx_out = OUT_ROWS*OUT_COLS-1 then idx_out <= 0;
-	-- 				else idx_out <= idx_out + 1;
-	-- 				end if;
-	-- 			end if;
-	-- 		end if;
 
 
-    --     end if;
-	-- end process;
+
+        
 
 	-- save_output: process(cnt_frame)
 	-- 	file out_file : text;
