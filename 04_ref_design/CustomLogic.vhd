@@ -267,9 +267,9 @@ architecture behav of CustomLogic is
 begin
 
 	-- Bypass these connections for now. 
-	m_axis_tdata <= s_axis_tdata;
+	m_axis_tdata(255 downto 255-159) <= rheed_m_axis_tdata(0);
 	m_axis_tuser <= s_axis_tuser;
-	m_axis_tvalid <= '1';
+	m_axis_tvalid <= rheed_m_axis_tvalid;
 
 	-- Instantiate RHEED_inference module
 	reset_rheed <= (not s_axis_resetn) or srst250;
@@ -323,7 +323,7 @@ begin
 	);
 	tb_s_axis_tready <= lfsr_16bit_out(0);
 
-	-- Drive crop-coordiantes
+	-- Drive crop-coordinates
 	gen_assign : for i in NUM_CROPS-1 downto 0 generate
 		crop_y0_n(i) <= std_logic_vector(to_unsigned(CROP_Y0_N_CONST(i), clog2(IN_ROWS)));
 		crop_x0_n(i) <= std_logic_vector(to_unsigned(CROP_X0_N_CONST(i), clog2(IN_COLS)));
@@ -375,7 +375,6 @@ begin
     end process;
 
 	-- Data capture and verification process
-
     cn_data_capture: process(clk250)
     begin
         if rising_edge(clk250) then
@@ -402,18 +401,12 @@ begin
 		end if;
 	end process;
 
-					
-
-
-
-        
-
+	-- Save output to file
 	save_output: process(cnt_frame)
 		file out_file : text;
         variable out_line : line;
         variable file_status : file_open_status;
 	begin
-
 		if cnt_frame = NUM_FRAMES then 
 
 			for crop_idx in NUM_CROPS-1 downto 0 loop
